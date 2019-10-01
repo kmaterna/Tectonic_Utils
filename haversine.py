@@ -2,6 +2,8 @@
 
 # Haversine formula example in Python
 # Author: Wayne Dyck
+# From here, you can also add a vector of km lengths to a lon/lat coordinate, returning coordinates in lon/lat. 
+
 
 import numpy as np 
 import math
@@ -76,3 +78,15 @@ def xy_distance(ref_loc,sta_loc):
     x = radius * np.cos(np.deg2rad(azimuth)) * 1000;
     y = radius * np.sin(np.deg2rad(azimuth)) * 1000;
     return [x, y];
+
+
+
+def add_vector_to_coords(lon0, lat0, dx, dy):
+    # Add a vector of km to a set of latitude/longitude points. 
+    lat1=lat0+dy/111.000;
+    lon1=lon0+dx/(111.000*np.cos(np.deg2rad(lat0)));
+    return_coords = [lon1, lat1]
+    return return_coords;
+
+
+    
