@@ -6,7 +6,6 @@ a point by a known euler pole.
 import numpy as np
 import sys
 
-
 def point_rotation_by_Euler_Pole(Point, Euler_Pole):
 
 	R_point = get_r(Point[0], Point[1]);
@@ -80,8 +79,7 @@ if __name__=="__main__":
 	Euler_Pole = [69.9, -12.3, 0.55]; # Lon, Lat, Deg/Ma
 	Point = [-124, 40.5];  # Lon, Lat
 	[east_transform, north_transform, up_transform] = point_rotation_by_Euler_Pole(Point, Euler_Pole);
-	print(east_transform);
-	print(north_transform);
-	print(up_transform);
-	print(np.sqrt(east_transform*east_transform + north_transform*north_transform));
+	total = np.sqrt(east_transform*east_transform + north_transform*north_transform);
+	print("%.2f east, %.2f north, %.2f up, %.2f mm/yr total" % (east_transform, north_transform, up_transform, total) );
+	
 
