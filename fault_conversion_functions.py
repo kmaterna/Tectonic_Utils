@@ -4,9 +4,11 @@
 # Fault is a dictionary here containing: strike, dip, length(km), width(km), lon, lat, depth
 # Format  json: basis1, basis2, length(m), width(m), nlength, nwidth, strike, dip, position [lon, lat, dep], penalty
 # Format intxt: strike rake dip length(km) width(km) updip_corner_lon updip_corner_lat updip_corner_dep
+# Lon, lat, depth refer to top left corner of the fualt. 
 
 import numpy as np 
 import json
+import haversine
 
 def read_faults_intxt(infile):
 	# Read all faults that are sources or receivers
@@ -30,6 +32,7 @@ def read_faults_intxt(infile):
 
 def read_faults_json(infile):
 	# Read all faults from a json file (just geometry; don't have slip or rake)
+	# It has to convert from fault center to fault corner. 
 	fault_list=[];
 	config_file = open('config.json','r')
 	config = json.load(config_file);
@@ -39,8 +42,12 @@ def read_faults_json(infile):
 		one_fault["dip"]=config["faults"][key]["dip"];
 		one_fault["length"]=config["faults"][key]["length"]/1000.0;
 		one_fault["width"]=config["faults"][key]["width"]/1000.0;
-		one_fault["lon"]=config["faults"][key]["position"][0];
-		one_fault["lat"]=config["faults"][key]["position"][1];
+		center_lon = config["faults"][key]["position"][0];
+		center_lat = config["faults"][key]["position"][1];
+		x_start, y_start = add_vector_to_point(0, 0, one_fault["length"]/2, -one_fault["strike"]);  # in km
+		corner_lon, corner_lat = xy2lonlat(xi,yi,center_lon,center_lat);  # 
+		one_fault["lon"]=corner_lon;
+		one_fault["lat"]=corner_lat;
 		one_fault["depth"]=config["faults"][key]["position"][2];
 		fault_list.append(one_fault);
 	return fault_list;
@@ -60,16 +67,22 @@ def write_faults_json(faults_list, outfile):
 	faults={};
 	count=0;
 	for fault in faults_list:
+		# Convert the fault (which has top left corner) into a fault with top center coordinate
+		corner_lon = fault["lon"]
+		corner_lat = fault["lat"]
+		x_center, y_center = add_vector_to_point(0, 0, fault["length"]/2, fault["strike"]);  # in km
+		center_lon, center_lat = xy2lonlat(x_center,y_center,corner_lon,corner_lat);  # 
+
 		count=count+1;
 		label="fault"+str(count)
 		fault["length"]=fault["length"]*1000;
 		fault["width"]=fault["width"]*1000;
 		fault["basis1"]=[1,0,0];
 		fault["basis2"]=None;
-		fault["nlength"]=1;
-		fault["nwidth"]=1;
+		fault["Nlength"]=1;
+		fault["Nwidth"]=1;
 		fault["penalty"]=1;
-		fault["position"]=[fault["lon"],fault["lat"],fault["depth"]];
+		fault["position"]=[center_lon,center_lat,fault["depth"]];
 		fault.pop("lon");
 		fault.pop("lat");
 		fault.pop("depth");
@@ -89,3 +102,27 @@ def intxt2json(infile, outfile):
 	faults = read_faults_intxt(infile);
 	write_faults_json(faults, outfile);
 	return;
+
+
+def add_vector_to_point(x0,y0,vector_mag,vector_heading):
+	# Vector heading defined as strike- CW from north.
+	theta=np.deg2rad(90-vector_heading);
+	x1 = x0 + vector_mag*np.cos(theta);
+	y1 = y0 + vector_mag*np.sin(theta);
+	return x1, y1;
+
+def xy2lonlat(xi,yi,reflon,reflat):
+	lat=reflat+( yi*1/111.000 );
+	lon=reflon+( xi*1/(111.000*abs(np.cos(np.deg2rad(reflat)))) );
+	return lon, lat;
+
+
+def latlon2xy(loni,lati,lon0,lat0):
+	# returns the distance between a point and a reference in km. 
+	radius = haversine.distance([lat0,lon0], [lati,loni]);
+	bearing = haversine.calculate_initial_compass_bearing((lat0, lon0),(lati, loni))
+	azimuth = 90 - bearing;
+	x = radius * np.cos(np.deg2rad(azimuth));
+	y = radius * np.sin(np.deg2rad(azimuth));
+	return [x, y];
+
