@@ -35,9 +35,6 @@ def read_geojson(infile):
 		mean = feature["properties"]["mean"]*0.001
 		median = feature["properties"]["median"]*0.001
 		std = feature["properties"]["std"]*0.001
-		if std<0.00001:   # if you only sample one point, you can get sigma = 0.00, which will be a pain later. 
-			print("Warning: std=0 will result in problems later. Turning to nominal value of 1.5 cm")
-			std=0.015;
 		unitE = feature["properties"]["unitE"]
 		unitN = feature["properties"]["unitN"]
 		unitU = feature["properties"]["unitU"]
@@ -120,19 +117,22 @@ def plot_downsampled_InSAR(pixel_list, plot_name, vmin=-20, vmax=20):
 
 
 
-def pixels_to_txt(pixel_list, text_file, bbox=[-180, 180, -90, 90]):
+def pixels_to_txt(pixel_list, text_file, bbox=[-180, 180, -90, 90], std_min=0.001):
 	# Write in the format needed by Trever's inversion code
 	# bbox is the optional bounding box with format [W,E,S,N];
+	# std_min is the minimum value of uncertainty (m)
 	# Lon Lat Value unitE unitN unitU
 	ofile=open(text_file,'w');
 	ofile.write("# Header: lon, lat, disp(m), sig(m), unitE, unitN, unitU from ground to satellite\n")
 	for pixel in pixel_list:
 		lon = np.mean([pixel.BL_corner[0], pixel.TR_corner[0]]);
 		lat = np.mean([pixel.BL_corner[1], pixel.TR_corner[1]]);
+		std = np.max([pixel.std, std_min]);  # don't let uncertainty get unreasonably small
 		if lon>=bbox[0] and lon<=bbox[1]:
 			if lat>=bbox[2] and lat<=bbox[3]:
-				ofile.write("%.5f %.5f %.5f %.5f %.5f %.5f %.5f\n" % (lon, lat, pixel.median, pixel.std, pixel.unitE, pixel.unitN, pixel.unitU) );
+				ofile.write("%.5f %.5f %.5f %.5f %.5f %.5f %.5f\n" % (lon, lat, pixel.median, std, pixel.unitE, pixel.unitN, pixel.unitU) );
 	ofile.close();
+	print("Writing %s with %d pixels " % (text_file, len(pixel_list)) );
 	return;
 
 
