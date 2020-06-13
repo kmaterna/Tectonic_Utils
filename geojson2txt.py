@@ -65,6 +65,7 @@ def plot_downsampled_InSAR(pixel_list, plot_name, vmin=-20, vmax=20):
 		ax.add_patch(mypolygon);
 
 	# Plot formatting
+	plt.title('Downsampled %d pixels ' % (len(pixel_list)) );
 	plt.ylim([np.min(ydim)-0.05, np.max(ydim)+0.05]);
 	plt.xlim([np.min(xdim)-0.05, np.max(xdim)+0.05]);  
 	plt.gca().tick_params(axis='both', which='major', labelsize=18)
@@ -100,6 +101,7 @@ def plot_downsampled_InSAR(pixel_list, plot_name, vmin=-20, vmax=20):
 		ax.add_patch(mypolygon);
 
 	# Plot formatting
+	plt.title('Downsampled %d pixels ' % (len(pixel_list)) );
 	plt.ylim([np.min(ydim)-0.05, np.max(ydim)+0.05]);
 	plt.xlim([np.min(xdim)-0.05, np.max(xdim)+0.05]);  
 	plt.gca().tick_params(axis='both', which='major', labelsize=18)
