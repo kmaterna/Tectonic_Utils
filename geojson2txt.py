@@ -44,7 +44,7 @@ def read_geojson(infile):
 	return pixel_list;
 
 
-def plot_downsampled_InSAR(pixel_list, plot_name, vmin=-20, vmax=20):
+def plot_downsampled_InSAR(pixel_list, plot_name, vmin=None, vmax=None):
 	plt.figure(figsize=(16,8),dpi=300);
 	color_boundary_object=matplotlib.colors.Normalize(vmin=vmin,vmax=vmax, clip=True);
 	custom_cmap = cm.ScalarMappable(norm=color_boundary_object,cmap='rainbow');

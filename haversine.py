@@ -64,6 +64,28 @@ def calculate_initial_compass_bearing(pointA, pointB):
 
     return compass_bearing
 
+def calculate_endpoint_given_bearing(origin, bearing, angular_distance_degrees):
+    # head a certain angular distance (degrees) along a bearing
+    # starting from a point on earth.  Where do you end up? 
+    # Origin is a two-vector that contains [latitude, longitude]
+    # bearing is clockwise from north in degrees, like strike
+    # phi2, lambda2 are the latitude and longitude of the destination point. 
+    # theta is bearing in radians. 
+    # delta is the angular distance in radians, d/R (d = distance, R = radius of Earth)
+    # Source: https://www.movable-type.co.uk/scripts/latlong.html
+    lat0 = origin[0]; lon0 = origin[1];
+    phi1 = np.deg2rad(lat0)
+    lambda1 = np.deg2rad(lon0);
+    delta = np.deg2rad(angular_distance_degrees);
+    theta = np.deg2rad(bearing);
+    phi2 = np.arcsin( (np.sin(phi1)*np.cos(delta)) + (np.cos(phi1)*np.sin(delta)*np.cos(theta)) );
+    lambda2 = lambda1 + np.arctan2( np.sin(theta)*np.sin(delta)*np.cos(phi1), np.cos(delta)-np.sin(phi1)*np.sin(phi2) ) ;
+
+    lat2 = np.rad2deg(phi2)
+    lon2 = np.rad2deg(lambda2);  
+    destination = [lat2, lon2]
+    return destination; 
+
 
 def xy_distance(ref_loc,sta_loc):
     """
