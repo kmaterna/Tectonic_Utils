@@ -1,10 +1,20 @@
-# The functions in this script convert between two fault formats 
-# Format 1: json, Trever Hines' format for Slippy
-# Format 2: .intxt, Kathryn Materna's format for Elastic_stresses_py
-# Fault is a dictionary here containing: strike, dip, length(km), width(km), lon, lat, depth
-# Format  json: basis1, basis2, length(m), width(m), nlength, nwidth, strike, dip, position [lon, lat, dep], penalty
-# Format intxt: strike rake dip length(km) width(km) updip_corner_lon updip_corner_lat updip_corner_dep
-# Lon, lat, depth refer to top left corner of the fualt. 
+'''
+The functions in this script convert between fault formats 
+# Format 1: json format for Slippy
+# Format 2: slip distribution format for Slippy
+# Format 3: .intxt, Kathryn Materna's format for Elastic_stresses_py
+
+The internal format here is a dictionary containing: 
+Format internal: strike(deg), dip(deg), length(km), width(km), lon(corner), lat(corner), depth(km), rake(deg), slip(m)
+	If the fault is a receiver fault, we put slip = 0
+
+Format json: basis1, basis2, length(m), width(m), nlength, nwidth, strike, dip, position [lon, lat, dep], penalty
+
+Format slippy: lon lat depth[m] strike[deg] dip[deg] length[m] width[m] left-lateral[m] thrust[m] tensile[m]
+
+Format intxt: strike rake dip length(km) width(km) updip_corner_lon updip_corner_lat updip_corner_dep(km) slip
+'''
+
 
 import numpy as np 
 import json
@@ -17,19 +27,25 @@ import math
 def read_faults_intxt(infile):
 	# Read all faults that are sources or receivers
 	# Reads faults into a list of fault dictionaries
-	fault_list=[];
+	# The lat/lon refer to the top left corner of the fault. 
+	fault_list = [];
 	ifile=open(infile,'r');
 	for line in ifile:
 		temp=line.split();
-		if temp[0]=="S:" or temp[0]=="R:":
-			one_fault={};
-			one_fault["strike"]=float(temp[1]);
-			one_fault["dip"]=float(temp[3]);
-			one_fault["length"]=float(temp[4]);
-			one_fault["width"]=float(temp[5]);
-			one_fault["lon"]=float(temp[6]);
-			one_fault["lat"]=float(temp[7]);
-			one_fault["depth"]=float(temp[8]);
+		if temp[0] == "S:" or temp[0] == "R:":
+			one_fault = {};
+			one_fault["strike"] = float(temp[1]);
+			one_fault["dip"] = float(temp[3]);
+			one_fault["length"] = float(temp[4]);
+			one_fault["width"] = float(temp[5]);
+			one_fault["lon"] = float(temp[6]);
+			one_fault["lat"] = float(temp[7]);
+			one_fault["depth"] = float(temp[8]);
+			one_fault["rake"] = float(temp[2]);
+			if temp[0] == "R:":
+				one_fault["slip"] = 0;
+			else:
+				one_fault["slip"] = float(temp[9]);
 			fault_list.append(one_fault);
 	ifile.close();
 	return fault_list;
@@ -39,34 +55,67 @@ def read_faults_json(infile):
 	# Read all faults from a json file (just geometry; don't have slip or rake)
 	# It has to convert from fault center to fault corner. 
 	# Reads faults into a list of fault dictionaries
-	fault_list=[];
+	# Faults read from JSON have zero slip
+	fault_list = [];
 	config_file = open('config.json','r')
 	config = json.load(config_file);
 	for key in config["faults"].keys():
-		one_fault={};
-		one_fault["strike"]=config["faults"][key]["strike"];
-		one_fault["dip"]=config["faults"][key]["dip"];
-		one_fault["length"]=config["faults"][key]["length"]/1000.0;
-		one_fault["width"]=config["faults"][key]["width"]/1000.0;
+		one_fault = {};
+		one_fault["strike"] = config["faults"][key]["strike"];
+		one_fault["dip"] = config["faults"][key]["dip"];
+		one_fault["length"] = config["faults"][key]["length"]/1000.0;
+		one_fault["width"] = config["faults"][key]["width"]/1000.0;
 		center_lon = config["faults"][key]["position"][0];
 		center_lat = config["faults"][key]["position"][1];
 		x_start, y_start = add_vector_to_point(0, 0, one_fault["length"]/2, -one_fault["strike"]);  # in km
-		corner_lon, corner_lat = xy2lonlat(xi,yi,center_lon,center_lat);  # 
-		one_fault["lon"]=corner_lon;
-		one_fault["lat"]=corner_lat;
-		one_fault["depth"]=config["faults"][key]["position"][2];
+		corner_lon, corner_lat = xy2lonlat(x_start, y_start, center_lon, center_lat);  # 
+		one_fault["lon"] = corner_lon;
+		one_fault["lat"] = corner_lat;
+		one_fault["depth"] = -config["faults"][key]["position"][2]/1000;
+		one_fault["rake"] = 0;
+		one_fault["slip"] = 0;
 		fault_list.append(one_fault);
 	return fault_list;
 
 
-def write_faults_intxt(faults, outfile):
-	# Writes the files as receivers with zero slip. 
-	# Rake is unknown because we only have geometry. 
+def read_slippy_distribution(infile):
+	# Read a file from the Slippy inversion outputs
+	# lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees] length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num
+	# Lon/lat usually refer to the center top of the fault
+	# Must convert the lon/lat to the top left corner
+	fault_list = [];
+	[lon, lat, depth, strike, dip, length, width, ll_slip, thrust_slip, tensile_slip, segment_num] = np.loadtxt(infile, skiprows=1, unpack=True, dtype={"names":('lon','lat','depth','strike','dip','length','width','ss','ds','tensile','num'), "formats":(np.float, np.float, np.float, np.float, np.float, np.float, np.float, np.float, np.float, np.float, np.float)});
+	for i in range(len(lon)):
+		one_fault = {};
+		one_fault["strike"] = strike[i];
+		one_fault["dip"] = dip[i];
+		one_fault["length"] = length[i] / 1000; 
+		one_fault["width"] = width[i] / 1000; 
+		one_fault["depth"] = -depth[i]/1000;
+		center_lon = lon[i];
+		center_lat = lat[i];
+		x_start, y_start = add_vector_to_point(0, 0, one_fault["length"]/2, -one_fault["strike"]);  # in km
+		corner_lon, corner_lat = xy2lonlat(x_start, y_start, center_lon, center_lat);
+		one_fault["lon"] = corner_lon;
+		one_fault["lat"] = corner_lat; 
+		one_fault["rake"] = get_rake(ll_slip[i], thrust_slip[i]);
+		one_fault["slip"] = get_total_slip(ll_slip[i], thrust_slip[i]);
+		fault_list.append(one_fault);
+	return fault_list;
+
+
+def write_faults_intxt(faults, outfile, receiver=True, source=False):
+	# Writes the files as receivers with zero slip, or sources with finite slip. 
 	ofile=open(outfile,'w');
+	ofile.write('#S/R: strike rake dip length(km) width(km) updip_corner_lon updip_corner_lat updip_corner_dep(km) slip\n')
 	for fault in faults:
-		ofile.write("R: %.1f nan %.1f %.2f %.2f %.3f %.3f %.2f \n" % (fault["strike"],fault["dip"],fault["length"],fault["width"],fault["lon"],fault["lat"],fault["depth"]) );
+		if receiver == True:
+			ofile.write("R: %.1f nan %.1f %.2f %.2f %.3f %.3f %.2f \n" % (fault["strike"],fault["dip"],fault["length"],fault["width"],fault["lon"],fault["lat"],fault["depth"]) );
+		if source == True:
+			ofile.write("S: %.1f %.1f %.1f %.2f %.2f %.3f %.3f %.2f %.3f \n" % (fault["strike"],fault["rake"],fault["dip"],fault["length"],fault["width"],fault["lon"],fault["lat"],fault["depth"], fault["slip"]) );
 	ofile.close();
 	return;
+
 
 def write_faults_json(faults_list, outfile):
 	output={};
@@ -99,9 +148,26 @@ def write_faults_json(faults_list, outfile):
 		json.dump(output,ofile,indent=4);
 	return;
 
+
+def write_slipdistribution(faults, outfile):
+	# Write a slip distribution for Slippy. 
+	# lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees] length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num
+	# Remember depths are negative in meters
+	# Remeber lon/lat refer to fault center. 
+	# Will write this function later. 
+	ofile=open(outfile,'w');
+	ofile.write('# lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees] length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num\n');
+	# for fault in faults:
+	print("THIS FUNCTION ISN'T WRITTEN YET");
+	ofile.close();
+	return;
+
+
+# ------- CONVERSION FUNCTIONS ------------ # 
+
 def json2intxt(infile, outfile):
 	faults = read_faults_json(infile);
-	write_faults_intxt(faults, outfile);
+	write_faults_intxt(faults, outfile, receiver=True, source=False);
 	return;
 
 def intxt2json(infile, outfile):
@@ -109,8 +175,15 @@ def intxt2json(infile, outfile):
 	write_faults_json(faults, outfile);
 	return;
 
+def slippydist2intxt(infile, outfile):
+	faults = read_slippy_distribution(infile);
+	write_faults_intxt(faults, outfile, receiver=False, source=True);
+	return;
 
-
+def intxt2slipdistribution(infile,outfile):
+	faults = read_faults_intxt(infile);
+	write_slipdistribution(faults, outfile);
+	return;
 
 
 # ------------- MATH FUNCTIONS ------------------ # 
@@ -165,6 +238,10 @@ def get_rtlat_dip_slip(slip, rake):
 	dip_slip = slip * np.sin(np.deg2rad(rake));
 	return strike_slip, dip_slip;
 
+def get_total_slip(strike_slip, dip_slip):
+	# Just the pythagorean theorem
+	return np.sqrt(strike_slip*strike_slip + dip_slip*dip_slip);
+
 def get_strike_length(x0,x1,y0,y1):
 	# Just the pythagorean theorem
 	length=np.sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
@@ -195,6 +272,7 @@ def add_vector_to_point(x0,y0,vector_mag,vector_heading):
 def get_rake(strike_slip, dip_slip):
 	# Positive slip is right lateral, and reverse. 
 	# Range is -180 to 180.
+	# Will return 0 if dipslip,strikeslip==0,0
 	rake = np.rad2deg(math.atan2(dip_slip,strike_slip));
 	return rake;
 
