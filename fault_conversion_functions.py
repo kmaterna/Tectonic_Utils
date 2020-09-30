@@ -67,7 +67,7 @@ def read_faults_json(infile):
 		one_fault["width"] = config["faults"][key]["width"]/1000.0;
 		center_lon = config["faults"][key]["position"][0];
 		center_lat = config["faults"][key]["position"][1];
-		x_start, y_start = add_vector_to_point(0, 0, one_fault["length"]/2, -one_fault["strike"]);  # in km
+		x_start, y_start = add_vector_to_point(0, 0, one_fault["length"]/2, one_fault["strike"]-180);  # in km
 		corner_lon, corner_lat = xy2lonlat(x_start, y_start, center_lon, center_lat);  # 
 		one_fault["lon"] = corner_lon;
 		one_fault["lat"] = corner_lat;
@@ -94,7 +94,7 @@ def read_slippy_distribution(infile):
 		one_fault["depth"] = -depth[i]/1000;
 		center_lon = lon[i];
 		center_lat = lat[i];
-		x_start, y_start = add_vector_to_point(0, 0, one_fault["length"]/2, -one_fault["strike"]);  # in km
+		x_start, y_start = add_vector_to_point(0, 0, one_fault["length"]/2, one_fault["strike"]-180);  # in km
 		corner_lon, corner_lat = xy2lonlat(x_start, y_start, center_lon, center_lat);
 		one_fault["lon"] = corner_lon;
 		one_fault["lat"] = corner_lat; 
