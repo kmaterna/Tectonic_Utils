@@ -4,7 +4,6 @@
 import numpy as np 
 
 
-
 def moment_from_muad(mu, A, d):
 	# moment = mu * A * d
 	return mu*A*d;

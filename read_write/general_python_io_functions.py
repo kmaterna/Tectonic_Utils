@@ -2,9 +2,8 @@
 # Example: a multi-segment file with polygons or lines, as could be used in GMT
 
 
-
 def read_gmt_multisegment_latlon(fields_file, split_delimiter=' '):
-	# GENERALIZED GMT MULTISEGMENT FILE READER IN PYTHON
+    # GENERALIZED GMT MULTISEGMENT FILE READER IN PYTHON
     # Returns a list of lists, each one with a single segment
     print("reading gmt multisegment file %s" % fields_file);
     ifile = open(fields_file);
@@ -27,4 +26,3 @@ def read_gmt_multisegment_latlon(fields_file, split_delimiter=' '):
     lon_collection.append(lon_temp);
     lat_collection.append(lat_temp);
     return lon_collection, lat_collection;
-

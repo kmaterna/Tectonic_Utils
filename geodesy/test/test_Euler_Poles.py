@@ -1,5 +1,5 @@
 import numpy as np 
-import euler_pole
+from Tectonic_Utils.geodesy import euler_pole
 
 if __name__=="__main__":
 	Euler_Pole = [69.9, -12.3, 0.55]; # Lon, Lat, Deg/Ma

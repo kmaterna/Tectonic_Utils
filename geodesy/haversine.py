@@ -15,7 +15,7 @@ def distance(origin, destination):
     """
     lat1, lon1 = origin
     lat2, lon2 = destination
-    radius = 6371 # km
+    radius = 6371  # km
 
     dlat = math.radians(lat2-lat1)
     dlon = math.radians(lon2-lon1)
@@ -51,8 +51,7 @@ def calculate_initial_compass_bearing(pointA, pointB):
     diffLong = math.radians(pointB[1] - pointA[1])
 
     x = math.sin(diffLong) * math.cos(lat2)
-    y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1)
-            * math.cos(lat2) * math.cos(diffLong))
+    y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1) * math.cos(lat2) * math.cos(diffLong))
 
     initial_bearing = math.atan2(x, y)
 
@@ -73,13 +72,14 @@ def calculate_endpoint_given_bearing(origin, bearing, angular_distance_degrees):
     # theta is bearing in radians. 
     # delta is the angular distance in radians, d/R (d = distance, R = radius of Earth)
     # Source: https://www.movable-type.co.uk/scripts/latlong.html
-    lat0 = origin[0]; lon0 = origin[1];
+    lat0 = origin[0];
+    lon0 = origin[1];
     phi1 = np.deg2rad(lat0)
     lambda1 = np.deg2rad(lon0);
     delta = np.deg2rad(angular_distance_degrees);
     theta = np.deg2rad(bearing);
-    phi2 = np.arcsin( (np.sin(phi1)*np.cos(delta)) + (np.cos(phi1)*np.sin(delta)*np.cos(theta)) );
-    lambda2 = lambda1 + np.arctan2( np.sin(theta)*np.sin(delta)*np.cos(phi1), np.cos(delta)-np.sin(phi1)*np.sin(phi2) ) ;
+    phi2 = np.arcsin((np.sin(phi1)*np.cos(delta)) + (np.cos(phi1)*np.sin(delta)*np.cos(theta)));
+    lambda2 = lambda1 + np.arctan2(np.sin(theta)*np.sin(delta)*np.cos(phi1), np.cos(delta)-np.sin(phi1)*np.sin(phi2));
 
     lat2 = np.rad2deg(phi2)
     lon2 = np.rad2deg(lambda2);  
@@ -87,7 +87,7 @@ def calculate_endpoint_given_bearing(origin, bearing, angular_distance_degrees):
     return destination; 
 
 
-def xy_distance(ref_loc,sta_loc):
+def xy_distance(ref_loc, sta_loc):
     """
     Distance between two latitude/longitude pairs, 
     given in x-distance and y-distance in meters
@@ -95,20 +95,16 @@ def xy_distance(ref_loc,sta_loc):
     Returns x and y in meters. 
     """
     radius = distance(ref_loc, sta_loc);
-    bearing = calculate_initial_compass_bearing((ref_loc[0], ref_loc[1]),(sta_loc[0], sta_loc[1]))
+    bearing = calculate_initial_compass_bearing((ref_loc[0], ref_loc[1]), (sta_loc[0], sta_loc[1]))
     azimuth = 90 - bearing;
     x = radius * np.cos(np.deg2rad(azimuth)) * 1000;
     y = radius * np.sin(np.deg2rad(azimuth)) * 1000;
     return [x, y];
 
 
-
 def add_vector_to_coords(lon0, lat0, dx, dy):
     # Add a vector of km to a set of latitude/longitude points. 
-    lat1=lat0+dy/111.000;
-    lon1=lon0+dx/(111.000*np.cos(np.deg2rad(lat0)));
+    lat1 = lat0+dy/111.000;
+    lon1 = lon0+dx/(111.000*np.cos(np.deg2rad(lat0)));
     return_coords = [lon1, lat1]
     return return_coords;
-
-
-    
