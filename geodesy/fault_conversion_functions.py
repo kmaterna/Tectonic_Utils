@@ -6,7 +6,7 @@ The functions in this script convert between fault formats
 
 The internal format here is a dictionary containing: 
 Format internal: strike(deg), dip(deg), length(km), width(km), lon(corner), lat(corner), depth(km), rake(deg), slip(m)
-	If the fault is a receiver fault, we put slip = 0
+If the fault is a receiver fault, we put slip = 0
 
 Format json: basis1, basis2, length(m), width(m), nlength, nwidth, strike, dip, position [lon, lat, dep], penalty
 
@@ -56,7 +56,7 @@ def read_faults_json(infile):
     # Reads faults into a list of fault dictionaries
     # Faults read from JSON have zero slip
     fault_list = [];
-    config_file = open('config.json', 'r')
+    config_file = open(infile, 'r')
     config = json.load(config_file);
     for key in config["faults"].keys():
         one_fault = {};
@@ -79,36 +79,33 @@ def read_faults_json(infile):
 
 def read_slippy_distribution(infile):
     # Read a file from the Slippy inversion outputs lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees]
-	# length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num Lon/lat usually refer to the center top of
-	# the fault Must convert the lon/lat to the top left corner
+    # length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num Lon/lat usually refer to the center top of
+    # the fault Must convert the lon/lat to the top left corner
     fault_list = [];
-    [lon, lat, depth, strike, dip, length, width, ll_slip, thrust_slip, tensile, segment] = np.loadtxt(infile,
-																									   skiprows=1,
-																									   unpack=True,
-																									   dtype={"names":
-																										   ('lon',
-																											'lat',
-																											'depth',
-																											'strike',
-																											'dip',
-																											'length',
-																											'width',
-																											'ss',
-																											'ds',
-																											'tensile',
-																											'num'),
-																											  "formats": (
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float,
-                                                                                                                    np.float)});
+    [lon, lat, depth, strike, dip, length,
+     width, ll_slip, thrust_slip, tensile, segment] = np.loadtxt(infile, skiprows=1, unpack=True, dtype={"names":('lon',
+                                                                                                                  'lat',
+                                                                                                                  'depth',
+                                                                                                                  'strike',
+                                                                                                                  'dip',
+                                                                                                                  'length',
+                                                                                                                  'width',
+                                                                                                                  'ss',
+                                                                                                                  'ds',
+                                                                                                                  'tensile',
+                                                                                                                  'num'),
+                                                                                                              "formats": (
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float,
+                                                                                                                  np.float)});
     for i in range(len(lon)):
         one_fault = {};
         one_fault["strike"] = strike[i];
@@ -137,14 +134,15 @@ def write_faults_intxt(faults, outfile, receiver=True, source=False, write_heade
         ofile.write("G: 0.250 0.40 -115.75 -115.25 -115.5 32.75 33.25 33.0 # general information\n");
         ofile.write("R: 191 -103 45 6 7 -115.507 33.1 0  # random fault\n");
     for fault in faults:
-        if receiver == True:
+        if receiver is True:
             ofile.write("R: %.1f nan %.1f %.2f %.2f %.3f %.3f %.2f \n" % (
-            fault["strike"], fault["dip"], fault["length"], fault["width"], fault["lon"], fault["lat"],
-            fault["depth"]));
-        if source == True:
+                fault["strike"], fault["dip"], fault["length"], fault["width"], fault["lon"], fault["lat"],
+                fault["depth"]));
+        if source is True:
             ofile.write("S: %.1f %.1f %.1f %.2f %.2f %.3f %.3f %.2f %.3f \n" % (
-            fault["strike"], fault["rake"], fault["dip"], fault["length"], fault["width"], fault["lon"], fault["lat"],
-            fault["depth"], fault["slip"]));
+                fault["strike"], fault["rake"], fault["dip"], fault["length"], fault["width"], fault["lon"],
+                fault["lat"],
+                fault["depth"], fault["slip"]));
     ofile.close();
     return;
 
@@ -226,7 +224,8 @@ def intxt2slipdistribution(infile, outfile):
 
 
 def get_plane_normal(strike, dip):
-    # Given a strike and dip, find the orthogonal unit vectors aligned with strike and dip directions that sit within the plane.
+    # Given a strike and dip, find orthogonal unit vectors
+    # aligned with strike and dip directions that sit within the plane.
     # The plane normal is their cross product.
     # Returns in x, y, z coordinates.
     strike_vector = get_strike_vector(strike);  # unit vector
@@ -261,6 +260,7 @@ def get_dip_vector(strike, dip):
 
 
 def get_vector_magnitude(vector):
+    magnitude = 0;
     total = 0;
     for i in range(len(vector)):
         total = total + vector[i] * vector[i];
@@ -348,7 +348,6 @@ def get_fault_four_corners(fault_object):
     W = get_downdip_width(fault_object.top, fault_object.bottom, fault_object.dipangle);
     depth = fault_object.top;
     strike = fault_object.strike;
-    dip = fault_object.dipangle;
 
     updip_point0 = [fault_object.xstart, fault_object.ystart];
     updip_point1 = [fault_object.xfinish, fault_object.yfinish];
