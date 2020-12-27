@@ -12,7 +12,7 @@ A simple library with utility functions for "everyday use" in active tectonics r
 ## Installation
 On Unix (other systems not tested yet), install from PyPI using: 
 
-```pip install Tectonic_Utils```
+```pip install Tectonic-Utils```
 
 To test that it works, import a utility in Python. I typically use an import structure like: 
 ```
