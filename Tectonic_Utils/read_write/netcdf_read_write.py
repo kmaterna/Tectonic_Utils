@@ -1,6 +1,6 @@
 # Netcdf reading and writing functions
 # For the InSAR library, only Netcdf3 and Netcdf4 files with PIXEL NODE REGISTRATION are valid.
-# The assumption for 2D Netcdf files is 3 variables, in x-y-z order.
+# The assumption is 2D Netcdf files with 3 variables, in x-y-z order.
 
 import numpy as np
 import scipy.io.netcdf as netcdf

@@ -13,7 +13,7 @@ def read_gmt_multisegment_latlon(fields_file, split_delimiter=' '):
     lat_temp = [];
     for line in ifile:
         if line.split()[0] == '>>' or line.split()[0] == '>':
-            if lon_temp != []:
+            if lon_temp:
                 lon_collection.append(lon_temp);
                 lat_collection.append(lat_temp);
             lon_temp = [];

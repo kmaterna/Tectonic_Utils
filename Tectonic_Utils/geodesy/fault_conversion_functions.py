@@ -1,10 +1,10 @@
-'''
-The functions in this script convert between fault formats 
+"""
+The functions in this script convert between fault formats
 # Format 1: json format for Slippy
 # Format 2: slip distribution format for Slippy
 # Format 3: .intxt, Kathryn Materna's format for Elastic_stresses_py
 
-The internal format here is a dictionary containing: 
+The internal format here is a dictionary containing:
 Format internal: strike(deg), dip(deg), length(km), width(km), lon(corner), lat(corner), depth(km), rake(deg), slip(m)
 If the fault is a receiver fault, we put slip = 0
 
@@ -13,7 +13,7 @@ Format json: basis1, basis2, length(m), width(m), nlength, nwidth, strike, dip, 
 Format slippy: lon lat depth[m] strike[deg] dip[deg] length[m] width[m] left-lateral[m] thrust[m] tensile[m]
 
 Format intxt: strike rake dip length(km) width(km) updip_corner_lon updip_corner_lat updip_corner_dep(km) slip
-'''
+"""
 
 import numpy as np
 import json
@@ -32,15 +32,9 @@ def read_faults_intxt(infile):
     for line in ifile:
         temp = line.split();
         if temp[0] == "S:" or temp[0] == "R:":
-            one_fault = {};
-            one_fault["strike"] = float(temp[1]);
-            one_fault["dip"] = float(temp[3]);
-            one_fault["length"] = float(temp[4]);
-            one_fault["width"] = float(temp[5]);
-            one_fault["lon"] = float(temp[6]);
-            one_fault["lat"] = float(temp[7]);
-            one_fault["depth"] = float(temp[8]);
-            one_fault["rake"] = float(temp[2]);
+            one_fault = {"strike": float(temp[1]), "dip": float(temp[3]), "length": float(temp[4]),
+                         "width": float(temp[5]), "lon": float(temp[6]), "lat": float(temp[7]), "depth": float(temp[8]),
+                         "rake": float(temp[2])};
             if temp[0] == "R:":
                 one_fault["slip"] = 0;
             else:
@@ -59,11 +53,9 @@ def read_faults_json(infile):
     config_file = open(infile, 'r')
     config = json.load(config_file);
     for key in config["faults"].keys():
-        one_fault = {};
-        one_fault["strike"] = config["faults"][key]["strike"];
-        one_fault["dip"] = config["faults"][key]["dip"];
-        one_fault["length"] = config["faults"][key]["length"] / 1000.0;
-        one_fault["width"] = config["faults"][key]["width"] / 1000.0;
+        one_fault = {"strike": config["faults"][key]["strike"], "dip": config["faults"][key]["dip"],
+                     "length": config["faults"][key]["length"] / 1000.0,
+                     "width": config["faults"][key]["width"] / 1000.0};
         center_lon = config["faults"][key]["position"][0];
         center_lat = config["faults"][key]["position"][1];
         x_start, y_start = add_vector_to_point(0, 0, one_fault["length"] / 2, one_fault["strike"] - 180);  # in km
@@ -79,40 +71,21 @@ def read_faults_json(infile):
 
 def read_slippy_distribution(infile):
     # Read a file from the Slippy inversion outputs lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees]
-    # length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num Lon/lat usually refer to the center top of
-    # the fault Must convert the lon/lat to the top left corner
+    # length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num.
+    # Lon/lat usually refer to the center top of the fault.
+    # Must convert the lon/lat to the top left corner.
     fault_list = [];
-    [lon, lat, depth, strike, dip, length,
-     width, ll_slip, thrust_slip, tensile, segment] = np.loadtxt(infile, skiprows=1, unpack=True, dtype={"names":('lon',
-                                                                                                                  'lat',
-                                                                                                                  'depth',
-                                                                                                                  'strike',
-                                                                                                                  'dip',
-                                                                                                                  'length',
-                                                                                                                  'width',
-                                                                                                                  'ss',
-                                                                                                                  'ds',
-                                                                                                                  'tensile',
-                                                                                                                  'num'),
-                                                                                                              "formats": (
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float,
-                                                                                                                  np.float)});
+    [lon, lat, depth, strike, dip, length, width, ll_slip,
+     thrust_slip, _, _] = np.loadtxt(infile, skiprows=1, unpack=True, dtype={"names": ('lon', 'lat', 'depth', 'strike',
+                                                                                       'dip', 'length', 'width', 'ss',
+                                                                                       'ds', 'tensile', 'num'),
+                                                                             "formats": (np.float, np.float, np.float,
+                                                                                         np.float, np.float, np.float,
+                                                                                         np.float, np.float, np.float,
+                                                                                         np.float, np.float)});
     for i in range(len(lon)):
-        one_fault = {};
-        one_fault["strike"] = strike[i];
-        one_fault["dip"] = dip[i];
-        one_fault["length"] = length[i] / 1000;
-        one_fault["width"] = width[i] / 1000;
-        one_fault["depth"] = -depth[i] / 1000;
+        one_fault = {"strike": strike[i], "dip": dip[i], "length": length[i] / 1000, "width": width[i] / 1000,
+                     "depth": -depth[i] / 1000};
         center_lon = lon[i];
         center_lat = lat[i];
         x_start, y_start = add_vector_to_point(0, 0, one_fault["length"] / 2, one_fault["strike"] - 180);  # in km
@@ -181,13 +154,14 @@ def write_faults_json(faults_list, outfile):
 
 def write_slipdistribution(faults, outfile):
     # Write a slip distribution for Slippy.
-    # lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees] length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num
+    # lon[deg] lat[deg] depth[m] strike[deg] dip[deg] len[m] wid[m] left-lateral[m] thrust[m] tensile[m] segment_num
     # Remember depths are negative in meters
     # Remeber lon/lat refer to fault center.
     # Will write this function later.
     ofile = open(outfile, 'w');
     ofile.write(
-        '# lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees] length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num\n');
+        '# lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees] length[m] width[m] left-lateral[m] thrust['
+        'm] tensile[m] segment_num\n');
     # for fault in faults:
     print("THIS FUNCTION ISN'T WRITTEN YET");
     ofile.close();
@@ -346,7 +320,6 @@ def get_fault_center(fault_object):
 def get_fault_four_corners(fault_object):
     # Get the four corners of the object, including updip and downdip.
     W = get_downdip_width(fault_object.top, fault_object.bottom, fault_object.dipangle);
-    depth = fault_object.top;
     strike = fault_object.strike;
 
     updip_point0 = [fault_object.xstart, fault_object.ystart];
