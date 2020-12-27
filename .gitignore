@@ -1,3 +1,6 @@
 __pycache__/*
 *__pycache__*
 .idea
+build*
+dist*
+Tectonic_Utils.egg-info*
