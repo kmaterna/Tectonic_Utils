@@ -19,6 +19,38 @@ def parse_pixelnode_registration(filename):
     return;
 
 
+def properly_parse_variables(key1, key2, key3):
+    # Sometimes the variables.keys() function doesn't return keys in the expected order.
+    # I might have to re-order it
+    # Expected patterns are x, y, z; lon, lat, z; longitude, latitude, z.
+    key_list = [key1, key2, key3];
+    # get the x key:
+    if 'x' in key_list:
+        xkey = 'x';
+    elif 'lon' in key_list:
+        xkey = 'lon';
+    elif 'longitude' in key_list:
+        xkey = 'longitude';
+    else:
+        raise Exception("Xkey not determined");
+    # get the y key
+    if 'y' in key_list:
+        ykey = 'y';
+    elif 'lat' in key_list:
+        ykey = 'lat';
+    elif 'latitude' in key_list:
+        ykey = 'latitude';
+    else:
+        raise Exception("Ykey not determined");
+    key_list.pop(key_list.index(xkey));
+    key_list.pop(key_list.index(ykey));
+    if len(key_list) == 1:
+        zkey = key_list[0];
+    else:
+        raise Exception("Zkey not determined");
+    return [xkey, ykey, zkey];
+
+
 def read_netcdf3(filename):
     # A general netcdf3 function that may or may not take variables.
     # Spits out the right thing based on several known patterns (x, y, z; lon,lat,z; etc)
@@ -27,6 +59,7 @@ def read_netcdf3(filename):
     file = netcdf.netcdf_file(filename, 'r');
     parse_pixelnode_registration(filename);
     [xkey, ykey, zkey] = file.variables.keys();
+    [xkey, ykey, zkey] = properly_parse_variables(xkey, ykey, zkey);
     xdata0 = file.variables[xkey][:];
     ydata0 = file.variables[ykey][:];
     zdata0 = file.variables[zkey][::];
@@ -41,6 +74,7 @@ def read_netcdf4(filename):
     rootgrp = Dataset(filename, "r");
     parse_pixelnode_registration(filename);
     [xkey, ykey, zkey] = rootgrp.variables.keys()
+    [xkey, ykey, zkey] = properly_parse_variables(xkey, ykey, zkey);
     xvar = rootgrp.variables[xkey];
     yvar = rootgrp.variables[ykey];
     zvar = rootgrp.variables[zkey];
