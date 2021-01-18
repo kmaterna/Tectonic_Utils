@@ -4,3 +4,4 @@ __pycache__/*
 build*
 dist*
 Tectonic_Utils.egg-info*
+upload_wheel.sh
