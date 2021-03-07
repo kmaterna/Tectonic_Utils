@@ -31,7 +31,7 @@ def check_magnitude(M, mmin, mmax):
 
 
 def rectangular_slip(length, width, magnitude):
-    # Rectangular slip : length in m, width in m, magnitude, and slip in m.
+    """Rectangular slip : length in m, width in m, magnitude, and slip in m."""
     mu = 30 * 1e9;  # 30 GPa rigidity.
     area = length * width;  # meters^2
     moment = np.power(10, ((1.5 * magnitude) + 16.05));  # dyne-cm

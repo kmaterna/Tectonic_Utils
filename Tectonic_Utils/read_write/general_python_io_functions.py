@@ -3,8 +3,8 @@
 
 
 def read_gmt_multisegment_latlon(fields_file, split_delimiter=' '):
-    # GENERALIZED GMT MULTISEGMENT FILE READER IN PYTHON
-    # Returns a list of lists, each one with a single segment
+    """GENERALIZED GMT MULTISEGMENT FILE READER IN PYTHON
+    Returns a list of lists, each one with a single segment"""
     print("reading gmt multisegment file %s" % fields_file);
     ifile = open(fields_file);
     lon_collection = [];

@@ -20,9 +20,11 @@ def parse_pixelnode_registration(filename):
 
 
 def properly_parse_variables(key1, key2, key3):
-    # Sometimes the variables.keys() function doesn't return keys in the expected order.
-    # I might have to re-order it
-    # Expected patterns are x, y, z; lon, lat, z; longitude, latitude, z.
+    """
+    Sometimes the variables.keys() function doesn't return keys in the expected order.
+    I might have to re-order it
+    Expected patterns are x, y, z; lon, lat, z; longitude, latitude, z.
+    """
     key_list = [key1, key2, key3];
     # get the x key:
     if 'x' in key_list:
@@ -52,9 +54,11 @@ def properly_parse_variables(key1, key2, key3):
 
 
 def read_netcdf3(filename):
-    # A general netcdf3 function that may or may not take variables.
-    # Spits out the right thing based on several known patterns (x, y, z; lon,lat,z; etc)
-    # Imposes pixel-node registration.
+    """
+    A general netcdf3 function that may or may not take variables.
+    Spits out the right thing based on several known patterns (x, y, z; lon,lat,z; etc)
+    Imposes pixel-node registration.
+    """
     print("Reading file %s " % filename);
     file = netcdf.netcdf_file(filename, 'r');
     parse_pixelnode_registration(filename);
@@ -67,9 +71,11 @@ def read_netcdf3(filename):
 
 
 def read_netcdf4(filename):
-    # Reading a generalized netCDF4 file with 3 variables, using netCDF4 library
-    # Examples: (x,y,z; lon,lat,z; etc.)
-    # Should read such that the data point is the center of each pixel
+    """
+    Reading a generalized netCDF4 file with 3 variables, using netCDF4 library
+    Examples: (x,y,z; lon,lat,z; etc.)
+    Should read such that the data point is the center of each pixel
+    """
     print("Reading file %s " % filename);
     rootgrp = Dataset(filename, "r");
     parse_pixelnode_registration(filename);
@@ -82,7 +88,7 @@ def read_netcdf4(filename):
 
 
 def read_any_grd(filename):
-    # Switch between netcdf4 and netcdf3 automatically.
+    """Switch between netcdf4 and netcdf3 automatically."""
     try:
         [xdata, ydata, zdata] = read_netcdf3(filename);
     except TypeError:
@@ -115,7 +121,7 @@ def read_3D_netcdf(filename):
 
 
 def write_temp_output_txt(z, outfile):
-    # A helper function for dumping grid data into pixel-node-registered grd files
+    """A helper function for dumping grid data into pixel-node-registered grd files"""
     (y, x) = np.shape(z);
     z = np.reshape(z, (x*y,));
     # z = np.array(z).astype(str)
@@ -130,8 +136,8 @@ def write_temp_output_txt(z, outfile):
 
 
 def write_netcdf4(x, y, z, outfile):
-    # Writing PIXEL NODE registered netcdf4 file from numpy array
-    # strategy: send out to a file and make GMT convert to netcdf
+    """Writing PIXEL NODE registered netcdf4 file from numpy array
+    strategy: send out to a file and make GMT convert to netcdf"""
     print("writing outfile %s " % outfile);
     outtxt = outfile+'.xyz'
     write_temp_output_txt(z, outtxt);
@@ -152,8 +158,8 @@ def write_netcdf4(x, y, z, outfile):
 
 
 def produce_output_netcdf(xdata, ydata, zdata, zunits, netcdfname, dtype=float):
-    # Write netcdf3 grid file.
-    # NOTE: The pixel vs gridline registration of this function is not guaranteed.
+    """Write netcdf3 grid file.
+    NOTE: The pixel vs gridline registration of this function is not guaranteed; depends on file system :( """
     print("Writing output netcdf to file %s " % netcdfname);
     f = netcdf.netcdf_file(netcdfname, 'w');
     f.history = 'Created for a test';
@@ -222,11 +228,13 @@ def produce_output_TS_grids(xdata, ydata, zdata, timearray, zunits, outdir):
 
 
 def produce_output_timeseries(xdata, ydata, zdata, timearray, zunits, netcdfname):
-    # Ultimately we will need a function that writes a large 3D array.
-    # Each 2D slice is the displacement at a particular time, associated with a time series.
-    # zdata comes in as a 2D array where each element is a timeseries (1D array).
-    # It must be re-packaged into a 3D array before we save it.
-    # Broke during long SoCal experiment for some reason. f.close() didn't work.
+    """"
+    Ultimately we will need a function that writes a large 3D array.
+    Each 2D slice is the displacement at a particular time, associated with a time series.
+    zdata comes in as a 2D array where each element is a timeseries (1D array).
+    It must be re-packaged into a 3D array before we save it.
+    Broke during long SoCal experiment for some reason. f.close() didn't work.
+    """
 
     print("Shape of zdata originally:", np.shape(zdata));
     zdata_repacked = np.zeros([len(timearray), len(ydata), len(xdata)]);

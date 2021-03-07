@@ -31,17 +31,19 @@ def get_unit_vector(vec):
 
 
 def degma2radyr(omega):
-    # degrees/Ma to radians/yr
+    """degrees/Ma to radians/yr"""
     radyr = omega * (np.pi / 180) * 1e-6;
     return radyr;
 
 
 def get_r(lon, lat):
-    # Vector from center of earth to the point in question
-    # Definitions:
-    # 0 longitude: x = 0
-    # 0 latitude: z = 0
-    # North is positive z.
+    """
+    Vector from center of earth to the point in question
+    Definitions:
+    0 longitude: x = 0
+    0 latitude: z = 0
+    North is positive z.
+    """
     R_fixed = 6378000;  # In meters
     R_equatorial_disk = R_fixed * np.cos(np.deg2rad(lat));
     T_equatorial_disk = np.deg2rad(lon);
@@ -61,13 +63,15 @@ def get_unit_east(lon, lat):
 
 
 def xyz2enu(x, y, z, lon, lat):
+    """
+    Convert velocities from xyz to east north up
+    Assuming spherical earth
+    Assuming horizontal movement only
+    The unit east vector is the only one we need.
+    Then we take the dot product with the unit east vector.
+    The north component is the remainder.
+    """
     vel_vector = [x, y, z];
-    # Convert velocities from xyz to east north up
-    # Assuming spherical earth
-    # Assuming horizontal movement only
-    # The unit east vector is the only one we need.
-    # Then we take the dot product with the unit east vector.
-    # The north component is the remainder.
     unit_east = get_unit_east(lon, lat);
     e = np.dot(vel_vector, unit_east);
     n = np.sqrt(x * x + y * y + z * z - e * e);

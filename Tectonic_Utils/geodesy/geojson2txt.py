@@ -16,11 +16,13 @@ Downsampled_pixel = collections.namedtuple("Downsampled_pixel",
 
 
 def read_geojson(infile):
-    # This function reads a geojson as created by Kite downsampling
-    # "features" is a list with n elements
-    # Each element is a downsampled pixel and is stored as a dictionary
-    # containing 'type','id','geometry','properties'
-    # These properties will be unpacked into a named tuple that contains helpful information.
+    """
+    This function reads a geojson as created by Kite downsampling
+    "features" is a list with n elements
+    Each element is a downsampled pixel and is stored as a dictionary
+    containing 'type','id','geometry','properties'
+    These properties will be unpacked into a named tuple that contains helpful information.
+    """
     with open(infile) as f:
         data = json.load(f);
     features = data["features"];  # beginning to unpack the geojson
@@ -42,10 +44,12 @@ def read_geojson(infile):
 
 
 def pixels_to_txt(pixel_list, text_file, bbox=(-180, 180, -90, 90), std_min=0.001):
-    # Write in the format needed by Trever's inversion code
-    # bbox is the optional bounding box with format [W,E,S,N];
-    # std_min is the minimum value of uncertainty (m)
-    # Lon Lat Value unitE unitN unitU
+    """
+    Write in the format needed by Trever's inversion code
+    bbox is the optional bounding box with format [W,E,S,N];
+    std_min is the minimum value of uncertainty (m)
+    Lon Lat Value unitE unitN unitU
+    """
     ofile = open(text_file, 'w');
     ofile.write("# Header: lon, lat, disp(m), sig(m), unitE, unitN, unitU from ground to satellite\n")
     for pixel in pixel_list:
