@@ -1,5 +1,5 @@
 """
-Calculations that deal with seismic moment tensors
+Calculations that deal with seismic moment tensors.
 Notes from Lay and Wallace Chapter 8:
 
 * Decomposition 1: Mij = isotropic + deviatoric
@@ -9,7 +9,7 @@ Notes from Lay and Wallace Chapter 8:
 * Decomposition 5: Mij = isotropic + major DC + minor DC
 * Decomposition 6: Mij = isotropic + DC + CLVD
 
-The most useful in practical terms are Decomposition 1 and Decomposition 6.
+The most useful in practice are Decomposition 1 and Decomposition 6.
 """
 
 import numpy as np
@@ -20,32 +20,61 @@ def get_MT(mrr, mtt, mpp, mrt, mrp, mtp):
     return MT;
 
 def diagonalize_MT(MT):
-    """Return a diagonal matrix"""
+    """Return a diagonal matrix whose elements are the ordered eigenvalues."""
     eigvals, eigvecs = np.linalg.eig(MT);
-    return np.multiply(eigvecs, eigvals);
+    eigvals = sorted(eigvals)[::-1];
+    return np.diag(eigvals);
 
 def get_deviatoric_MT(MT):
-    """Get deviatoric MT"""
-    iso_MT = get_iso_matrix(MT);
+    """Get deviatoric MT (returns a matrix)"""
+    iso_MT = get_iso_MT(MT);
     M_dev = np.subtract(MT, iso_MT);
     return M_dev;
 
-def get_iso_matrix(MT):
-    """Return the isotropic part of a moment tensor (returns a matrix)"""
+def get_iso_MT(MT):
+    """Return the isotropic moment tensor (returns a matrix)"""
     x = (1 / 3) * np.trace(MT);
     iso_MT = np.multiply(np.eye(3), x);
     return iso_MT
 
-def decompose_iso_dc_clvd(MT):
-    """A useful function to decompose a moment tensor into an isotropic part, a double-couple, and a CLVD component"""
-    diag_MT = diagonalize_MT(MT)
-    iso_MT = get_iso_matrix(diag_MT);
-    _ = get_deviatoric_MT(diag_MT);
-    # Next: assert components of deviatoric moment tensor are in the right order
-    # Next: calculate epsilon
-    # Next: Construct DC and CLVD matrices, return them.
-    return iso_MT;
+def get_clvd_dc_from_deviatoric_MT(MT):
+    """
+    Return the dc and clvd components of a deviatoric MT, from Shearer Equation 9.14.
+    Returns two matricies.
+    """
+    eigenvalues = np.diag(MT);
+    assert(eigenvalues[0] > eigenvalues[1] > eigenvalues[2]), ValueError("Deviatoric eigenvalues out of order.")
+    dc_component = (1/2)*(eigenvalues[0]-eigenvalues[2]);
+    clvd_component = eigenvalues[1]*(1/2);
+    M_dc = np.diag([dc_component, 0, -dc_component]);
+    M_clvd = np.diag([-clvd_component, 2*clvd_component, -clvd_component]);
+    return M_clvd, M_dc;
 
-def get_scalar_moment(MT):
-    """Not sure how to do this yet"""
-    return;
+def decompose_iso_dc_clvd(MT):
+    """
+    A useful function to decompose a full moment tensor into an isotropic part, a double-couple, and a CLVD component.
+    Returns three matrices.
+    """
+    diag_MT = diagonalize_MT(MT);  # equivalent to a coordinate transformation
+    M_iso = get_iso_MT(diag_MT);  # get the trace
+    M_dev = get_deviatoric_MT(diag_MT);
+    M_dev = diagonalize_MT(M_dev);  # diagonalized in the proper order
+    M_clvd, M_dc = get_clvd_dc_from_deviatoric_MT(M_dev);
+    return M_iso, M_clvd, M_dc;
+
+def get_scalar_moments(MT):
+    """return isotropic, clvd, and double couple moments"""
+    M_iso, M_clvd, M_dc = decompose_iso_dc_clvd(MT);
+    iso_moment = abs(M_iso[0][0]);
+    clvd_moment = abs(M_clvd[0][0]);
+    dc_moment = abs(M_dc[0][0]);
+    return iso_moment, clvd_moment, dc_moment;
+
+def get_percent_double_couple(MT):
+    """Get the percent double couple and percent clvd moment from a deviatoric moment tensor"""
+    m_dev = diagonalize_MT(get_deviatoric_MT(MT));
+    epsilon = np.diag(m_dev)[1] / np.diag(m_dev)[0]
+    fraction = epsilon * 2;
+    perc_clvd = 100 * (abs(fraction));
+    perc_dc = 100 - perc_clvd;
+    return perc_dc, perc_clvd;
