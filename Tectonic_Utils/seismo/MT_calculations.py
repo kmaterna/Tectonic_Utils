@@ -1,19 +1,21 @@
 """
 Calculations that deal with seismic moment tensors
 Notes from Lay and Wallace Chapter 8:
-Decomposition 1: Mij = isotropic + deviatoric
-Decomposition 2: Mij = isotropic + 3 vector dipoles
-Decomposition 3: Mij = isotropic + 3 double couples
-Decomposition 4: Mij = isotropic + 3 CLVDs
-Decomposition 5: Mij = isotropic + major DC + minor DC
-Decomposition 6: Mij = isotropic + DC + CLVD
+
+* Decomposition 1: Mij = isotropic + deviatoric
+* Decomposition 2: Mij = isotropic + 3 vector dipoles
+* Decomposition 3: Mij = isotropic + 3 double couples
+* Decomposition 4: Mij = isotropic + 3 CLVDs
+* Decomposition 5: Mij = isotropic + major DC + minor DC
+* Decomposition 6: Mij = isotropic + DC + CLVD
+
 The most useful in practical terms are Decomposition 1 and Decomposition 6.
 """
 
 import numpy as np
 
 def get_MT(mrr, mtt, mpp, mrt, mrp, mtp):
-    """build a matrix from the six components of the moment tensor"""
+    """Build a matrix from the six components of the moment tensor"""
     MT = np.array([[mrr, mrt, mrp], [mrt, mtt, mtp], [mrp, mtp, mpp]]);
     return MT;
 
@@ -35,7 +37,7 @@ def get_iso_matrix(MT):
     return iso_MT
 
 def decompose_iso_dc_clvd(MT):
-    """A useful function to decompose a moment tensor into an isotropic part, a double-couple, and a clvd component"""
+    """A useful function to decompose a moment tensor into an isotropic part, a double-couple, and a CLVD component"""
     diag_MT = diagonalize_MT(MT)
     iso_MT = get_iso_matrix(diag_MT);
     _ = get_deviatoric_MT(diag_MT);
@@ -44,6 +46,6 @@ def decompose_iso_dc_clvd(MT):
     # Next: Construct DC and CLVD matrices, return them.
     return iso_MT;
 
-def get_scalar_moment():
+def get_scalar_moment(MT):
     """Not sure how to do this yet"""
     return;

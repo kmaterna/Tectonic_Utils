@@ -1,8 +1,9 @@
 """
 The functions in this script convert between fault formats
-# Format 1: json format for Slippy
-# Format 2: slip distribution format for Slippy
-# Format 3: .intxt, Kathryn Materna's format for Elastic_stresses_py
+
+* Format 1: json format for Slippy
+* Format 2: slip distribution format for Slippy
+* Format 3: .intxt, Kathryn Materna's format for Elastic_stresses_py
 
 The internal format here is a dictionary containing:
 Format internal: {strike(deg), dip(deg), length(km), width(km), lon(corner), lat(corner), depth(km), rake(deg), slip(m)}
@@ -22,19 +23,23 @@ from Tectonic_Utils.geodesy import fault_vector_functions
 
 def read_faults_intxt(infile):
     """
-    Read all faults that are sources or receivers
-    Reads faults into a list of fault dictionaries
+    Read all faults that are sources or receivers into a list of fault dictionaries.
     The lat/lon refer to the top left corner of the fault.
+
+    :param infile: name of input .intxt file
+    :type infile: string
+    :returns: list of fault dictionaries
+    :rtype: list
     """
     fault_list = [];
     ifile = open(infile, 'r');
     for line in ifile:
         temp = line.split();
-        if temp[0] == "S:" or temp[0] == "R:":
+        if temp[0] == "Source_Patch:" or temp[0] == "Receiver:":
             one_fault = {"strike": float(temp[1]), "dip": float(temp[3]), "length": float(temp[4]),
                          "width": float(temp[5]), "lon": float(temp[6]), "lat": float(temp[7]), "depth": float(temp[8]),
                          "rake": float(temp[2])};
-            if temp[0] == "R:":
+            if temp[0] == "Receiver:":
                 one_fault["slip"] = 0;
             else:
                 one_fault["slip"] = float(temp[9]);
@@ -45,10 +50,14 @@ def read_faults_intxt(infile):
 
 def read_faults_json(infile):
     """
-    Read all faults from a json file (just geometry; don't have slip or rake)
+    Read all faults from a json file (just geometry; no slip or rake) into a list of fault dictionaries.
     It has to convert from fault center to fault corner.
-    Reads faults into a list of fault dictionaries
-    Faults read from JSON have zero slip
+    Faults read from JSON have zero slip.
+
+    :param infile: name of input json file
+    :type infile: string
+    :returns: list of fault dictionaries
+    :rtype: list
     """
     fault_list = [];
     config_file = open(infile, 'r')
@@ -73,10 +82,14 @@ def read_faults_json(infile):
 
 def read_slippy_distribution(infile):
     """
-    Read a file from the Slippy inversion outputs lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees]
-    length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num.
-    Lon/lat usually refer to the center top of the fault.
-    Must convert the lon/lat to the top left corner.
+    Read a file from the Slippy inversion outputs (lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees]
+    length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num) into a list of fault dictionaries.
+    Lon/lat usually refer to the center top of the fault, so it must convert the lon/lat to the top left corner.
+
+    :param infile: name of input slip distribution file
+    :type infile: string
+    :returns: list of fault dictionaries
+    :rtype: list
     """
     fault_list = [];
     [lon, lat, depth, strike, dip, length, width, ll_slip,
@@ -104,7 +117,20 @@ def read_slippy_distribution(infile):
 
 
 def write_faults_intxt(faults, outfile, receiver=True, source=False, write_header=False):
-    """Writes the files as receivers with zero slip, or sources with finite slip."""
+    """
+    Writes faults to intxt as receivers with zero slip, or sources with finite slip.
+
+    :param faults: list of fault dictionaries
+    :type faults: list
+    :param outfile: name of output intxt file
+    :type outfile: string
+    :param receiver: whether the faults are receivers (slip set to 0), default True
+    :type receiver: bool
+    :param source: whether the faults are sources (finite slip), default False
+    :type source: bool
+    :param write_header: whether to write the header line, default True
+    :type write_header: bool
+    """
     ofile = open(outfile, 'w');
     ofile.write(
         '#S/R: strike rake dip length(km) width(km) updip_corner_lon updip_corner_lat updip_corner_dep(km) slip\n')
@@ -126,6 +152,14 @@ def write_faults_intxt(faults, outfile, receiver=True, source=False, write_heade
 
 
 def write_faults_json(faults_list, outfile):
+    """
+    Writes faults to json as receivers with zero slip
+
+    :param faults: list of fault dictionaries
+    :type faults: list
+    :param outfile: name of output json file
+    :type outfile: string
+    """
     output = {};
     faults = {};
     count = 0;
@@ -159,10 +193,10 @@ def write_faults_json(faults_list, outfile):
 
 def write_slipdistribution(faults, outfile):
     """Write a slip distribution for Slippy.
-    lon[deg] lat[deg] depth[m] strike[deg] dip[deg] len[m] wid[m] left-lateral[m] thrust[m] tensile[m] segment_num
-    Remember depths are negative in meters
-    Remember lon/lat refer to fault center.
-    Will write this function later.
+    lon[deg] lat[deg] depth[m] strike[deg] dip[deg] len[m] wid[m] left-lateral[m] thrust[m] tensile[m] segment_num.
+    Depths are negative in meters. lon/lat refer to fault center.
+
+    Function not written yet.
     """
     ofile = open(outfile, 'w');
     ofile.write(
@@ -177,24 +211,28 @@ def write_slipdistribution(faults, outfile):
 # ------- CONVERSION FUNCTIONS ------------ # 
 
 def json2intxt(infile, outfile):
+    """Converts json faults to .intxt faults"""
     faults = read_faults_json(infile);
     write_faults_intxt(faults, outfile, receiver=True, source=False);
     return;
 
 
 def intxt2json(infile, outfile):
+    """Converts .intxt faults to json faults"""
     faults = read_faults_intxt(infile);
     write_faults_json(faults, outfile);
     return;
 
 
 def slippydist2intxt(infile, outfile):
+    """Converts slippy faults to .intxt faults"""
     faults = read_slippy_distribution(infile);
     write_faults_intxt(faults, outfile, receiver=False, source=True, write_header=True);
     return;
 
 
 def intxt2slipdistribution(infile, outfile):
+    """Converts .intxt faults to slippy faults (in progress)"""
     faults = read_faults_intxt(infile);
     write_slipdistribution(faults, outfile);
     return;

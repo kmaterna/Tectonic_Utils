@@ -1,12 +1,23 @@
-# The functions in this file are used for reading common file types into structures in Pythin
-# Example: a multi-segment file with polygons or lines, as could be used in GMT
+"""
+Functions to read common file types into structures in Pythin
+Example: a multi-segment file with polygons or lines, as could be used in GMT
+"""
 
 
-def read_gmt_multisegment_latlon(fields_file, split_delimiter=' '):
-    """GENERALIZED GMT MULTISEGMENT FILE READER IN PYTHON
-    Returns a list of lists, each one with a single segment"""
-    print("reading gmt multisegment file %s" % fields_file);
-    ifile = open(fields_file);
+def read_gmt_multisegment_latlon(input_file, split_delimiter=' '):
+    """
+    Generalized GMT multisegment file reader.
+    Returns lon and lat in a list of lists, each element with a single segment.
+
+    :param input_file: name of input file
+    :type input_file: string
+    :param split_delimiter: delimiter between values on the same line, defaults to space
+    :type split_delimiter: string, optional
+    :returns: list of lons, list of lats
+    :rtype: list
+    """
+    print("reading gmt multisegment file %s" % input_file);
+    ifile = open(input_file);
     lon_collection = [];
     lat_collection = [];
     lon_temp = [];

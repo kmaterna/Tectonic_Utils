@@ -1,8 +1,14 @@
-# The purpose of this code is to read a simple box drawn in Google Earth and saved as a KML file. 
-# The return value is a list of latitude and longitude coordinates. 
 
 
 def read_simple_kml(infile):
+    """
+    Read a simple box drawn in Google Earth and saved as a KML file with field 'coordinates'.
+
+    :param infile: kml file with simple box
+    :type infile: string
+    :returns: lons, lats as lists that represent the coordinates of box vertices
+    :rtype: list, list
+    """
     print("Reading %s into arrays of lon and lat..." % infile)
     start = 0;
     lats, lons = [], [];
@@ -17,8 +23,3 @@ def read_simple_kml(infile):
         if "coordinates" in line:
             start = 1;
     return lons, lats;
-
-
-if __name__ == "__main__":
-    ifile = "test1.kml"
-    lons, lats = read_simple_kml(ifile);

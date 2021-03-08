@@ -1,29 +1,37 @@
-# Netcdf reading and writing functions
-# For the InSAR library, only Netcdf3 and Netcdf4 files with PIXEL NODE REGISTRATION are valid.
-# The assumption is 2D Netcdf files with 3 variables, in x-y-z order.
+"""
+Netcdf reading and writing functions.
+Only Netcdf3 and Netcdf4 files with PIXEL NODE REGISTRATION are valid.
+The assumption is 2D Netcdf files with 3 variables, in x-y-z order.
+"""
 
 import numpy as np
 import scipy.io.netcdf as netcdf
 import datetime as dt
-import subprocess, sys
+import subprocess
 from netCDF4 import Dataset
 
 
 # --------------- READING ------------------- #
 
 def parse_pixelnode_registration(filename):
-    output = subprocess.check_output(['gmt', 'grdinfo', filename], shell=False);
-    if "Pixel node registration used" not in str(output):
-        print("ERROR! %s is not a pixel-node registered grd file (pixel-node required for this library)" % filename);
-        sys.exit(1);
+    """Ensure pixel node registration for netcdf file"""
+    output = subprocess.check_output(['gmt', 'grdinfo', filename], shell=False)
+    assert("Pixel node registration used" in str(output)), ValueError("ERROR! "+filename+" not pixel-node registered");
     return;
 
 
 def properly_parse_variables(key1, key2, key3):
     """
-    Sometimes the variables.keys() function doesn't return keys in the expected order.
-    I might have to re-order it
-    Expected patterns are x, y, z; lon, lat, z; longitude, latitude, z.
+    Set proper ordering for known keys in a netcdf file. Options: [x, y, z]; [lon, lat, z]; [longitude, latitude, z].
+
+    :param key1: names of netcdf variable key
+    :type key1: string
+    :param key2: names of netcdf variable key
+    :type key2: string
+    :param key3: names of netcdf variable key
+    :type key3: string
+    :returns: ordered keys
+    :rtype: list
     """
     key_list = [key1, key2, key3];
     # get the x key:
@@ -55,9 +63,12 @@ def properly_parse_variables(key1, key2, key3):
 
 def read_netcdf3(filename):
     """
-    A general netcdf3 function that may or may not take variables.
-    Spits out the right thing based on several known patterns (x, y, z; lon,lat,z; etc)
-    Imposes pixel-node registration.
+    A netcdf3 reading function for pixel-node registered files with recognized key patterns.
+
+    :param filename: name of netcdf3 file
+    :type filename: string
+    :returns: [xdata, ydata, zdata]
+    :rtype: list of 3 np.ndarrays
     """
     print("Reading file %s " % filename);
     file = netcdf.netcdf_file(filename, 'r');
@@ -72,9 +83,12 @@ def read_netcdf3(filename):
 
 def read_netcdf4(filename):
     """
-    Reading a generalized netCDF4 file with 3 variables, using netCDF4 library
-    Examples: (x,y,z; lon,lat,z; etc.)
-    Should read such that the data point is the center of each pixel
+    A netcdf4 reading function for pixel-node registered files with recognized key patterns.
+
+    :param filename: name of netcdf4 file
+    :type filename: string
+    :returns: [xdata, ydata, zdata]
+    :rtype: list of 3 np.ndarrays
     """
     print("Reading file %s " % filename);
     rootgrp = Dataset(filename, "r");
@@ -88,7 +102,14 @@ def read_netcdf4(filename):
 
 
 def read_any_grd(filename):
-    """Switch between netcdf4 and netcdf3 automatically."""
+    """
+    A general netcdf4/netcdf3 reading function for pixel-node registered files with recognized key patterns.
+
+    :param filename: name of file
+    :type filename: string
+    :returns: [xdata, ydata, zdata]
+    :rtype: list of 3 np.ndarrays
+    """
     try:
         [xdata, ydata, zdata] = read_netcdf3(filename);
     except TypeError:
@@ -97,6 +118,7 @@ def read_any_grd(filename):
 
 
 def give_metrics_on_grd(filename):
+    """Print shape, min/max, and NaN metrics on a netcdf grid file"""
     grid_data = read_any_grd(filename)[2];
     nan_pixels = np.count_nonzero(np.isnan(grid_data));
     total_pixels = np.shape(grid_data)[0] * np.shape(grid_data)[1];
@@ -109,6 +131,14 @@ def give_metrics_on_grd(filename):
 
 
 def read_3D_netcdf(filename):
+    """
+    Reading function for 3D netcdf pixel-node registered files with key pattern 't, x, y, z'
+
+    :param filename: name of netcdf file
+    :type filename: string
+    :returns: [tdata, xdata, ydata, zdata]
+    :rtype: list of 4 np.ndarrays
+    """
     filereader = netcdf.netcdf_file(filename, 'r');
     tdata0 = filereader.variables['t'][:];
     xdata0 = filereader.variables['x'][:]
@@ -136,8 +166,10 @@ def write_temp_output_txt(z, outfile):
 
 
 def write_netcdf4(x, y, z, outfile):
-    """Writing PIXEL NODE registered netcdf4 file from numpy array
-    strategy: send out to a file and make GMT convert to netcdf"""
+    """
+    Writing PIXEL NODE registered netcdf4 file from numpy array.
+    Internal strategy: send out to a binary file and make GMT convert to netcdf.
+    """
     print("writing outfile %s " % outfile);
     outtxt = outfile+'.xyz'
     write_temp_output_txt(z, outtxt);
@@ -158,8 +190,12 @@ def write_netcdf4(x, y, z, outfile):
 
 
 def produce_output_netcdf(xdata, ydata, zdata, zunits, netcdfname, dtype=float):
-    """Write netcdf3 grid file.
-    NOTE: The pixel vs gridline registration of this function is not guaranteed; depends on file system :( """
+    """
+    Write netcdf3 grid file.
+    NOTE: The pixel vs gridline registration of this function is not guaranteed;
+    depends on file system and float type :(.
+    Safer to use write_netcdf4().
+    """
     print("Writing output netcdf to file %s " % netcdfname);
     f = netcdf.netcdf_file(netcdfname, 'w');
     f.history = 'Created for a test';
@@ -181,7 +217,7 @@ def produce_output_netcdf(xdata, ydata, zdata, zunits, netcdfname, dtype=float):
 
 
 def flip_if_necessary(filename):
-    # IF WE NEED TO FLIP DATA:
+    """If netcdf3 file is stored with xinc or yinc backwards, we replace with a copy that flips the affected axis."""
     xinc = subprocess.check_output('gmt grdinfo -M -C ' + filename + ' | awk \'{print $8}\'',
                                    shell=True);  # x-increment
     yinc = subprocess.check_output('gmt grdinfo -M -C ' + filename + ' | awk \'{print $9}\'',
@@ -215,6 +251,7 @@ def flip_if_necessary(filename):
 
 
 def produce_output_TS_grids(xdata, ydata, zdata, timearray, zunits, outdir):
+    """ Write many netcdf3 files, one for each step of a timearray. Each file will be named with a datetime suffix."""
     print("Shape of zdata originally:", np.shape(zdata));
     for i in range(len(timearray)):
         filename = dt.datetime.strftime(timearray[i], "%Y%m%d") + ".grd";
@@ -229,10 +266,10 @@ def produce_output_TS_grids(xdata, ydata, zdata, timearray, zunits, outdir):
 
 def produce_output_timeseries(xdata, ydata, zdata, timearray, zunits, netcdfname):
     """"
-    Ultimately we will need a function that writes a large 3D array.
+    Write dataset with t, x, y, z into large 3D netcdf.
     Each 2D slice is the displacement at a particular time, associated with a time series.
-    zdata comes in as a 2D array where each element is a timeseries (1D array).
-    It must be re-packaged into a 3D array before we save it.
+    zdata comes in as a 2D array where each element is a timeseries (1D array), so it must be re-packaged into
+    3D array before we save it.
     Broke during long SoCal experiment for some reason. f.close() didn't work.
     """
 

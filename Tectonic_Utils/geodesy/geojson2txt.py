@@ -1,7 +1,8 @@
 """
-This script contains utility functions to convert between two different InSAR data representations
-1. geojson, produced by Kite after downsampling
-2. text representation, used for inversions
+This script contains utility functions to convert between two different InSAR data representations:
+
+* geojson, produced by Kite after downsampling
+* text representation, used for inversions
 """
 
 import numpy as np
