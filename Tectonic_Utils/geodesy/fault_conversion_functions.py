@@ -5,7 +5,7 @@ The functions in this script convert between fault formats
 # Format 3: .intxt, Kathryn Materna's format for Elastic_stresses_py
 
 The internal format here is a dictionary containing:
-Format internal: strike(deg), dip(deg), length(km), width(km), lon(corner), lat(corner), depth(km), rake(deg), slip(m)
+Format internal: {strike(deg), dip(deg), length(km), width(km), lon(corner), lat(corner), depth(km), rake(deg), slip(m)}
 If the fault is a receiver fault, we put slip = 0
 
 Format json: basis1, basis2, length(m), width(m), nlength, nwidth, strike, dip, position [lon, lat, dep], penalty
@@ -199,42 +199,3 @@ def intxt2slipdistribution(infile, outfile):
     write_slipdistribution(faults, outfile);
     return;
 
-
-# ------- FUNCTIONS ON FAULT OBJECTS ------------ #
-
-def get_fault_center(fault_object):
-    """
-    Compute the x-y-z coordinates of the center of a fault patch.
-    Index is the i'th fault patch in this fault_object
-    """
-    W = fault_vector_functions.get_downdip_width(fault_object.top, fault_object.bottom, fault_object.dipangle);
-    center_z = (fault_object.top + fault_object.bottom) / 2.0;
-    updip_center_x = (fault_object.xstart + fault_object.xfinish) / 2.0;
-    updip_center_y = (fault_object.ystart + fault_object.yfinish) / 2.0;
-    vector_mag = W * np.cos(
-        np.deg2rad(fault_object.dipangle)) / 2.0;  # how far the middle is displaced downdip from map-view
-    center_point = fault_vector_functions.add_vector_to_point(updip_center_x, updip_center_y, vector_mag,
-                                                              fault_object.strike + 90);  # strike+90 = downdip dir.
-    center = [center_point[0], center_point[1], center_z];
-    return center;
-
-
-def get_fault_four_corners(fault_object):
-    """Get the four corners of the object, including updip and downdip."""
-    W = fault_vector_functions.get_downdip_width(fault_object.top, fault_object.bottom, fault_object.dipangle);
-    strike = fault_object.strike;
-
-    updip_point0 = [fault_object.xstart, fault_object.ystart];
-    updip_point1 = [fault_object.xfinish, fault_object.yfinish];
-    vector_mag = W * np.cos(
-        np.deg2rad(fault_object.dipangle));  # how far the bottom edge is displaced downdip from map-view
-    downdip_point0 = fault_vector_functions.add_vector_to_point(fault_object.xstart, fault_object.ystart, vector_mag,
-                                                                strike + 90);  # strike+90 = downdip direction.
-    downdip_point1 = fault_vector_functions.add_vector_to_point(fault_object.xfinish, fault_object.yfinish, vector_mag,
-                                                                strike + 90);
-
-    x_total = [updip_point0[0], updip_point1[0], downdip_point1[0], downdip_point0[0], updip_point0[0]];
-    y_total = [updip_point0[1], updip_point1[1], downdip_point1[1], downdip_point0[1], updip_point0[1]];
-    x_updip = [updip_point0[0], updip_point1[0]];
-    y_updip = [updip_point0[1], updip_point1[1]];
-    return [x_total, y_total, x_updip, y_updip];

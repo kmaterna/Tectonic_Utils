@@ -1,8 +1,8 @@
-# May 14, 2020
-# This script contains utility functions to convert between 
-# two different InSAR data representations
-# 1. geojson, produced by Kite after downsampling
-# 2. text reprsentation, used for inversion code
+"""
+This script contains utility functions to convert between two different InSAR data representations
+1. geojson, produced by Kite after downsampling
+2. text representation, used for inversions
+"""
 
 import numpy as np
 import collections
@@ -11,18 +11,32 @@ import json
 Downsampled_pixel = collections.namedtuple("Downsampled_pixel",
                                            ["mean", "median", "std", "BL_corner", "TR_corner", "unitE", "unitN",
                                             "unitU"]);
-# Median and Mean values are in meters
-# Unit vectors are from ground to satellite.
+Downsampled_pixel.__doc__ = """
+:param mean: mean LOS value for pixel (meters)
+:param median: median LOS value for pixel (meters)
+:param std: standard deviation LOS value for pixel (meters)
+:param BL_corner: Bottom Left corner coordinate (longitude, latitude)
+:param TR_corner: Top Right corner coordinate (longitude, latitude)
+:param unitE: east component of unit vector from ground to satellite
+:param unitN: north component of unit vector from ground to satellite
+:param unitU: up component of unit vector from ground to satellite
+"""
 
 
 def read_geojson(infile):
     """
-    This function reads a geojson as created by Kite downsampling
-    "features" is a list with n elements
-    Each element is a downsampled pixel and is stored as a dictionary
-    containing 'type','id','geometry','properties'
-    These properties will be unpacked into a named tuple that contains helpful information.
+    Reads a geojson as created by Kite downsampling into downsampled pixel objects.
+
+    :param infile: name of geojson file
+    :type infile: string
+    :return: list of pixel objects
+    :rtype: list
     """
+    # "features" is a list with n elements
+    # Each element is a downsampled pixel and is stored as a dictionary
+    # containing 'type','id','geometry','properties'
+    # These properties will be unpacked into a named tuple that contains helpful information.
+
     with open(infile) as f:
         data = json.load(f);
     features = data["features"];  # beginning to unpack the geojson
@@ -45,10 +59,16 @@ def read_geojson(infile):
 
 def pixels_to_txt(pixel_list, text_file, bbox=(-180, 180, -90, 90), std_min=0.001):
     """
-    Write in the format needed by Trever's inversion code
-    bbox is the optional bounding box with format [W,E,S,N];
-    std_min is the minimum value of uncertainty (m)
-    Lon Lat Value unitE unitN unitU
+    Writes InSAR pixels in the format needed by Slippy inversion code: Lon Lat Value unitE unitN unitU
+
+    :param pixel_list: list of pixel objects
+    :type pixel_list: list
+    :param text_file: name of output file
+    :type text_file: str
+    :param bbox: tuple of (W, E, S, N) bounding box, defaults to (-180, 180, -90, 90)
+    :type bbox: array_like, optional
+    :param std_min: minimum value of uncertainty (m), defaults to 0.001
+    :type std_min: float, optional
     """
     ofile = open(text_file, 'w');
     ofile.write("# Header: lon, lat, disp(m), sig(m), unitE, unitN, unitU from ground to satellite\n")

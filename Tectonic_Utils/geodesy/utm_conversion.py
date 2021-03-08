@@ -1,11 +1,10 @@
-# functions to support the conversion between utm coordinate system (meters) and lat/lon (degrees)
+"""functions to support the conversion between utm coordinate system (meters) and lat/lon (degrees)"""
 
 import numpy as np
 
 
 def deg2utm(lat, lon):
-    """"
-    -------------------------------------------------------------------------
+    """
     [x,y,utmzone] = deg2utm(Lat,Lon)
     Description: Function to convert lat/lon vectors into UTM coordinates (WGS84).
     Some code has been extracted from UTM.m function by Gabriel Ruiz Martinez.
@@ -20,6 +19,7 @@ def deg2utm(lat, lon):
      Lat=[40.3154333; 46.283900; 37.577833; 28.645650; 38.855550; 25.061783];
      Lon=[-3.4857166; 7.8012333; -119.95525; -17.759533; -94.7990166; 121.640266];
      [x,y,utmzone] = deg2utm(Lat,Lon);
+
      fprintf('%7.0f ',x)
         458731  407653  239027  230253  343898  362850
      fprintf('%7.0f ',y)
@@ -44,10 +44,8 @@ def deg2utm(lat, lon):
     Universidad Pontificia Comillas
     Madrid, Spain
     Version: Apr/06, Jun/06, Aug/06, Aug/06
-    Aug/06: fixed a problem (found by Rodolphe Dewarrat) related to southern
-        hemisphere coordinates.
+    Aug/06: fixed a problem (found by Rodolphe Dewarrat) related to southern hemisphere coordinates.
     Aug/06: corrected m-Lint warnings
-    -------------------------------------------------------------------------
     """
     # Argument checking
     n1 = len(lat);
@@ -153,8 +151,7 @@ def deg2utm(lat, lon):
 
 
 def utm2deg(xx, yy, utmzone):
-    """"
-    -------------------------------------------------------------------------
+    """
     [Lat, Lon] = utm2deg(x, y, utmzone)
 
     Description: Function to convert vectors of UTM coordinates into Lat/Lon vectors (WGS84).
@@ -172,6 +169,7 @@ def utm2deg(xx, yy, utmzone):
         y=[4462881; 5126290; 4163083; 3171843; 4302285; 2772478];
         utmzone=['30 T'; '32 T'; '11 S'; '28 R'; '15 S'; '51 R'];
         [Lat, Lon]=utm2deg(x,y,utmzone);
+
         fprintf('%11.6f ',lat)
             40.315430   46.283902   37.577834   28.645647   38.855552   25.061780
         fprintf('%11.6f ',lon)
@@ -187,21 +185,22 @@ def utm2deg(xx, yy, utmzone):
         28.00         38.00         44.33
         38.00         51.00         19.96
         25.00          3.00         42.41
+
         LonDMS=dms2mat(deg2dms(Lon))
         LonDMS =
         -3.00         29.00          8.61
-         7.00         48.00          4.40
-        -119.00         57.00         18.93
+        7.00          48.00          4.40
+        -119.00        57.00         18.93
         -17.00         45.00         34.33
         -94.00         47.00         56.47
         121.00         38.00         24.96
+
     Author:
     Rafael Palacios
     Universidad Pontificia Comillas
     Madrid, Spain
     Version: Apr/06, Jun/06, Aug/06
     Aug/06: corrected m-Lint warnings
-    -------------------------------------------------------------------------
     """
 
     # Argument checking

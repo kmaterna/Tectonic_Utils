@@ -8,13 +8,40 @@ from Tectonic_Utils.geodesy import haversine
 
 
 def xy2lonlat_single(xi, yi, reflon, reflat):
+    """
+    Convert cartesian x/y coordinate into lon/lat coordinate using reference point.
+
+    :param xi: x coordinate of target point, in km
+    :type xi: float
+    :param yi: y coordinate of target point, in km
+    :type yi: float
+    :param reflon: longitude of reference point
+    :type reflon: float
+    :param reflat: latitude of reference point
+    :type reflat: float
+    :returns: lon, lat of target point
+    :rtype: float, float
+    """
     lat = reflat + (yi * 1 / 111.000);
     lon = reflon + (xi * 1 / (111.000 * abs(np.cos(np.deg2rad(reflat)))));
     return lon, lat;
 
 
 def latlon2xy_single(loni, lati, lon0, lat0):
-    """returns the distance between a point and a reference in km."""
+    """
+    Convert lon/lat coordinate into cartesian x/y coordinate using reference point.
+
+    :param loni: longitude of target point
+    :type loni: float
+    :param lati: latitude of target point
+    :type lati: float
+    :param lon0: longitude of reference point
+    :type lon0: float
+    :param lat0: latitude of reference point
+    :type lat0: float
+    :returns: x, y of target point, in km
+    :rtype: float, float
+    """
     radius = haversine.distance([lat0, lon0], [lati, loni]);
     bearing = haversine.calculate_initial_compass_bearing((lat0, lon0), (lati, loni))
     azimuth = 90 - bearing;
@@ -24,9 +51,21 @@ def latlon2xy_single(loni, lati, lon0, lat0):
 
 
 def xy2lonlat(xi, yi, reflon, reflat):
-    """can take a list or a single value"""
-    if type(xi) == float or type(xi) == np.float64 or type(
-            xi) == int:  # if we are getting a single value, we return a single value.
+    """
+    Convert cartesian x/y coordinates into lon/lat coordinates using reference point.
+
+    :param xi: x coordinate of target point(s), in km
+    :type xi: float or list
+    :param yi: y coordinate of target point(s), in km
+    :type yi: float or list
+    :param reflon: longitude of reference point
+    :type reflon: float
+    :param reflat: latitude of reference point
+    :type reflat: float
+    :returns: lon, lat of target point(s)
+    :rtype: list, list
+    """
+    if type(xi) == float or type(xi) == np.float64 or type(xi) == int:  # if single value, return single value
         lon, lat = xy2lonlat_single(xi, yi, reflon, reflat);
     else:  # if we are getting a list of values, we return a list of the same dimensions
         lat, lon = [], [];
@@ -38,9 +77,21 @@ def xy2lonlat(xi, yi, reflon, reflat):
 
 
 def latlon2xy(loni, lati, lon0, lat0):
-    """can take a list or a single value"""
-    if type(loni) == float or type(loni) == np.float64 or type(
-            loni) == int:  # if we are getting a single value, we return a single value.
+    """
+    Convert lon/lat coordinates into cartesian x/y coordinates using reference point.
+
+    :param loni: longitude of target point(s)
+    :type loni: float or list
+    :param lati: latitude of target point(s)
+    :type lati: float or list
+    :param lon0: longitude of reference point
+    :type lon0: float
+    :param lat0: latitude of reference point
+    :type lat0: float
+    :returns: [x, y] of target point(s), in km
+    :rtype: list
+    """
+    if type(loni) == float or type(loni) == np.float64 or type(loni) == int:  # if single value, return single value.
         x, y = latlon2xy_single(loni, lati, lon0, lat0);
     else:  # If we are getting a list, return a list of the same dimensions
         x, y = [], [];
@@ -53,17 +104,18 @@ def latlon2xy(loni, lati, lon0, lat0):
 
 def get_plane_normal(strike, dip):
     """
-    Get the unit normal to a plane of specified strike and dip. We first find the orthogonal unit vectors aligned
-    with strike and dip directions that sit within the plane. The plane normal is their cross product,
-    i.e. the outward facing unit normal vector, dip-cross-strike, in x-y-z coordinates.
+    Get the outward-facing unit normal to a plane of specified strike and dip (dip-cross-strike).
 
     :param strike: strike, degrees
     :type strike: float
     :param dip: dip, degrees
     :type dip: float
-    :return: 3-component vector of outward facing unit normal vector
+    :return: 3-component vector of outward facing unit normal vector, [x, y, z]
     :rtype: np.ndarray
     """
+    # Inside, we first find the orthogonal unit vectors
+    # aligned with strike and dip directions that sit within the plane. The plane normal is their cross product,
+    # i.e. the outward facing unit normal vector, dip-cross-strike, in x-y-z coordinates.
     strike_vector = get_strike_vector(strike);  # unit vector
     dip_vector = get_dip_vector(strike, dip);  # unit vector
     plane_normal = np.cross(dip_vector, strike_vector);  # dip x strike for outward facing normal, by right hand rule.
@@ -71,6 +123,24 @@ def get_plane_normal(strike, dip):
 
 
 def get_dip_degrees(x0, y0, z0, x1, y1, z1):
+    """
+    Get the dip of the line that connects two points.
+
+    :param x0: x coordinate of shallower point
+    :type x0: float
+    :param y0: y coordinate of shallower point
+    :type y0: float
+    :param z0: z coordinate of shallower point
+    :type z0: float
+    :param x1: x coordinate of deeper point
+    :type x1: float
+    :param y1: y coordinate of deeper point
+    :type y1: float
+    :param z1: z coordinate of deeper point
+    :type z1: float
+    :returns: dip, in degrees
+    :rtype: float
+    """
     horizontal_length = get_strike_length(x0, x1, y0, y1);
     vertical_distance = abs(z1 - z0);
     dip = np.rad2deg(math.atan2(vertical_distance, horizontal_length));
@@ -78,34 +148,65 @@ def get_dip_degrees(x0, y0, z0, x1, y1, z1):
 
 
 def get_strike_vector(strike):
-    """Returns a unit vector in x-y-z coordinates"""
+    """
+    Get a unit vector along the strike direction of a plane
+
+    :param strike: strike, in degrees CW from N
+    :type strike: float
+    :returns: 3-component unit vector, in x, y, z coordinates
+    :rtype: [float, float, float]
+    """
     theta = np.deg2rad(90 - strike);
     strike_vector = [np.cos(theta), np.sin(theta), 0];
     return strike_vector;
 
 
 def get_dip_vector(strike, dip):
-    """Returns a unit vector in x-y-z coordinates"""
+    """
+    Get a unit vector along the dip direction of a plane
+
+    :param strike: strike, in degrees CW from N
+    :type strike: float
+    :param dip: dip, in degrees
+    :type dip: float
+    :returns: 3-component unit vector, in x, y, z coordinates
+    :rtype: [float, float, float]
+    """
     downdip_direction_theta = np.deg2rad(-strike);  # theta(strike+90)
     dip_unit_vector_z = np.sin(np.deg2rad(dip))  # the vertical component of the downdip unit vector
-    dip_unit_vector_xy = np.sqrt(
-        1 - dip_unit_vector_z * dip_unit_vector_z);  # the horizontal component of the downdip unit vector
+    dip_unit_vector_xy = np.sqrt(1-dip_unit_vector_z*dip_unit_vector_z);  # horizontal component of downdip unit vector
     dip_vector = [dip_unit_vector_xy * np.cos(downdip_direction_theta),
                   dip_unit_vector_xy * np.sin(downdip_direction_theta), -dip_unit_vector_z];
     return dip_vector;
 
 
-def get_vector_magnitude(vector):
-    magnitude = 0;
-    total = 0;
-    for i in range(len(vector)):
-        total = total + vector[i] * vector[i];
-        magnitude = np.sqrt(total);
-    return magnitude;
+def get_rtlat_dip_slip(slip, rake):
+    """
+    Decompose slip into right lateral and dip slip components
+
+    :param slip: slip, in any length unit
+    :type slip: float
+    :param rake: rake, in degrees
+    :type rake: float
+    :returns: rt-lat strike slip and dip slip, in the same length units as `slip`
+    :rtype: float, float
+    """
+    strike_slip = -slip * np.cos(np.deg2rad(rake));  # negative sign for convention of right lateral slip
+    dip_slip = slip * np.sin(np.deg2rad(rake));
+    return strike_slip, dip_slip;
 
 
 def get_strike(deltax, deltay):
-    """Returns the strike of a line (in cw degrees from north) given the deltax and deltay in km."""
+    """
+    Compute the strike of a vector x,y
+
+    :param deltax: displacement in x direction, in any length unit
+    :type deltax: float
+    :param deltay: displacement in y direction, in any length unit
+    :type deltay: float
+    :returns: strike of vector, in CW degrees from north
+    :rtype: float
+    """
     slope = math.atan2(deltay, deltax);
     strike = 90 - np.rad2deg(slope);
     if strike < 0:
@@ -113,10 +214,21 @@ def get_strike(deltax, deltay):
     return strike;
 
 
-def get_rtlat_dip_slip(slip, rake):
-    strike_slip = -slip * np.cos(np.deg2rad(rake));  # negative sign for convention of right lateral slip
-    dip_slip = slip * np.sin(np.deg2rad(rake));
-    return strike_slip, dip_slip;
+def get_downdip_width(top, bottom, dip):
+    """
+    Get the total downdip-width of a rectangular fault plane given its top depth, bottom depth, and dip
+
+    :param top: depth of top of fault plane, in km (positive down)
+    :type top: float
+    :param bottom: depth of top of fault plane, in km (positive down)
+    :type bottom: float
+    :param dip: dip of fault plane, in degrees (range 0 to 90)
+    :type dip: float
+    :returns: total down-dip width of the rectangle, in km
+    :rtype: float
+    """
+    W = abs(top - bottom) / np.sin(np.deg2rad(dip));  # guaranteed to be between 0 and 90
+    return W;
 
 
 def get_total_slip(strike_slip, dip_slip):
@@ -130,26 +242,70 @@ def get_strike_length(x0, x1, y0, y1):
     return length;
 
 
-def get_downdip_width(top, bottom, dip):
-    W = abs(top - bottom) / np.sin(np.deg2rad(dip));  # guaranteed to be between 0 and 90
-    return W;
-
-
 def get_top_bottom_from_center(center_depth, width, dip):
-    """Given a fault, where is the top and bottom?
-    Width is total downdip width of the fault."""
+    """
+    Get the top and bottom depth of a rectangular fault from its width, center, and dip
+
+    :param center_depth: depth of center of fault plane, in km (positive down)
+    :type center_depth: float
+    :param width: total downdip width of rectangular fault plane, in km
+    :type width: float
+    :param dip: dip of fault plane, in degrees (range 0 to 90)
+    :type dip: float
+    :returns: top and bottom of fault plane, in km
+    :rtype: float, float
+    """
     top = center_depth - (width / 2.0 * np.sin(np.deg2rad(dip)));
     bottom = center_depth + (width / 2.0 * np.sin(np.deg2rad(dip)));
     return top, bottom;
 
 
 def get_top_bottom_from_top(top_depth, width, dip):
+    """
+    Get the top and bottom depth of a rectangular fault from its width, top-edge depth, and dip
+
+    :param top_depth: depth of top edge of fault plane, in km (positive down)
+    :type top_depth: float
+    :param width: total downdip width of rectangular fault plane, in km
+    :type width: float
+    :param dip: dip of fault plane, in degrees (range 0 to 90)
+    :type dip: float
+    :returns: top and bottom of fault plane, in km
+    :rtype: float, float
+    """
     bottom = top_depth + (width * np.sin(np.deg2rad(dip)));
     return top_depth, bottom;
 
 
+def get_vector_magnitude(vector):
+    """
+    Get magnitude of a vector.
+
+    :param vector: n-component vector, any units
+    :type vector: array_like
+    :return: magnitude
+    :rtype: float
+    """
+    total = 0;
+    for i in range(len(vector)):
+        total = total + vector[i]*vector[i];
+    magnitude = np.sqrt(total);
+    return magnitude;
+
+
 def add_vector_to_point(x0, y0, vector_mag, vector_heading):
-    """Vector heading defined as strike- CW from north."""
+    """
+    :param x0: starting x-coordinate for vector
+    :type x0: float
+    :param y0: starting y-coordinate for vector
+    :type y0: float
+    :param vector_mag: magnitude of vector to be added to point
+    :type vector_mag: float
+    :param vector_heading: direction of vector, in degrees CW from north
+    :type vector_heading: float
+    :returns: x1, y1 coordinates of ending point
+    :rtype: float, float
+    """
     theta = np.deg2rad(90 - vector_heading);
     x1 = x0 + vector_mag * np.cos(theta);
     y1 = y0 + vector_mag * np.sin(theta);
@@ -158,9 +314,16 @@ def add_vector_to_point(x0, y0, vector_mag, vector_heading):
 
 def get_rake(strike_slip, dip_slip):
     """
-    Positive slip is right lateral, and reverse.
-    Range is -180 to 180.
+    Return the rake of a given slip vector.
+    Positive strike-slip is right lateral, and positive dip-slip is reverse.
     Will return 0 if dipslip,strikeslip==0,0
+
+    :param strike_slip: quantity of right lateral slip, any length units
+    :type strike_slip: float
+    :param dip_slip: quantity of reverse slip, any length units
+    :type dip_slip: float
+    :return: rake in range -180 to 180 degrees
+    :rtype: float
     """
     rake = np.rad2deg(math.atan2(dip_slip, strike_slip));
     return rake;

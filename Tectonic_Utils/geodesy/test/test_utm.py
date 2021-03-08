@@ -17,14 +17,14 @@ class Tests(unittest.TestCase):
         self.assertListEqual(y_predicted, list(np.round(y)), 'deg2utm failed.');
         self.assertListEqual(utm_predicted, list(utm), 'deg2utm failed.');
 
-        x = [ 458731,  407653,  239027,  230253,  343898,  362850];
+        x = [458731,  407653,  239027,  230253,  343898,  362850];
         y = [4462881, 5126290, 4163083, 3171843, 4302285, 2772478];
         utmzone = ['30 T', '32 T', '11 S', '28 R', '15 S', '51 R'];
         lat, lon = utm_conversion.utm2deg(x, y, utmzone);
         lat_predicted = [40.31543016, 46.28390185, 37.57783421, 28.64564715, 38.85555224, 25.06177977];
-        lon_predicted = [  -3.48571304, 7.80123464, -119.9552465, -17.75953665, -94.79901928, 121.64026588];
-        self.assertListEqual(list(np.round(lat,8)), lat_predicted, 'utm2deg failed.');
-        self.assertListEqual(list(np.round(lon,8)), lon_predicted, 'utm2deg failed.');
+        lon_predicted = [-3.48571304, 7.80123464, -119.9552465, -17.75953665, -94.79901928, 121.64026588];
+        self.assertListEqual(list(np.round(lat, 8)), lat_predicted, 'utm2deg failed.');
+        self.assertListEqual(list(np.round(lon, 8)), lon_predicted, 'utm2deg failed.');
         return;
 
 

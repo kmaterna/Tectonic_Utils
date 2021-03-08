@@ -1,17 +1,22 @@
 #!/usr/bin/env python
 
-# Haversine formula example in Python
-# Author: Wayne Dyck
-# From here, you can also add a vector of km lengths to a lon/lat coordinate, returning coordinates in lon/lat. 
-
+"""
+Haversine formula example in Python. Original author Wayne Dyck.
+"""
 
 import numpy as np 
 import math
 
 def distance(origin, destination):
     """
-    Computes the distance [in km] between origin [lat1, lon1] and destination [lat2, lon2]. 
-    Lat-lon must be specified in that order. 
+    Computes the distance between origin [lat1, lon1] and destination [lat2, lon2].
+
+    :param origin: Tuple representing (latitude, longitude) of first point, in decimal degrees
+    :type origin: array_like
+    :param destination: Tuple representing (latitude, longitude) of second point, in decimal degrees
+    :type destination: array_like
+    :return: distance, in km
+    :rtype: float
     """
     lat1, lon1 = origin
     lat2, lon2 = destination
@@ -29,18 +34,15 @@ def distance(origin, destination):
 
 def calculate_initial_compass_bearing(pointA, pointB):
     """
-    Calculates the bearing between two points.
-    The formulae used is the following:
-        theta = atan2(sin(delta_long).cos(lat2),cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(delta_long))
-    :Parameters:
-      - `pointA: The tuple representing the latitude/longitude for the
-        first point. Latitude and longitude must be in decimal degrees
-      - `pointB: The tuple representing the latitude/longitude for the
-        second point. Latitude and longitude must be in decimal degrees
-    :Returns:
-      The bearing in degrees (CW from north, just like strike)
-    :Returns Type:
-      float
+    Calculate the bearing between two points.
+    By the formula theta = atan2(sin(delta_long).cos(lat2),cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(delta_long))
+
+    :param pointA: Tuple representing (latitude, longitude) of first point, in decimal degrees
+    :type pointA: array_like
+    :param pointB: Tuple representing (latitude, longitude) of second point, in decimal degrees
+    :type pointB: array_like
+    :return: bearing, in degrees CW from north
+    :rtype: float
     """
     if (type(pointA) != tuple) or (type(pointB) != tuple):
         raise TypeError("Only tuples are supported as arguments")
@@ -65,15 +67,22 @@ def calculate_initial_compass_bearing(pointA, pointB):
 
 def calculate_endpoint_given_bearing(origin, bearing, angular_distance_degrees):
     """
-    head a certain angular distance (degrees) along a bearing
-    starting from a point on earth.  Where do you end up?
-    Origin is a two-vector that contains [latitude, longitude]
-    bearing is clockwise from north in degrees, like strike
-    phi2, lambda2 are the latitude and longitude of the destination point.
-    theta is bearing in radians.
-    delta is the angular distance in radians, d/R (d = distance, R = radius of Earth)
+    Travel a certain angular distance (degrees) along a bearing starting from a coordinate.
     Source: https://www.movable-type.co.uk/scripts/latlong.html
+
+    :param origin: Tuple representing (latitude, longitude) of first point, in decimal degrees
+    :type origin: array_like
+    :param bearing: angle clockwise from north, in decimal degrees
+    :type bearing: float
+    :param angular_distance_degrees: angular distance, in decimal degrees
+    :type angular_distance_degrees: float
+    :return: [lat, lon], in degrees
+    :rtype: [float, float]
     """
+    # Internally, phi2, lambda2 are the latitude and longitude of the destination point.
+    # theta is bearing in radians.
+    # delta is the angular distance in radians, d/R (d = distance, R = radius of Earth)
+
     lat0 = origin[0];
     lon0 = origin[1];
     phi1 = np.deg2rad(lat0)
@@ -82,7 +91,6 @@ def calculate_endpoint_given_bearing(origin, bearing, angular_distance_degrees):
     theta = np.deg2rad(bearing);
     phi2 = np.arcsin((np.sin(phi1)*np.cos(delta)) + (np.cos(phi1)*np.sin(delta)*np.cos(theta)));
     lambda2 = lambda1 + np.arctan2(np.sin(theta)*np.sin(delta)*np.cos(phi1), np.cos(delta)-np.sin(phi1)*np.sin(phi2));
-
     lat2 = np.rad2deg(phi2)
     lon2 = np.rad2deg(lambda2);  
     destination = [lat2, lon2]
@@ -91,22 +99,38 @@ def calculate_endpoint_given_bearing(origin, bearing, angular_distance_degrees):
 
 def xy_distance(ref_loc, sta_loc):
     """
-    Distance between two latitude/longitude pairs, 
-    given in x-distance and y-distance in meters
-    (assuming flat surface between the points)
-    Returns x and y in meters. 
+    Pythagorean distance between two latitude/longitude pairs, assuming flat surface between the points.
+    Returns x and y in meters.
+
+    :param ref_loc: Tuple representing (latitude, longitude) of first point, in decimal degrees
+    :type ref_loc: array_like
+    :param sta_loc: Tuple representing (latitude, longitude) of second point, in decimal degrees
+    :type sta_loc: array_like
+    :return: [distance_x, distance_y], in m
+    :rtype: [float, float]
     """
-    radius = distance(ref_loc, sta_loc);
+    radius = distance(ref_loc, sta_loc);  # in km
     bearing = calculate_initial_compass_bearing((ref_loc[0], ref_loc[1]), (sta_loc[0], sta_loc[1]))
     azimuth = 90 - bearing;
-    x = radius * np.cos(np.deg2rad(azimuth)) * 1000;
-    y = radius * np.sin(np.deg2rad(azimuth)) * 1000;
+    x = radius * np.cos(np.deg2rad(azimuth)) * 1000;  # in m
+    y = radius * np.sin(np.deg2rad(azimuth)) * 1000;  # in m
     return [x, y];
 
 
 def add_vector_to_coords(lon0, lat0, dx, dy):
-    # Add a vector of km to a set of latitude/longitude points. 
+    """Add a vector of km to a set of latitude/longitude points.
+
+    :param lon0: Longitude of initial point, in degrees
+    :type lon0: float
+    :param lat0: Latitude of initial point, in degrees
+    :type lat0: float
+    :param dx: x component of vector added to the point, in km
+    :type dx: float
+    :param dy: y component of vector added to the point, in km
+    :type dy: float
+    :return: [lon1, lat1], in degrees
+    :rtype: [float, float]
+    """
     lat1 = lat0+dy/111.000;
     lon1 = lon0+dx/(111.000*np.cos(np.deg2rad(lat0)));
-    return_coords = [lon1, lat1]
-    return return_coords;
+    return [lon1, lat1];
