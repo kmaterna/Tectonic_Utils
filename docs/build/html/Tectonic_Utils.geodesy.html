@@ -1,0 +1,1129 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Tectonic_Utils.geodesy package &mdash; Tectonic_Utils 0.0.4 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Tectonic_Utils
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Tectonic_Utils.geodesy package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-Tectonic_Utils.geodesy.euler_pole">Tectonic_Utils.geodesy.euler_pole module</a></li>
+<li><a class="reference internal" href="#module-Tectonic_Utils.geodesy.fault_conversion_functions">Tectonic_Utils.geodesy.fault_conversion_functions module</a></li>
+<li><a class="reference internal" href="#module-Tectonic_Utils.geodesy.fault_vector_functions">Tectonic_Utils.geodesy.fault_vector_functions module</a></li>
+<li><a class="reference internal" href="#module-Tectonic_Utils.geodesy.geojson2txt">Tectonic_Utils.geodesy.geojson2txt module</a></li>
+<li><a class="reference internal" href="#module-Tectonic_Utils.geodesy.haversine">Tectonic_Utils.geodesy.haversine module</a></li>
+<li><a class="reference internal" href="#module-Tectonic_Utils.geodesy.utm_conversion">Tectonic_Utils.geodesy.utm_conversion module</a></li>
+<li><a class="reference internal" href="#module-Tectonic_Utils.geodesy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Tectonic_Utils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Tectonic_Utils.geodesy package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/Tectonic_Utils.geodesy.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tectonic-utils-geodesy-package">
+<h1>Tectonic_Utils.geodesy package<a class="headerlink" href="#tectonic-utils-geodesy-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-Tectonic_Utils.geodesy.euler_pole">
+<span id="tectonic-utils-geodesy-euler-pole-module"></span><h2>Tectonic_Utils.geodesy.euler_pole module<a class="headerlink" href="#module-Tectonic_Utils.geodesy.euler_pole" title="Permalink to this headline">¶</a></h2>
+<p>Functions to rotate a point by a known euler pole.</p>
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.euler_pole.degma2radyr">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.euler_pole.</span></code><code class="sig-name descname"><span class="pre">degma2radyr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.euler_pole.degma2radyr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert omega from degrees/Ma to radians/yr</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.euler_pole.get_r">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.euler_pole.</span></code><code class="sig-name descname"><span class="pre">get_r</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.euler_pole.get_r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vector from center of earth to the point in question assuming a spherical earth.
+The XYZ coordinate system has x=0 at longitude=0 and z=0 at the equator with positive to the north.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lon</strong> (<em>float</em>) – Longitude of initial point, in degrees</p></li>
+<li><p><strong>lat</strong> (<em>float</em>) – Latitude of initial point, in degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[X, Y, Z] coordinates in meters.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float, float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.euler_pole.get_unit_east">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.euler_pole.</span></code><code class="sig-name descname"><span class="pre">get_unit_east</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.euler_pole.get_unit_east" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit east vector from a point on earth’s surface in XYZ coordinates.
+The XYZ coordinate system has x=0 at longitude=0 and z=0 at the equator with positive to the north.
+The return value of Z is zero for eastward motion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lon</strong> (<em>float</em>) – Longitude of initial point, in degrees</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[X, Y, Z] components</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float, float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.euler_pole.get_unit_vector">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.euler_pole.</span></code><code class="sig-name descname"><span class="pre">get_unit_vector</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.euler_pole.get_unit_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a vector to its associated unit vector</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.euler_pole.point_rotation_by_Euler_Pole">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.euler_pole.</span></code><code class="sig-name descname"><span class="pre">point_rotation_by_Euler_Pole</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Euler_Pole</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.euler_pole.point_rotation_by_Euler_Pole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the velocity of rotation of a point about an Euler pole on a spherical earth.
+This function is useful for computing the velocity of a stationary point in one reference frame
+with respect to another reference frame.
+The resulting velocity is assumed to be horizontal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Point</strong> (<em>array_like</em>) – [longitude, latitude] of observation point, in degrees</p></li>
+<li><p><strong>Euler_Pole</strong> (<em>array_like</em>) – [longitude, latitude, omega] of Euler Pole, in degrees and degrees/Ma</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[e_velocity, n_velocity, u_velocity] of point in rotated reference frame, in mm/yr</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.euler_pole.xyz2en">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.euler_pole.</span></code><code class="sig-name descname"><span class="pre">xyz2en</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.euler_pole.xyz2en" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert velocities from xyz to horizontal east and north, assuming spherical earth and no vertical motion.
+We take the dot product of the velocity with the unit east vector and the north component is the remainder.
+A more complex function xyz2enu(X, Y, Z, lon, lat) could be written later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x velocity at observation point</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y velocity at observation point</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z velocity at observation point</p></li>
+<li><p><strong>lon</strong> (<em>float</em>) – Longitude of observation point, in degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[east_vel, north_vel]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Tectonic_Utils.geodesy.fault_conversion_functions">
+<span id="tectonic-utils-geodesy-fault-conversion-functions-module"></span><h2>Tectonic_Utils.geodesy.fault_conversion_functions module<a class="headerlink" href="#module-Tectonic_Utils.geodesy.fault_conversion_functions" title="Permalink to this headline">¶</a></h2>
+<p>The functions in this script convert between fault formats</p>
+<ul class="simple">
+<li><p>Format 1: json format for Slippy</p></li>
+<li><p>Format 2: slip distribution format for Slippy</p></li>
+<li><p>Format 3: .intxt, Kathryn Materna’s format for Elastic_stresses_py</p></li>
+</ul>
+<p>The internal format here is a dictionary containing:
+Format internal: {strike(deg), dip(deg), length(km), width(km), lon(corner), lat(corner), depth(km), rake(deg), slip(m)}
+If the fault is a receiver fault, we put slip = 0</p>
+<p>Format json: basis1, basis2, length(m), width(m), nlength, nwidth, strike, dip, position [lon, lat, dep], penalty</p>
+<p>Format slippy: lon lat depth[m] strike[deg] dip[deg] length[m] width[m] left-lateral[m] thrust[m] tensile[m]</p>
+<p>Format intxt: strike rake dip length(km) width(km) updip_corner_lon updip_corner_lat updip_corner_dep(km) slip</p>
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.intxt2json">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">intxt2json</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.intxt2json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts .intxt faults to json faults</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.intxt2slipdistribution">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">intxt2slipdistribution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.intxt2slipdistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts .intxt faults to slippy faults (in progress)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.json2intxt">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">json2intxt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.json2intxt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts json faults to .intxt faults</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.read_faults_intxt">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">read_faults_intxt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.read_faults_intxt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read all faults that are sources or receivers into a list of fault dictionaries.
+The lat/lon refer to the top left corner of the fault.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>infile</strong> (<em>string</em>) – name of input .intxt file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of fault dictionaries</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.read_faults_json">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">read_faults_json</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.read_faults_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read all faults from a json file (just geometry; no slip or rake) into a list of fault dictionaries.
+It has to convert from fault center to fault corner.
+Faults read from JSON have zero slip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>infile</strong> (<em>string</em>) – name of input json file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of fault dictionaries</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.read_slippy_distribution">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">read_slippy_distribution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.read_slippy_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a file from the Slippy inversion outputs (lon[degrees] lat[degrees] depth[m] strike[degrees] dip[degrees]
+length[m] width[m] left-lateral[m] thrust[m] tensile[m] segment_num) into a list of fault dictionaries.
+Lon/lat usually refer to the center top of the fault, so it must convert the lon/lat to the top left corner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>infile</strong> (<em>string</em>) – name of input slip distribution file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of fault dictionaries</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.slippydist2intxt">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">slippydist2intxt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.slippydist2intxt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts slippy faults to .intxt faults</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.write_faults_intxt">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">write_faults_intxt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faults</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.write_faults_intxt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes faults to intxt as receivers with zero slip, or sources with finite slip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>faults</strong> (<em>list</em>) – list of fault dictionaries</p></li>
+<li><p><strong>outfile</strong> (<em>string</em>) – name of output intxt file</p></li>
+<li><p><strong>receiver</strong> (<em>bool</em>) – whether the faults are receivers (slip set to 0), default True</p></li>
+<li><p><strong>source</strong> (<em>bool</em>) – whether the faults are sources (finite slip), default False</p></li>
+<li><p><strong>write_header</strong> (<em>bool</em>) – whether to write the header line, default True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.write_faults_json">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">write_faults_json</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faults_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.write_faults_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes faults to json as receivers with zero slip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>faults</strong> (<em>list</em>) – list of fault dictionaries</p></li>
+<li><p><strong>outfile</strong> (<em>string</em>) – name of output json file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_conversion_functions.write_slipdistribution">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_conversion_functions.</span></code><code class="sig-name descname"><span class="pre">write_slipdistribution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faults</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_conversion_functions.write_slipdistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a slip distribution for Slippy.
+lon[deg] lat[deg] depth[m] strike[deg] dip[deg] len[m] wid[m] left-lateral[m] thrust[m] tensile[m] segment_num.
+Depths are negative in meters. lon/lat refer to fault center.</p>
+<p>Function not written yet.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Tectonic_Utils.geodesy.fault_vector_functions">
+<span id="tectonic-utils-geodesy-fault-vector-functions-module"></span><h2>Tectonic_Utils.geodesy.fault_vector_functions module<a class="headerlink" href="#module-Tectonic_Utils.geodesy.fault_vector_functions" title="Permalink to this headline">¶</a></h2>
+<p>Useful utilities for defining fault planes and coordinate systems</p>
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.add_vector_to_point">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">add_vector_to_point</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_mag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_heading</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.add_vector_to_point" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> (<em>float</em>) – starting x-coordinate for vector</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – starting y-coordinate for vector</p></li>
+<li><p><strong>vector_mag</strong> (<em>float</em>) – magnitude of vector to be added to point</p></li>
+<li><p><strong>vector_heading</strong> (<em>float</em>) – direction of vector, in degrees CW from north</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x1, y1 coordinates of ending point</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_dip_degrees">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_dip_degrees</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_dip_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the dip of the line that connects two points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> (<em>float</em>) – x coordinate of shallower point</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – y coordinate of shallower point</p></li>
+<li><p><strong>z0</strong> (<em>float</em>) – z coordinate of shallower point</p></li>
+<li><p><strong>x1</strong> (<em>float</em>) – x coordinate of deeper point</p></li>
+<li><p><strong>y1</strong> (<em>float</em>) – y coordinate of deeper point</p></li>
+<li><p><strong>z1</strong> (<em>float</em>) – z coordinate of deeper point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dip, in degrees</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_dip_vector">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_dip_vector</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_dip_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a unit vector along the dip direction of a plane</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strike</strong> (<em>float</em>) – strike, in degrees CW from N</p></li>
+<li><p><strong>dip</strong> (<em>float</em>) – dip, in degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>3-component unit vector, in x, y, z coordinates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float, float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_downdip_width">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_downdip_width</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_downdip_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the total downdip-width of a rectangular fault plane given its top depth, bottom depth, and dip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top</strong> (<em>float</em>) – depth of top of fault plane, in km (positive down)</p></li>
+<li><p><strong>bottom</strong> (<em>float</em>) – depth of top of fault plane, in km (positive down)</p></li>
+<li><p><strong>dip</strong> (<em>float</em>) – dip of fault plane, in degrees (range 0 to 90)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>total down-dip width of the rectangle, in km</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_plane_normal">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_plane_normal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_plane_normal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the outward-facing unit normal to a plane of specified strike and dip (dip-cross-strike).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strike</strong> (<em>float</em>) – strike, degrees</p></li>
+<li><p><strong>dip</strong> (<em>float</em>) – dip, degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>3-component vector of outward facing unit normal vector, [x, y, z]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_rake">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_rake</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike_slip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip_slip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_rake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the rake of a given slip vector.
+Positive strike-slip is right lateral, and positive dip-slip is reverse.
+Will return 0 if dipslip,strikeslip==0,0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strike_slip</strong> (<em>float</em>) – quantity of right lateral slip, any length units</p></li>
+<li><p><strong>dip_slip</strong> (<em>float</em>) – quantity of reverse slip, any length units</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>rake in range -180 to 180 degrees</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_rtlat_dip_slip">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_rtlat_dip_slip</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_rtlat_dip_slip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decompose slip into right lateral and dip slip components</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slip</strong> (<em>float</em>) – slip, in any length unit</p></li>
+<li><p><strong>rake</strong> (<em>float</em>) – rake, in degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>rt-lat strike slip and dip slip, in the same length units as <cite>slip</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_strike">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_strike</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deltax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deltay</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_strike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the strike of a vector x,y</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deltax</strong> (<em>float</em>) – displacement in x direction, in any length unit</p></li>
+<li><p><strong>deltay</strong> (<em>float</em>) – displacement in y direction, in any length unit</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>strike of vector, in CW degrees from north</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_strike_length">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_strike_length</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_strike_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just the pythagorean theorem</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_strike_vector">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_strike_vector</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_strike_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a unit vector along the strike direction of a plane</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>strike</strong> (<em>float</em>) – strike, in degrees CW from N</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>3-component unit vector, in x, y, z coordinates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float, float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_top_bottom_from_center">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_top_bottom_from_center</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center_depth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_top_bottom_from_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the top and bottom depth of a rectangular fault from its width, center, and dip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center_depth</strong> (<em>float</em>) – depth of center of fault plane, in km (positive down)</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – total downdip width of rectangular fault plane, in km</p></li>
+<li><p><strong>dip</strong> (<em>float</em>) – dip of fault plane, in degrees (range 0 to 90)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>top and bottom of fault plane, in km</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_top_bottom_from_top">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_top_bottom_from_top</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_depth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_top_bottom_from_top" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the top and bottom depth of a rectangular fault from its width, top-edge depth, and dip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top_depth</strong> (<em>float</em>) – depth of top edge of fault plane, in km (positive down)</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – total downdip width of rectangular fault plane, in km</p></li>
+<li><p><strong>dip</strong> (<em>float</em>) – dip of fault plane, in degrees (range 0 to 90)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>top and bottom of fault plane, in km</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_total_slip">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_total_slip</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike_slip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip_slip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_total_slip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just the pythagorean theorem</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.get_vector_magnitude">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">get_vector_magnitude</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.get_vector_magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get magnitude of a vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vector</strong> (<em>array_like</em>) – n-component vector, any units</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>magnitude</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.latlon2xy">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">latlon2xy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loni</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lati</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.latlon2xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert lon/lat coordinates into cartesian x/y coordinates using reference point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loni</strong> (<em>float</em><em> or </em><em>list</em>) – longitude of target point(s)</p></li>
+<li><p><strong>lati</strong> (<em>float</em><em> or </em><em>list</em>) – latitude of target point(s)</p></li>
+<li><p><strong>lon0</strong> (<em>float</em>) – longitude of reference point</p></li>
+<li><p><strong>lat0</strong> (<em>float</em>) – latitude of reference point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[x, y] of target point(s), in km</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.latlon2xy_single">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">latlon2xy_single</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loni</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lati</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.latlon2xy_single" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert lon/lat coordinate into cartesian x/y coordinate using reference point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loni</strong> (<em>float</em>) – longitude of target point</p></li>
+<li><p><strong>lati</strong> (<em>float</em>) – latitude of target point</p></li>
+<li><p><strong>lon0</strong> (<em>float</em>) – longitude of reference point</p></li>
+<li><p><strong>lat0</strong> (<em>float</em>) – latitude of reference point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x, y of target point, in km</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.xy2lonlat">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">xy2lonlat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.xy2lonlat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert cartesian x/y coordinates into lon/lat coordinates using reference point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em><em> or </em><em>list</em>) – x coordinate of target point(s), in km</p></li>
+<li><p><strong>yi</strong> (<em>float</em><em> or </em><em>list</em>) – y coordinate of target point(s), in km</p></li>
+<li><p><strong>reflon</strong> (<em>float</em>) – longitude of reference point</p></li>
+<li><p><strong>reflat</strong> (<em>float</em>) – latitude of reference point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lon, lat of target point(s)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list, list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.fault_vector_functions.xy2lonlat_single">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.fault_vector_functions.</span></code><code class="sig-name descname"><span class="pre">xy2lonlat_single</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.fault_vector_functions.xy2lonlat_single" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert cartesian x/y coordinate into lon/lat coordinate using reference point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> (<em>float</em>) – x coordinate of target point, in km</p></li>
+<li><p><strong>yi</strong> (<em>float</em>) – y coordinate of target point, in km</p></li>
+<li><p><strong>reflon</strong> (<em>float</em>) – longitude of reference point</p></li>
+<li><p><strong>reflat</strong> (<em>float</em>) – latitude of reference point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lon, lat of target point</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float, float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Tectonic_Utils.geodesy.geojson2txt">
+<span id="tectonic-utils-geodesy-geojson2txt-module"></span><h2>Tectonic_Utils.geodesy.geojson2txt module<a class="headerlink" href="#module-Tectonic_Utils.geodesy.geojson2txt" title="Permalink to this headline">¶</a></h2>
+<p>This script contains utility functions to convert between two different InSAR data representations:</p>
+<ul class="simple">
+<li><p>geojson, produced by Kite after downsampling</p></li>
+<li><p>text representation, used for inversions</p></li>
+</ul>
+<dl class="py class">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.geojson2txt.</span></code><code class="sig-name descname"><span class="pre">Downsampled_pixel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">median</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BL_corner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TR_corner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitU</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mean</strong> – mean LOS value for pixel (meters)</p></li>
+<li><p><strong>median</strong> – median LOS value for pixel (meters)</p></li>
+<li><p><strong>std</strong> – standard deviation LOS value for pixel (meters)</p></li>
+<li><p><strong>BL_corner</strong> – Bottom Left corner coordinate (longitude, latitude)</p></li>
+<li><p><strong>TR_corner</strong> – Top Right corner coordinate (longitude, latitude)</p></li>
+<li><p><strong>unitE</strong> – east component of unit vector from ground to satellite</p></li>
+<li><p><strong>unitN</strong> – north component of unit vector from ground to satellite</p></li>
+<li><p><strong>unitU</strong> – up component of unit vector from ground to satellite</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.BL_corner">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">BL_corner</span></code><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.BL_corner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.TR_corner">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">TR_corner</span></code><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.TR_corner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.mean">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">mean</span></code><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.median">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">median</span></code><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.std">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">std</span></code><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.unitE">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">unitE</span></code><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.unitE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.unitN">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">unitN</span></code><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.unitN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 6</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.unitU">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">unitU</span></code><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.Downsampled_pixel.unitU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 7</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.pixels_to_txt">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.geojson2txt.</span></code><code class="sig-name descname"><span class="pre">pixels_to_txt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixel_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-</span> <span class="pre">180,</span> <span class="pre">180,</span> <span class="pre">-</span> <span class="pre">90,</span> <span class="pre">90)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.pixels_to_txt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes InSAR pixels in the format needed by Slippy inversion code: Lon Lat Value unitE unitN unitU</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pixel_list</strong> (<em>list</em>) – list of pixel objects</p></li>
+<li><p><strong>text_file</strong> (<em>str</em>) – name of output file</p></li>
+<li><p><strong>bbox</strong> (<em>array_like</em><em>, </em><em>optional</em>) – tuple of (W, E, S, N) bounding box, defaults to (-180, 180, -90, 90)</p></li>
+<li><p><strong>std_min</strong> (<em>float</em><em>, </em><em>optional</em>) – minimum value of uncertainty (m), defaults to 0.001</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.geojson2txt.read_geojson">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.geojson2txt.</span></code><code class="sig-name descname"><span class="pre">read_geojson</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.geojson2txt.read_geojson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a geojson as created by Kite downsampling into downsampled pixel objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>infile</strong> (<em>string</em>) – name of geojson file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of pixel objects</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Tectonic_Utils.geodesy.haversine">
+<span id="tectonic-utils-geodesy-haversine-module"></span><h2>Tectonic_Utils.geodesy.haversine module<a class="headerlink" href="#module-Tectonic_Utils.geodesy.haversine" title="Permalink to this headline">¶</a></h2>
+<p>Haversine formula example in Python. Original author Wayne Dyck.</p>
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.haversine.add_vector_to_coords">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.haversine.</span></code><code class="sig-name descname"><span class="pre">add_vector_to_coords</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.haversine.add_vector_to_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a vector of km to a set of latitude/longitude points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lon0</strong> (<em>float</em>) – Longitude of initial point, in degrees</p></li>
+<li><p><strong>lat0</strong> (<em>float</em>) – Latitude of initial point, in degrees</p></li>
+<li><p><strong>dx</strong> (<em>float</em>) – x component of vector added to the point, in km</p></li>
+<li><p><strong>dy</strong> (<em>float</em>) – y component of vector added to the point, in km</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[lon1, lat1], in degrees</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.haversine.calculate_endpoint_given_bearing">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.haversine.</span></code><code class="sig-name descname"><span class="pre">calculate_endpoint_given_bearing</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bearing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_distance_degrees</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.haversine.calculate_endpoint_given_bearing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Travel a certain angular distance (degrees) along a bearing starting from a coordinate.
+Source: <a class="reference external" href="https://www.movable-type.co.uk/scripts/latlong.html">https://www.movable-type.co.uk/scripts/latlong.html</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<em>array_like</em>) – Tuple representing (latitude, longitude) of first point, in decimal degrees</p></li>
+<li><p><strong>bearing</strong> (<em>float</em>) – angle clockwise from north, in decimal degrees</p></li>
+<li><p><strong>angular_distance_degrees</strong> (<em>float</em>) – angular distance, in decimal degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[lat, lon], in degrees</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.haversine.calculate_initial_compass_bearing">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.haversine.</span></code><code class="sig-name descname"><span class="pre">calculate_initial_compass_bearing</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pointA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointB</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.haversine.calculate_initial_compass_bearing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the bearing between two points.
+By the formula theta = atan2(sin(delta_long).cos(lat2),cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(delta_long))</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pointA</strong> (<em>array_like</em>) – Tuple representing (latitude, longitude) of first point, in decimal degrees</p></li>
+<li><p><strong>pointB</strong> (<em>array_like</em>) – Tuple representing (latitude, longitude) of second point, in decimal degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bearing, in degrees CW from north</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.haversine.distance">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.haversine.</span></code><code class="sig-name descname"><span class="pre">distance</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.haversine.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the distance between origin [lat1, lon1] and destination [lat2, lon2].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin</strong> (<em>array_like</em>) – Tuple representing (latitude, longitude) of first point, in decimal degrees</p></li>
+<li><p><strong>destination</strong> (<em>array_like</em>) – Tuple representing (latitude, longitude) of second point, in decimal degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>distance, in km</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.haversine.xy_distance">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.haversine.</span></code><code class="sig-name descname"><span class="pre">xy_distance</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_loc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sta_loc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.haversine.xy_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pythagorean distance between two latitude/longitude pairs, assuming flat surface between the points.
+Returns x and y in meters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ref_loc</strong> (<em>array_like</em>) – Tuple representing (latitude, longitude) of first point, in decimal degrees</p></li>
+<li><p><strong>sta_loc</strong> (<em>array_like</em>) – Tuple representing (latitude, longitude) of second point, in decimal degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[distance_x, distance_y], in m</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Tectonic_Utils.geodesy.utm_conversion">
+<span id="tectonic-utils-geodesy-utm-conversion-module"></span><h2>Tectonic_Utils.geodesy.utm_conversion module<a class="headerlink" href="#module-Tectonic_Utils.geodesy.utm_conversion" title="Permalink to this headline">¶</a></h2>
+<p>functions to support the conversion between utm coordinate system (meters) and lat/lon (degrees)</p>
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.utm_conversion.deg2utm">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.utm_conversion.</span></code><code class="sig-name descname"><span class="pre">deg2utm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.utm_conversion.deg2utm" title="Permalink to this definition">¶</a></dt>
+<dd><p>[x,y,utmzone] = deg2utm(Lat,Lon)
+Description: Function to convert lat/lon vectors into UTM coordinates (WGS84).
+Some code has been extracted from UTM.m function by Gabriel Ruiz Martinez.</p>
+<dl>
+<dt>Inputs:</dt><dd><p>Lat: Latitude vector (np array).   Degrees.  +ddd.ddddd  WGS84
+Lon: Longitude vector (np array).  Degrees.  +ddd.ddddd  WGS84</p>
+</dd>
+<dt>Outputs:</dt><dd><p>x, y , utmzone.   See example</p>
+</dd>
+<dt>Example 1:</dt><dd><p>Lat=[40.3154333; 46.283900; 37.577833; 28.645650; 38.855550; 25.061783];
+Lon=[-3.4857166; 7.8012333; -119.95525; -17.759533; -94.7990166; 121.640266];
+[x,y,utmzone] = deg2utm(Lat,Lon);</p>
+<dl class="simple">
+<dt>fprintf(‘%7.0f ‘,x)</dt><dd><p>458731  407653  239027  230253  343898  362850</p>
+</dd>
+<dt>fprintf(‘%7.0f ‘,y)</dt><dd><p>4462881 5126290 4163083 3171843 4302285 2772478</p>
+</dd>
+<dt>utmzone =</dt><dd><p>30 T
+32 T
+11 S
+28 R
+15 S
+51 R</p>
+</dd>
+</dl>
+</dd>
+<dt>Example 2: If you have Lat/Lon coordinates in Degrees, Minutes and Seconds</dt><dd><p>LatDMS=[40 18 55.56; 46 17 2.04];
+LonDMS=[-3 29  8.58;  7 48 4.44];
+Lat=dms2deg(mat2dms(LatDMS)); %convert into degrees
+Lon=dms2deg(mat2dms(LonDMS)); %convert into degrees
+[x,y,utmzone] = deg2utm(Lat,Lon)</p>
+</dd>
+</dl>
+<p>Author:
+Rafael Palacios
+Universidad Pontificia Comillas
+Madrid, Spain
+Version: Apr/06, Jun/06, Aug/06, Aug/06
+Aug/06: fixed a problem (found by Rodolphe Dewarrat) related to southern hemisphere coordinates.
+Aug/06: corrected m-Lint warnings</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Tectonic_Utils.geodesy.utm_conversion.utm2deg">
+<code class="sig-prename descclassname"><span class="pre">Tectonic_Utils.geodesy.utm_conversion.</span></code><code class="sig-name descname"><span class="pre">utm2deg</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utmzone</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tectonic_Utils.geodesy.utm_conversion.utm2deg" title="Permalink to this definition">¶</a></dt>
+<dd><p>[Lat, Lon] = utm2deg(x, y, utmzone)</p>
+<p>Description: Function to convert vectors of UTM coordinates into Lat/Lon vectors (WGS84).
+Some code has been extracted from UTMIP.m function by Gabriel Ruiz Martinez.</p>
+<dl>
+<dt>Inputs:</dt><dd><p>x, y , utmzone.</p>
+</dd>
+<dt>Outputs:</dt><dd><p>Lat: Latitude vector.   Degrees.  +ddd.ddddd  WGS84
+Lon: Longitude vector.  Degrees.  +ddd.ddddd  WGS84</p>
+</dd>
+<dt>Example 1:</dt><dd><p>x=[ 458731;  407653;  239027;  230253;  343898;  362850];
+y=[4462881; 5126290; 4163083; 3171843; 4302285; 2772478];
+utmzone=[‘30 T’; ‘32 T’; ‘11 S’; ‘28 R’; ‘15 S’; ‘51 R’];
+[Lat, Lon]=utm2deg(x,y,utmzone);</p>
+<dl class="simple">
+<dt>fprintf(‘%11.6f ‘,lat)</dt><dd><p>40.315430   46.283902   37.577834   28.645647   38.855552   25.061780</p>
+</dd>
+<dt>fprintf(‘%11.6f ‘,lon)</dt><dd><p>-3.485713    7.801235 -119.955246  -17.759537  -94.799019  121.640266</p>
+</dd>
+</dl>
+</dd>
+<dt>Example 2: If you need Lat/Lon coordinates in Degrees, Minutes and Seconds</dt><dd><p>[Lat, Lon]=utm2deg(x,y,utmzone);
+LatDMS=dms2mat(deg2dms(Lat))
+LatDMS =
+40.00         18.00         55.55
+46.00         17.00          2.01
+37.00         34.00         40.17
+28.00         38.00         44.33
+38.00         51.00         19.96
+25.00          3.00         42.41</p>
+<p>LonDMS=dms2mat(deg2dms(Lon))
+LonDMS =
+-3.00         29.00          8.61
+7.00          48.00          4.40
+-119.00        57.00         18.93
+-17.00         45.00         34.33
+-94.00         47.00         56.47
+121.00         38.00         24.96</p>
+</dd>
+</dl>
+<p>Author:
+Rafael Palacios
+Universidad Pontificia Comillas
+Madrid, Spain
+Version: Apr/06, Jun/06, Aug/06
+Aug/06: corrected m-Lint warnings</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Tectonic_Utils.geodesy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Tectonic_Utils.geodesy" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kathryn Materna.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

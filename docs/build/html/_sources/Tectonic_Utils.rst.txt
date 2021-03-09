@@ -1,0 +1,20 @@
+Tectonic\_Utils package
+=======================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   Tectonic_Utils.geodesy
+   Tectonic_Utils.read_write
+   Tectonic_Utils.seismo
+
+Module contents
+---------------
+
+.. automodule:: Tectonic_Utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

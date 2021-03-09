@@ -1,0 +1,69 @@
+Tectonic\_Utils.geodesy package
+===============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   Tectonic_Utils.geodesy.test
+
+Submodules
+----------
+
+Tectonic\_Utils.geodesy.euler\_pole module
+------------------------------------------
+
+.. automodule:: Tectonic_Utils.geodesy.euler_pole
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Tectonic\_Utils.geodesy.fault\_conversion\_functions module
+-----------------------------------------------------------
+
+.. automodule:: Tectonic_Utils.geodesy.fault_conversion_functions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Tectonic\_Utils.geodesy.fault\_vector\_functions module
+-------------------------------------------------------
+
+.. automodule:: Tectonic_Utils.geodesy.fault_vector_functions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Tectonic\_Utils.geodesy.geojson2txt module
+------------------------------------------
+
+.. automodule:: Tectonic_Utils.geodesy.geojson2txt
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Tectonic\_Utils.geodesy.haversine module
+----------------------------------------
+
+.. automodule:: Tectonic_Utils.geodesy.haversine
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Tectonic\_Utils.geodesy.utm\_conversion module
+----------------------------------------------
+
+.. automodule:: Tectonic_Utils.geodesy.utm_conversion
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: Tectonic_Utils.geodesy
+   :members:
+   :undoc-members:
+   :show-inheritance:
