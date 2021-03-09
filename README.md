@@ -19,3 +19,6 @@ To test that it works, import a utility in Python. I typically use an import str
 $ python
 >>> from Tectonic_Utils.geodesy import haversine
 ```
+
+## Documentation
+I am beginning the process of documenting this library using sphinx. The preliminary html docs can be found here: https://kmaterna.github.io/Tectonic_Utils/index.html
