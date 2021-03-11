@@ -62,19 +62,34 @@ def decompose_iso_dc_clvd(MT):
     M_clvd, M_dc = get_clvd_dc_from_deviatoric_MT(M_dev);
     return M_iso, M_clvd, M_dc;
 
-def get_scalar_moments(MT):
-    """return isotropic, clvd, and double couple moments"""
-    M_iso, M_clvd, M_dc = decompose_iso_dc_clvd(MT);
-    iso_moment = abs(M_iso[0][0]);
-    clvd_moment = abs(M_clvd[0][0]);
-    dc_moment = abs(M_dc[0][0]);
-    return iso_moment, clvd_moment, dc_moment;
+# def get_separate_scalar_moments(MT):
+#     """return isotropic, clvd, and double couple moments. Not frequently used."""
+#     M_iso, M_clvd, M_dc = decompose_iso_dc_clvd(MT);
+#     iso_moment = abs(M_iso[0][0]);
+#     clvd_moment = abs(M_clvd[0][0]);
+#     dc_moment = abs(M_dc[0][0]);
+#     return iso_moment, clvd_moment, dc_moment;
+
+def get_total_scalar_moment(MT):
+    """Shearer Equation 9.8: quadratic sum of element of moment tensor components, in newton-meters"""
+    MT = np.divide(MT, 1e16);  # done to prevent computer buffer overflow
+    total = 0;
+    for i in range(3):
+        for j in range(3):
+            total = total + MT[i][j]*MT[i][j];
+    Mo = (1/np.sqrt(2)) * np.sqrt(total);
+    Mo = np.multiply(Mo, 1e16);
+    return Mo;
 
 def get_percent_double_couple(MT):
-    """Get the percent double couple and percent clvd moment from a deviatoric moment tensor"""
+    """Get the percent double couple and percent clvd moment from a deviatoric moment tensor.
+    When isotropic term is involved, this can get more complicated and there are several approaches.
+    See Shearer equation 9.17 for epsilon.
+    See Vavrycuk, 2001 for other approaches when isotropic component is involved. """
     m_dev = diagonalize_MT(get_deviatoric_MT(MT));
-    epsilon = np.diag(m_dev)[1] / np.diag(m_dev)[0]
+    epsilon = np.diag(m_dev)[1] / np.max([np.abs(np.diag(m_dev)[0]), np.abs(np.diag(m_dev)[2])]);
     fraction = epsilon * 2;
     perc_clvd = 100 * (abs(fraction));
     perc_dc = 100 - perc_clvd;
     return perc_dc, perc_clvd;
+
