@@ -3,6 +3,7 @@
 import numpy as np
 import unittest
 from Tectonic_Utils.geodesy import fault_vector_functions
+from Tectonic_Utils.geodesy import insar_vector_functions
 
 class Tests(unittest.TestCase):
 
@@ -40,6 +41,14 @@ class Tests(unittest.TestCase):
         self.assertAlmostEqual(plane_normal[0],  -0.0174524064372835);
         self.assertAlmostEqual(plane_normal[1], 0);
         self.assertAlmostEqual(plane_normal[2], 0.999847695156391);
+        return;
+
+    def test_lkv_conversion(self):
+        """ Testing that look vectors are converted correctly"""
+        [lkv_e, lkv_n, lkv_u] = insar_vector_functions.flight_incidence_angles2look_vector(190, 30);
+        [out_flight, out_inc] = insar_vector_functions.look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u);
+        self.assertAlmostEqual(190, out_flight);
+        self.assertAlmostEqual(30, out_inc);
         return;
 
 

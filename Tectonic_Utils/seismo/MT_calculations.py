@@ -92,4 +92,3 @@ def get_percent_double_couple(MT):
     perc_clvd = 100 * (abs(fraction));
     perc_dc = 100 - perc_clvd;
     return perc_dc, perc_clvd;
-
