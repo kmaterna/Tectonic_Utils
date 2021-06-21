@@ -138,17 +138,12 @@ def get_datums(names=None):
        Calling the function without input arguments returns a list of available datums.
        Unmatched datums return NaNs.
 
-    -------------------------------------------------------------------------------
-       Record of revisions:
-
-       Date          Programmer            Description of Change
-       ====          ==========            =====================
-
-       Aug 20, 2001  Peter Cervelli        Standardized code
-       Unknown       Peter Cervelli		   Original Code
-
-    -------------------------------------------------------------------------------
+    :param names: string
+    :type names: string
+    :returns : 5 numbers representing the chosen datum relative to WGS-84
+    :rtype : array
     """
+
     if not names:    # Return list of available datums if called with no input arguments.
         return data.keys();
     # Read the database. Match requested datums with those available.

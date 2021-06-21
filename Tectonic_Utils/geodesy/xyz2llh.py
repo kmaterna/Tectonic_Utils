@@ -18,6 +18,7 @@ def xyz2llh(xyz, datum=(0, 0)):
     by the function DATUMS function.
     Note that longitude occupies the first row of LLH.
     See DATUMS for more information on datum parameters.
+
     :param xyz: [x, y, z]
     :type xyz: numpy array
     :param datum: name of datum
@@ -114,8 +115,9 @@ def xyz2enum(origin):
        into to a local coordinate system aligned with the geographic
        directions at the position ORIGIN.  ORIGIN should contain a
        longitude and a latitude pair (degrees). T is 3x3.
-       :param origin: [longitude, latitude]
-       :type origin: np array
+
+    :param origin: [longitude, latitude]
+    :type origin: np array
     """
 
     # Check input arguments
@@ -149,12 +151,13 @@ def xyz2enu(d, origin, dcov=None):
        of transformed coordinates the same size as input D.  ECOV is a
        matrix containing the transformed covariance.
        E=xyz2enu(D,ORIGIN) behaves as above without a data covariance matrix.
-       :param d: nx3 np array of x, y, z values
-       :type d: numpy array
-       :param origin: 1x3 np array (x, y, z) or 1x2 np.array (lon, lat)
-       :type origin: numpy array
-       :param dcov: 3x3 np array
-       :type dcov: numpy array
+
+    :param d: nx3 np array of x, y, z values
+    :type d: numpy array
+    :param origin: 1x3 np array (x, y, z) or 1x2 np.array (lon, lat)
+    :type origin: numpy array
+    :param dcov: 3x3 np array
+    :type dcov: numpy array
     """
 
     # Check input arguments
@@ -190,12 +193,13 @@ def enu2xyz(d, origin, dcov=None):
        of transformed coordinates the same size as input D.  ECOV is a
        matrix containing the transformed covariance.
        E=xyz2enu(D,ORIGIN) behaves as above without a data covariance matrix.
-       :param d: nx3 np array of e, n, u values
-       :type d: numpy array
-       :param origin: 1x3 np array (x, y, z) or 1x2 np.array (lon, lat)
-       :type origin: numpy array
-       :param dcov: 3x3 np array
-       :type dcov: numpy array
+
+    :param d: nx3 np array of e, n, u values
+    :type d: numpy array
+    :param origin: 1x3 np array (x, y, z) or 1x2 np.array (lon, lat)
+    :type origin: numpy array
+    :param dcov: 3x3 np array
+    :type dcov: numpy array
     """
     # Check input arguments
     if len(origin) > 2:
