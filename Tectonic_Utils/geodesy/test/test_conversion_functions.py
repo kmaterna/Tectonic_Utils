@@ -2,8 +2,10 @@
 
 import numpy as np
 import unittest
-from Tectonic_Utils.geodesy import fault_vector_functions
-from Tectonic_Utils.geodesy import insar_vector_functions
+from .. import fault_vector_functions
+from .. import insar_vector_functions
+from .. import xyz2llh
+
 
 class Tests(unittest.TestCase):
 
@@ -49,6 +51,40 @@ class Tests(unittest.TestCase):
         [out_flight, out_inc] = insar_vector_functions.look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u);
         self.assertAlmostEqual(190, out_flight);
         self.assertAlmostEqual(30, out_inc);
+        return;
+
+    def test_llh_xyz_conversion(self):
+        """ Testing conversion between xyz and llh coordinates """
+        print("Testing llh/enu/xyz conversion math");
+        llh_point = np.array([[-121.98765, 37.12345, 0],
+                              [-121.98765, 38.12345, 0], ]);
+        xyz = xyz2llh.llh2xyz(llh_point);
+        llh_back = xyz2llh.xyz2llh(xyz);
+        self.assertTrue(np.allclose(llh_point, llh_back, atol=1e-6));
+
+        # Testing the xyz to llh conversion on values from a AC11 pos file from PBO GPS data.
+        xyz_point = np.array([[-2571637.61354, -1586307.97196,  5599086.71297], ]);
+        AC11_location = np.array([[211.6682527307-360, 61.8070788863, 790.83844], ]);
+        llh_point = xyz2llh.xyz2llh(xyz_point);
+        self.assertTrue(np.allclose(llh_point, AC11_location));
+        return;
+
+    def test_enu_conversion(self):
+        # Testing enu local conversion for station AC11 PBO GPS data
+        # Functions can use LLH or XYZ origin
+        reference_xyz = np.array([-2571637.71108, -1586307.90018,  5599086.75442]);  # 1d array from pos file
+        reference_llh = np.array([211.6682506012 - 360, 61.8070787035], )            # llh reference position
+        xyz_obs_2005 = np.array([[-2571637.61354, -1586307.97196,  5599086.71297], ]);  # xyz position on 20050721
+        enu_from_pos_file = np.array([[0.11200,  0.02035,  -0.05795], ]);               # enu position on 20050721
+        e_enu, _ = xyz2llh.xyz2enu(np.subtract(xyz_obs_2005, reference_xyz), reference_llh, dcov=None);
+        self.assertTrue(np.allclose(e_enu, enu_from_pos_file, atol=1e-3));
+
+        # Trying the enu to xyz coordinates
+        e_xyz, _ = xyz2llh.enu2xyz(enu_from_pos_file, reference_xyz, dcov=None);
+        self.assertTrue(np.allclose(np.add(e_xyz, reference_xyz), xyz_obs_2005, atol=1e-3));
+        # Feel-good code: check out the print statements!
+        print("pos file enu vs computed enu: ", enu_from_pos_file, e_enu);
+        print("pos_xyz_obs vs computed xyz_obs: ", xyz_obs_2005, np.add(e_xyz, reference_xyz));
         return;
 
 

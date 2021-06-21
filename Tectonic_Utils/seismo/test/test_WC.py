@@ -1,5 +1,5 @@
 import unittest
-from Tectonic_Utils.seismo import wells_and_coppersmith as wc
+from .. import wells_and_coppersmith as wc
 
 
 class Tests(unittest.TestCase):

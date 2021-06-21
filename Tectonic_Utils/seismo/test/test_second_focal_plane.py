@@ -1,5 +1,5 @@
 import unittest
-from Tectonic_Utils.seismo import second_focal_plane
+from .. import second_focal_plane
 
 
 class Tests(unittest.TestCase):

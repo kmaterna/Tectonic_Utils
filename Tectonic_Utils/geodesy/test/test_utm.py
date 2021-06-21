@@ -1,6 +1,6 @@
 import numpy as np
 import unittest
-from Tectonic_Utils.geodesy import utm_conversion
+from .. import utm_conversion
 
 
 class Tests(unittest.TestCase):
