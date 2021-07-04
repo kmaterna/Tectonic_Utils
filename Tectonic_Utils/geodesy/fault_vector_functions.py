@@ -293,6 +293,20 @@ def get_vector_magnitude(vector):
     return magnitude;
 
 
+def get_unit_vector(vec):
+    """
+    Get unit vector.
+
+    :param vec: n-component vector, any units
+    :type vec: array_like
+    :return: unit vector
+    :rtype: array_like
+    """
+    mag = np.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+    vec = np.divide(vec, mag);
+    return vec;
+
+
 def add_vector_to_point(x0, y0, vector_mag, vector_heading):
     """
     :param x0: starting x-coordinate for vector

@@ -3,6 +3,7 @@ Functions to rotate a point by a known euler pole.
 """
 
 import numpy as np
+from . import fault_vector_functions
 
 
 def point_rotation_by_Euler_Pole(Point, Euler_Pole):
@@ -21,7 +22,7 @@ def point_rotation_by_Euler_Pole(Point, Euler_Pole):
     """
     R_point = get_r(Point[0], Point[1]);
     R_ep = get_r(Euler_Pole[0], Euler_Pole[1]);
-    unit_ep = get_unit_vector(R_ep);
+    unit_ep = fault_vector_functions.get_unit_vector(R_ep);
     omega_raw = degma2radyr(Euler_Pole[2]);
     omega = omega_raw * unit_ep;  # in radians per year
 
@@ -35,13 +36,6 @@ def point_rotation_by_Euler_Pole(Point, Euler_Pole):
     up_transform = 0;  # by definition the velocity will be horizontal
 
     return [east_transform, north_transform, up_transform];
-
-
-def get_unit_vector(vec):
-    """Convert a vector to its associated unit vector"""
-    mag = np.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
-    vec = np.divide(vec, mag);
-    return vec;
 
 
 def degma2radyr(omega):

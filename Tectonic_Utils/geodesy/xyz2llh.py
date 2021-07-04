@@ -171,7 +171,7 @@ def xyz2enu(d, origin, dcov=None):
 
     # Transform
     e = np.dot(Tm, d.T);
-    if dcov:
+    if dcov is not None:
         ecov = np.dot(np.dot(Tm, dcov), Tm.T);
     else:
         ecov = None;
@@ -213,7 +213,7 @@ def enu2xyz(d, origin, dcov=None):
 
     # Transform
     e = np.dot(Tminv, d.T);
-    if dcov:
+    if dcov is not None:
         ecov = np.dot(np.dot(Tminv, dcov), Tminv.T);
     else:
         ecov = None;
