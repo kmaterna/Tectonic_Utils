@@ -173,17 +173,22 @@ def write_netcdf4(x, y, z, outfile):
     print("writing outfile %s " % outfile);
     outtxt = outfile+'.xyz'
     write_temp_output_txt(z, outtxt);
-    xinc = x[1] - x[0];
-    yinc = y[1] - y[0];
-    xmin = np.min(x)-xinc/2;  # for the half-pixel outside the edge
-    xmax = np.max(x)+xinc/2;  # required when writing pixel-node registration from Python's netcdf into .grd files
-    ymin = np.min(y)-yinc/2;  # required when writing pixel-node registration from Python's netcdf into .grd files
-    ymax = np.max(y)+yinc/2;  # required when writing pixel-node registration from Python's netcdf into .grd files
+    xinc = np.round(x[1] - x[0], 6);
+    yinc = np.round(y[1] - y[0], 6);
+    xmin = np.round(np.min(x)-xinc/2, 6);  # for the half-pixel outside the edge
+    xmax = np.round(np.max(x)+xinc/2, 6);  # writing pixel-node registration from Python's netcdf into .grd files
+    ymin = np.round(np.min(y)-yinc/2, 6);  # writing pixel-node registration from Python's netcdf into .grd files
+    ymax = np.round(np.max(y)+yinc/2, 6);  # writing pixel-node registration from Python's netcdf into .grd files
     increments = str(xinc)+'/'+str(yinc);
     region = str(xmin)+'/'+str(xmax)+'/'+str(ymin)+'/'+str(ymax);
-    command = 'gmt xyz2grd '+outtxt+' -G'+outfile+' -I'+increments+' -R'+region+' -ZBLf -r -fg -di-9999 '
+    if isinstance(z[0][0], np.float64):
+        binary_format_flags = '-ZBLd';   # double precision floating piont number, standard numpy float
+    else:
+        binary_format_flags = '-ZBLf';   # 4-byte floating point number
+    command = 'gmt xyz2grd '+outtxt+' -G'+outfile+' -I'+increments+' -R'+region+' '+binary_format_flags+\
+              ' -r -fg -di-9999 '
     print(command);
-    subprocess.call(['gmt', 'xyz2grd', outtxt, '-G'+outfile, '-I'+increments, '-R'+region, '-ZBLf', '-r',
+    subprocess.call(['gmt', 'xyz2grd', outtxt, '-G'+outfile, '-I'+increments, '-R'+region, binary_format_flags, '-r',
                      '-fg', '-di-9999'], shell=False);
     subprocess.call(['rm', outtxt], shell=False);
     return;
@@ -193,7 +198,7 @@ def produce_output_netcdf(xdata, ydata, zdata, zunits, netcdfname, dtype=float):
     """
     Write netcdf3 grid file.
     NOTE: The pixel vs gridline registration of this function is not guaranteed;
-    depends on file system and float type :(.
+    depends on file system and float type and precision :(.
     Safer to use write_netcdf4().
     """
     print("Writing output netcdf to file %s " % netcdfname);
