@@ -7,3 +7,4 @@ Tectonic_Utils.egg-info*
 upload_wheel.sh
 docs/*
 how_to_make_docs.txt
+.eggs/*
