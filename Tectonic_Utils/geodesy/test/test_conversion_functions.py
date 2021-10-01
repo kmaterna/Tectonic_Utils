@@ -22,7 +22,7 @@ class Tests(unittest.TestCase):
         return;
 
     def test_rake(self):
-        rake = fault_vector_functions.get_rake(strike_slip=1.0, dip_slip=0.5);
+        rake = fault_vector_functions.get_rake(rtlat_strike_slip=-1.0, dip_slip=0.5);
         self.assertAlmostEqual(rake, 26.5650511770779);
         return;
 

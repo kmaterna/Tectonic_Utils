@@ -182,18 +182,34 @@ def get_dip_vector(strike, dip):
 
 def get_rtlat_dip_slip(slip, rake):
     """
-    Decompose slip into right lateral and dip slip components
+    Decompose slip into right lateral and reverse dip slip components
 
     :param slip: slip, in any length unit
     :type slip: float
     :param rake: rake, in degrees
     :type rake: float
-    :returns: rt-lat strike slip and dip slip, in the same length units as `slip`
+    :returns: rt-lat strike slip and reverse dip slip, in the same length units as `slip`
     :rtype: float, float
     """
-    strike_slip = -slip * np.cos(np.deg2rad(rake));  # negative sign for convention of right lateral slip
+    rt_strike_slip = -slip * np.cos(np.deg2rad(rake));  # negative sign for convention of right lateral slip
     dip_slip = slip * np.sin(np.deg2rad(rake));
-    return strike_slip, dip_slip;
+    return rt_strike_slip, dip_slip;
+
+
+def get_leftlat_reverse_slip(slip, rake):
+    """
+    Decompose slip into left lateral and reverse slip components
+
+    :param slip: slip, in any length unit
+    :type slip: float
+    :param rake: rake, in degrees
+    :type rake: float
+    :returns: left-lat strike slip and reverse dip slip, in the same length units as `slip`
+    :rtype: float, float
+    """
+    ll_strike_slip = slip * np.cos(np.deg2rad(rake));  # convention of left lateral slip
+    dip_slip = slip * np.sin(np.deg2rad(rake));
+    return ll_strike_slip, dip_slip;
 
 
 def get_strike(deltax, deltay):
@@ -326,18 +342,18 @@ def add_vector_to_point(x0, y0, vector_mag, vector_heading):
     return x1, y1;
 
 
-def get_rake(strike_slip, dip_slip):
+def get_rake(rtlat_strike_slip, dip_slip):
     """
     Return the rake of a given slip vector.
     Positive strike-slip is right lateral, and positive dip-slip is reverse.
-    Will return 0 if dipslip,strikeslip==0,0
+    Will return 0 if dipslip,strikeslip == 0,0
 
-    :param strike_slip: quantity of right lateral slip, any length units
-    :type strike_slip: float
+    :param rtlat_strike_slip: quantity of right lateral slip, any length units
+    :type rtlat_strike_slip: float
     :param dip_slip: quantity of reverse slip, any length units
     :type dip_slip: float
     :return: rake in range -180 to 180 degrees
     :rtype: float
     """
-    rake = np.rad2deg(math.atan2(dip_slip, strike_slip));
+    rake = np.rad2deg(math.atan2(dip_slip, -rtlat_strike_slip));    # the Aki and Richards definition shows positive ll
     return rake;
