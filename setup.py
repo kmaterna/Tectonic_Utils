@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="Tectonic_Utils", 
-    version="0.0.7",
+    version="0.0.8",
     author="Kathryn Materna",
     author_email="kmaterna@berkeley.edu",
     description="A small package of useful geophysics utilities",
