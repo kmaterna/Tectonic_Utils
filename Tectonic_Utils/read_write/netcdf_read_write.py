@@ -20,7 +20,7 @@ def parse_pixelnode_registration(filename):
     return;
 
 
-def properly_parse_variables(key1, key2, key3):
+def properly_parse_three_variables(key1, key2, key3):
     """
     Set proper ordering for known keys in a netcdf file. Options: [x, y, z]; [lon, lat, z]; [longitude, latitude, z].
 
@@ -73,12 +73,26 @@ def read_netcdf3(filename):
     print("Reading file %s " % filename);
     file = netcdf.netcdf_file(filename, 'r');
     parse_pixelnode_registration(filename);
-    [xkey, ykey, zkey] = file.variables.keys();
-    [xkey, ykey, zkey] = properly_parse_variables(xkey, ykey, zkey);
-    xdata0 = file.variables[xkey][:];
-    ydata0 = file.variables[ykey][:];
-    zdata0 = file.variables[zkey][::];
-    return [xdata0.copy(), ydata0.copy(), zdata0.copy()];
+    if len(file.variables.keys()) == 6:
+        # Use a gdal parsing: ['x_range', 'y_range', 'z_range', 'spacing', 'dimension', 'z']
+        xinc = float(file.variables['spacing'][0])
+        yinc = float(file.variables['spacing'][1])
+        xstart = float(file.variables['x_range'][0]) + xinc/2  # pixel-node-registered
+        xfinish = float(file.variables['x_range'][1])
+        xdata0 = np.arange(xstart, xfinish, xinc);
+        ystart = float(file.variables['y_range'][0]) + xinc/2  # pixel-node-registered
+        yfinish = float(file.variables['y_range'][1])
+        ydata0 = np.arange(ystart, yfinish, yinc);
+        zdata0 = file.variables['z'][:].copy();
+        zdata0 = np.flipud(np.reshape(zdata0, (len(ydata0), len(xdata0))));   # frustrating.
+    else:
+        # Use a standard parsing: 3 keys, in lon/lat/z or x/y/z order
+        [xkey, ykey, zkey] = file.variables.keys();
+        [xkey, ykey, zkey] = properly_parse_three_variables(xkey, ykey, zkey);
+        xdata0 = file.variables[xkey][:].copy();
+        ydata0 = file.variables[ykey][:].copy();
+        zdata0 = file.variables[zkey][::].copy();
+    return [xdata0, ydata0, zdata0];
 
 
 def read_netcdf4(filename):
@@ -93,12 +107,25 @@ def read_netcdf4(filename):
     print("Reading file %s " % filename);
     rootgrp = Dataset(filename, "r");
     parse_pixelnode_registration(filename);
-    [xkey, ykey, zkey] = rootgrp.variables.keys()
-    [xkey, ykey, zkey] = properly_parse_variables(xkey, ykey, zkey);
-    xvar = rootgrp.variables[xkey];
-    yvar = rootgrp.variables[ykey];
-    zvar = rootgrp.variables[zkey];
-    return [xvar[:], yvar[:], zvar[:, :]];
+    if len(rootgrp.variables.keys()) == 6:
+        # Use a gdal parsing: ['x_range', 'y_range', 'z_range', 'spacing', 'dimension', 'z']
+        xinc = float(rootgrp.variables['spacing'][0])
+        yinc = float(rootgrp.variables['spacing'][1])
+        xstart = float(rootgrp.variables['x_range'][0]) + xinc/2  # pixel-node-registered
+        xfinish = float(rootgrp.variables['x_range'][1])
+        xvar = np.arange(xstart, xfinish, xinc);
+        ystart = float(rootgrp.variables['y_range'][0]) + xinc/2  # pixel-node-registered
+        yfinish = float(rootgrp.variables['y_range'][1])
+        yvar = np.arange(ystart, yfinish, yinc);
+        zvar = rootgrp.variables['z'][:].copy();
+        zvar = np.flipud(np.reshape(zvar, (len(yvar), len(xvar))));  # frustrating.
+    else:
+        [xkey, ykey, zkey] = rootgrp.variables.keys()
+        [xkey, ykey, zkey] = properly_parse_three_variables(xkey, ykey, zkey);
+        xvar = rootgrp.variables[xkey][:];
+        yvar = rootgrp.variables[ykey][:];
+        zvar = rootgrp.variables[zkey][:, :];
+    return [xvar, yvar, zvar];
 
 
 def read_any_grd(filename):
@@ -185,7 +212,7 @@ def write_netcdf4(x, y, z, outfile):
         binary_format_flags = '-ZBLd';   # double precision floating piont number, standard numpy float
     else:
         binary_format_flags = '-ZBLf';   # 4-byte floating point number
-    command = 'gmt xyz2grd '+outtxt+' -G'+outfile+' -I'+increments+' -R'+region+' '+binary_format_flags+\
+    command = 'gmt xyz2grd '+outtxt+' -G'+outfile+' -I'+increments+' -R'+region+' '+binary_format_flags +\
               ' -r -fg -di-9999 '
     print(command);
     subprocess.call(['gmt', 'xyz2grd', outtxt, '-G'+outfile, '-I'+increments, '-R'+region, binary_format_flags, '-r',
