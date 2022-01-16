@@ -200,3 +200,26 @@ def def3D_into_LOS(U_e, U_n, U_u, flight_angle, incidence_angle):
     lamda = np.deg2rad(incidence_angle);
     d_los = ((U_n * np.sin(phi) - U_e * np.cos(phi)) * np.sin(lamda) + U_u * np.cos(lamda));
     return d_los;
+
+
+def proj_los_into_vertical_no_horiz(los, lkv):
+    """
+    Project LOS deformation into a pseudo-vertical deformation,
+    assuming horizontal deformation is zero.
+    Compute the vertical deformation needed to produce given LOS deformation.
+    :param los: float
+    :param lkv: list of 3 floats, normalized look vector components E, N, U
+    Test cases:
+    print("lkv 45:")
+    print(proj_los_into_vertical_no_horiz(1, [0.7, 0, 0.7]));
+    print("lkv ", lkv, ":");
+    print(proj_los_into_vertical_no_horiz(1, lkv));
+    print("lkv 0:")
+    print(proj_los_into_vertical_no_horiz(1, [0, 0, 1]));
+    print("should be 1")
+    """
+    lkv_horizontal = np.sqrt(lkv[0]*lkv[0] + lkv[1]*lkv[1]);
+    lkv_vertical = lkv[2];
+    incidence_angle = np.arctan(lkv_horizontal/lkv_vertical);  # incidence angle from the vertical
+    pseudo_vertical_disp = los / np.cos(incidence_angle);  # assuming no horizontal data contributes to LoS
+    return pseudo_vertical_disp;
