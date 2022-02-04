@@ -8,3 +8,5 @@ upload_wheel.sh
 docs/*
 how_to_make_docs.txt
 .eggs/*
+*.ppt
+*.pptx

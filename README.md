@@ -37,13 +37,13 @@ $ python
 ```
 
 ## Documentation
-I am documenting this library using sphinx. The preliminary html docs can be found here: https://kmaterna.github.io/Tectonic_Utils/index.html
+The preliminary sphinx html docs can be found here: https://kmaterna.github.io/Tectonic_Utils/index.html
 
 ## Additional Thoughts
 I wrote this library for my own research because (**in theory**) 
 putting all my Python utility functions 
-into a single, unit-tested repository reduces bugs and increases reproducibility. 
-It's open source and available on Pip in case it would help others too. 
+into one unit-tested repository reduces bugs, increases code reproducibility, and allows for faster experimentation. 
+The library is open source and available on Pip in case it would help others too. 
 
 Disclaimer: Completely bug-free code can never be guaranteed. As things come up, I occasionally fix and update the package Pip.    
 
