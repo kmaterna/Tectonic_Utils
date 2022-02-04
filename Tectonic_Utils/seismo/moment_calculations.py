@@ -19,13 +19,25 @@ def moment_from_muad(mu, A, d):
     return mu*A*d;
 
 def mw_from_moment(moment):
-    """Definition of moment magnitude. Takes newton-meters, returns moment magnitude"""
+    """Definition of moment magnitude. Takes newton-meters, returns moment magnitude
+
+    :param moment: moment in Newton-meters
+    :type moment: float
+    :returns: magnitude
+    :rtype: float
+    """
     moment = moment*1e7;   # convert to dyne-cm
     mw = (2/3)*np.log10(moment) - 10.7
     return mw;
 
 def moment_from_mw(Mw):
-    """Definition of moment magnitude. Takes magnitude, returns moment in newton-meters"""
+    """Definition of moment magnitude. Takes magnitude, returns moment in newton-meters
+
+    :param Mw: moment magnitude
+    :type Mw: float
+    :returns: moment in Newton-meters
+    :rtype: float
+    """
     exponent = 1.5*Mw + 1.5*10.7;
     moment = np.power(10, exponent);
     moment_newton_meters = moment * 1e-7;

@@ -2,9 +2,7 @@
 
 import numpy as np
 import unittest
-from .. import fault_vector_functions
-from .. import insar_vector_functions
-from .. import xyz2llh
+from .. import fault_vector_functions, insar_vector_functions, xyz2llh
 
 
 class Tests(unittest.TestCase):
@@ -85,6 +83,15 @@ class Tests(unittest.TestCase):
         # Feel-good code: check out the print statements!
         print("pos file enu vs computed enu: ", enu_from_pos_file, e_enu);
         print("pos_xyz_obs vs computed xyz_obs: ", xyz_obs_2005, np.add(e_xyz, reference_xyz));
+        return;
+
+    def test_proj_into_vertical_no_horizontal(self):
+        # LKV 45 degree test case:
+        semivert = insar_vector_functions.proj_los_into_vertical_no_horiz(1, [0.7, 0, 0.7]);
+        self.assertAlmostEqual(semivert, 1.41421356)
+        # LKV vertical test case:
+        semivert = insar_vector_functions.proj_los_into_vertical_no_horiz(1, [0, 0, 1]);
+        self.assertAlmostEqual(semivert, 1.0);
         return;
 
 

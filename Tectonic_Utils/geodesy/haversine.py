@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 Haversine formula example in Python. Original author Wayne Dyck.
 """

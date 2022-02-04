@@ -6,7 +6,6 @@ The assumption is 2D Netcdf files with 3 variables, in x-y-z order.
 
 import numpy as np
 import scipy.io.netcdf as netcdf
-import datetime as dt
 import subprocess
 from netCDF4 import Dataset
 
@@ -14,7 +13,11 @@ from netCDF4 import Dataset
 # --------------- READING ------------------- #
 
 def parse_pixelnode_registration(filename):
-    """Ensure pixel node registration for netcdf file"""
+    """Ensure pixel node registration for netcdf file
+
+    :param filename: name of file
+    :type filename: string
+    """
     output = subprocess.check_output(['gmt', 'grdinfo', filename], shell=False)
     assert("Pixel node registration used" in str(output)), ValueError("ERROR! "+filename+" not pixel-node registered");
     return;
@@ -145,15 +148,18 @@ def read_any_grd(filename):
 
 
 def give_metrics_on_grd(filename):
-    """Print shape, min/max, and NaN metrics on a netcdf grid file"""
+    """Print shape, min/max, and NaN metrics on a netcdf grid file
+
+    :param filename: name of grd file
+    :type filename: string
+    """
     grid_data = read_any_grd(filename)[2];
     nan_pixels = np.count_nonzero(np.isnan(grid_data));
-    total_pixels = np.shape(grid_data)[0] * np.shape(grid_data)[1];
+    total_pix = np.shape(grid_data)[0] * np.shape(grid_data)[1];
     print("Shape of %s is [%d, %d]" % (filename, np.shape(grid_data)[0], np.shape(grid_data)[1]));
     print("Min data is %f " % (np.nanmin(grid_data)));
     print("Max data is %f " % (np.nanmax(grid_data)));
-    print(
-        "Nans: %d of %d pixels are nans (%.3f percent)" % (nan_pixels, total_pixels, nan_pixels / total_pixels * 100));
+    print("Nans: %d of %d pixels are nans (%.3f percent)" % (nan_pixels, total_pix, nan_pixels / total_pix * 100));
     return;
 
 
@@ -178,7 +184,11 @@ def read_3D_netcdf(filename):
 
 
 def write_temp_output_txt(z, outfile):
-    """A helper function for dumping grid data into pixel-node-registered grd files"""
+    """A helper function for dumping grid data into pixel-node-registered grd files
+
+    :param z: 2D array of floats
+    :param outfile: string, filename
+    """
     (y, x) = np.shape(z);
     z = np.reshape(z, (x*y,));
     # z = np.array(z).astype(str)
@@ -196,6 +206,11 @@ def write_netcdf4(x, y, z, outfile):
     """
     Writing PIXEL NODE registered netcdf4 file from numpy array.
     Internal strategy: send out to a binary file and make GMT convert to netcdf.
+
+    :param x: 1D array of floats
+    :param y: 1D array of floats
+    :param z: 2D array of floats
+    :param outfile: filename, string
     """
     print("writing outfile %s " % outfile);
     outtxt = outfile+'.xyz'
@@ -249,7 +264,11 @@ def produce_output_netcdf(xdata, ydata, zdata, zunits, netcdfname, dtype=float):
 
 
 def flip_if_necessary(filename):
-    """If netcdf3 file is stored with xinc or yinc backwards, we replace with a copy that flips the affected axis."""
+    """If netcdf3 file is stored with xinc or yinc backwards, we replace with a copy that flips the affected axis.
+
+    :param filename: name of file
+    :type filename: string
+    """
     xinc = subprocess.check_output('gmt grdinfo -M -C ' + filename + ' | awk \'{print $8}\'',
                                    shell=True);  # x-increment
     yinc = subprocess.check_output('gmt grdinfo -M -C ' + filename + ' | awk \'{print $9}\'',
@@ -282,27 +301,40 @@ def flip_if_necessary(filename):
     return;
 
 
-def produce_output_TS_grids(xdata, ydata, zdata, timearray, zunits, outdir):
-    """ Write many netcdf3 files, one for each step of a timearray. Each file will be named with a datetime suffix."""
+def produce_output_TS_grids(xdata, ydata, zdata, timearray, zunits, outfile):
+    """Write many netcdf3 files, one for each step of a timearray. Each file will be named with a datetime suffix.
+
+    :param xdata: 1D array of floats
+    :param ydata: 1D array of floats
+    :param zdata: 3D array of floats
+    :param timearray: 1D array of anything
+    :param zunits: string
+    :param outfile: string, filename
+    """
     print("Shape of zdata originally:", np.shape(zdata));
     for i in range(len(timearray)):
-        filename = dt.datetime.strftime(timearray[i], "%Y%m%d") + ".grd";
         zdata_slice = np.zeros([len(ydata), len(xdata)]);
         for k in range(len(xdata)):
             for j in range(len(ydata)):
                 temp_array = zdata[j][k][0];
                 zdata_slice[j][k] = temp_array[i];
-        produce_output_netcdf(xdata, ydata, zdata_slice, zunits, outdir + "/" + filename);
+        produce_output_netcdf(xdata, ydata, zdata_slice, zunits, outfile);
     return;
 
 
 def produce_output_timeseries(xdata, ydata, zdata, timearray, zunits, netcdfname):
-    """"
-    Write dataset with t, x, y, z into large 3D netcdf.
+    """Write dataset with t, x, y, z into large 3D netcdf.
     Each 2D slice is the displacement at a particular time, associated with a time series.
     zdata comes in as a 2D array where each element is a timeseries (1D array), so it must be re-packaged into
     3D array before we save it.
     Broke during long SoCal experiment for some reason. f.close() didn't work.
+
+    :param xdata: 1D array of floats
+    :param ydata: 1D array of floats
+    :param zdata: 3D array of floats
+    :param timearray: 1D array of anything
+    :param zunits: string
+    :param netcdfname: string, filename
     """
 
     print("Shape of zdata originally:", np.shape(zdata));

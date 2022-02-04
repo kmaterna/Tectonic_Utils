@@ -30,12 +30,22 @@ def cartesian_to_heading(cartesian_angle):
 
 
 def complement_angle(angle):
-    """ 90 minus angle, in degrees"""
+    """
+    90 minus angle, in degrees
+
+    :param angle: degrees
+    :returns: angle in degrees
+    """
     return 90 - angle;
 
 
 def cartesian_to_ccw_from_north(angle):
-    """ angle minus 90, in degrees"""
+    """
+    angle minus 90, in degrees
+
+    :param angle: degrees
+    :returns: angle in degrees
+    """
     return angle - 90;
 
 
@@ -207,16 +217,9 @@ def proj_los_into_vertical_no_horiz(los, lkv):
     Project LOS deformation into a pseudo-vertical deformation,
     assuming horizontal deformation is zero.
     Compute the vertical deformation needed to produce given LOS deformation.
+
     :param los: float
     :param lkv: list of 3 floats, normalized look vector components E, N, U
-    Test cases:
-    print("lkv 45:")
-    print(proj_los_into_vertical_no_horiz(1, [0.7, 0, 0.7]));
-    print("lkv ", lkv, ":");
-    print(proj_los_into_vertical_no_horiz(1, lkv));
-    print("lkv 0:")
-    print(proj_los_into_vertical_no_horiz(1, [0, 0, 1]));
-    print("should be 1")
     """
     lkv_horizontal = np.sqrt(lkv[0]*lkv[0] + lkv[1]*lkv[1]);
     lkv_vertical = lkv[2];
