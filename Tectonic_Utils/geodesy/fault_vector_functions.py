@@ -118,8 +118,16 @@ def get_plane_normal(strike, dip):
     # i.e. the outward facing unit normal vector, dip-cross-strike, in x-y-z coordinates.
     strike_vector = get_strike_vector(strike);  # unit vector
     dip_vector = get_dip_vector(strike, dip);  # unit vector
-    plane_normal = np.cross(dip_vector, strike_vector);  # dip x strike for outward facing normal, by right hand rule.
+    plane_normal = simple_cross_product(dip_vector, strike_vector);  # dip x strike
+    # for outward facing normal, by right-hand rule.
     return plane_normal;
+
+
+def simple_cross_product(a, b):
+    s1 = a[1]*b[2] - a[2]*b[1];
+    s2 = a[2]*b[0] - a[0]*b[2];
+    s3 = a[0]*b[1] - a[1]*b[0];
+    return [s1, s2, s3];
 
 
 def get_dip_degrees(x0, y0, z0, x1, y1, z1):
@@ -146,7 +154,6 @@ def get_dip_degrees(x0, y0, z0, x1, y1, z1):
     dip = np.rad2deg(math.atan2(vertical_distance, horizontal_length));
     return dip;
 
-
 def get_strike_vector(strike):
     """
     Get a unit vector along the strike direction of a plane
@@ -159,7 +166,6 @@ def get_strike_vector(strike):
     theta = np.deg2rad(90 - strike);
     strike_vector = [np.cos(theta), np.sin(theta), 0];
     return strike_vector;
-
 
 def get_dip_vector(strike, dip):
     """
