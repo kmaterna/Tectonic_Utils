@@ -81,6 +81,29 @@ def normalize_vector(lkve, lkvn, lkvu):
     return norm_lkve, norm_lkvn, norm_lkvu;
 
 
+def get_unit_vector_from_angle(angle):
+    """
+    Get the unit vector associated with a cartesian angle (CCW from east in degrees)
+
+    :param angle: degrees CW from North
+    :returns: list of two floats, x-component and y-component of unit vector
+    """
+    xcomponent, ycomponent = np.cos(np.deg2rad(angle)), np.sin(np.deg2rad(angle));
+    return [xcomponent, ycomponent];
+
+
+def get_unit_vector_from_heading(heading):
+    """
+    Get the unit vector associated with a heading angle (CW from north in degrees)
+
+    :param heading: degrees CW from North
+    :returns: list of two floats, x-component and y-component of unit vector
+    """
+    cartesian_angle = bearing_to_cartesian(heading);
+    [xcomponent, ycomponent] = get_unit_vector_from_angle(cartesian_angle);
+    return [xcomponent, ycomponent];
+
+
 def calc_rdr_azimuth_incidence_from_lkv_plane_down(lkve, lkvn, lkvu):
     """
     Function especially for UAVSAR interferograms to extract the incidence angle from lkv products

@@ -32,8 +32,8 @@ def xyz2llh(xyz, datum=(0, 0)):
         datum = datums.get_datums(datum);
         if any(np.isnan(datum)):
             raise ValueError('Could not resolve datum name.');
-    da = datum[0];
-    df = datum[1];
+    da = float(datum[0]);
+    df = float(datum[1]);
 
     if np.shape(xyz)[1] != 3:
         raise TypeError('Input xyz MUST be nx3.');
@@ -83,8 +83,8 @@ def llh2xyz(llh, datum=(0, 0)):
         datum = datums.get_datums(datum);
         if any(np.isnan(datum)):
             raise ValueError('Could not resolve datum name.');
-    da = datum[0];
-    df = datum[1];
+    da = float(datum[0]);
+    df = float(datum[1]);
 
     if np.shape(llh)[1] != 3:
         raise TypeError('Input llh MUST be nx3.');

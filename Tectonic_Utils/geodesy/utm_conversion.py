@@ -231,7 +231,7 @@ def utm2deg(xx, yy, utmzone):
         zone = float(utmzone[i][0:2]);
 
         # % e = (((sa ^ 2) - (sb ^ 2)) ^ 0.5) / sa;
-        e2 = np.power( ( np.power(sa, 2) - np.power(sb, 2) ), 0.5) / sb;
+        e2 = np.power((np.power(sa, 2) - np.power(sb, 2)), 0.5) / sb;
         e2cuadrada = np.power(e2, 2);
         c = np.power(sa, 2) / sb;
 
@@ -243,7 +243,7 @@ def utm2deg(xx, yy, utmzone):
 
         S = ((zone * 6) - 183);
         lat = Y / (6366197.724 * 0.9996);
-        v = (c / np.power( 1 + (e2cuadrada * np.power(np.cos(lat), 2)), 0.5) ) * 0.9996;
+        v = (c / np.power(1 + (e2cuadrada * np.power(np.cos(lat), 2)), 0.5)) * 0.9996;
         a = X / v;
         a1 = np.sin(2 * lat);
         a2 = a1 * np.power(np.cos(lat), 2);
