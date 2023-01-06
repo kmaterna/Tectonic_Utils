@@ -124,6 +124,14 @@ def get_plane_normal(strike, dip):
 
 
 def simple_cross_product(a, b):
+    """
+    Implements the simple cross product for 2 vectors in 3-D space
+
+    :param a: array-like, 3-component vector
+    :param b: array-like, 3-component vector
+    :returns: 3-component array, [x, y, z]
+    :rtype: [float, float, float]
+    """
     s1 = a[1]*b[2] - a[2]*b[1];
     s2 = a[2]*b[0] - a[0]*b[2];
     s3 = a[0]*b[1] - a[1]*b[0];
@@ -153,6 +161,7 @@ def get_dip_degrees(x0, y0, z0, x1, y1, z1):
     vertical_distance = abs(z1 - z0);
     dip = np.rad2deg(math.atan2(vertical_distance, horizontal_length));
     return dip;
+
 
 def get_strike_vector(strike):
     """

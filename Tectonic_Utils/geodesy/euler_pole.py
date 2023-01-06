@@ -18,7 +18,7 @@ def point_rotation_by_Euler_Pole(Point, Euler_Pole):
     :param Euler_Pole: [longitude, latitude, omega] of Euler Pole, in degrees and degrees/Ma
     :type Euler_Pole: array_like
     :returns: [e_velocity, n_velocity, u_velocity] of point in rotated reference frame, in mm/yr
-    :rtype: array_like
+    :rtype: [float, float, float]
     """
     R_point = get_r(Point[0], Point[1]);
     R_ep = get_r(Euler_Pole[0], Euler_Pole[1]);

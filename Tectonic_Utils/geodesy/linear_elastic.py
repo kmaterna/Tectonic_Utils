@@ -12,7 +12,8 @@ def get_constants_from_bulk_and_youngs(K, E):
 
     :param K: bulk modulus
     :param E: young's modulus
-    :returns: lame1, G, poisson's ratio, and p-wave modulus
+    :returns: [lame1, G, poisson's ratio, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     lame1 = (3*K * (3*K - E)) / (9*K - E);
     G = (3*K*E) / (9*K - E);
@@ -27,7 +28,8 @@ def get_constants_from_bulk_and_lame1(K, lame1):
 
     :param K: bulk modulus
     :param lame1: lame's first parameter
-    :returns: E, G, poisson's ratio, and p-wave modulus
+    :returns: [E, G, poisson's ratio, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     E = (9*K * (K-lame1) ) / (3*K - lame1);
     G = (3 * (K-lame1) ) / 2;
@@ -42,7 +44,8 @@ def get_constants_from_bulk_and_shear(K, G):
 
     :param K: bulk modulus
     :param G: shear modulus
-    :returns: E, lame1, poisson's ratio, and p-wave modulus
+    :returns: [E, lame1, poisson's ratio, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     E = (9*K*G) / (3*K + G);
     lame1 = K - (2*G / 3);
@@ -57,7 +60,8 @@ def get_constants_from_bulk_and_pr(K, nu):
 
     :param K: bulk modulus
     :param nu: poisson's ratio
-    :returns: E, G, lame1, and p-wave modulus
+    :returns: [E, G, lame1, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     E = 3*K*(1-2*nu);
     lame1 = (3*K*nu)/(1+nu);
@@ -72,7 +76,8 @@ def get_constants_from_bulk_and_pwave(K, M):
 
     :param K: bulk modulus
     :param M: p-wave modulus
-    :returns: E, G, lame1, and poisson's ratio
+    :returns: [E, G, lame1, and poisson's ratio]
+    :rtype: list of 4 floats
     """
     E = (9*K*(M-K))/(3*K + M);
     lame1 = (3*K - M) / 2;
@@ -87,7 +92,8 @@ def get_constants_from_youngs_and_lame1(E, lame1):
 
     :param E: Young's modulus
     :param lame1: lame's first parameter
-    :returns: K, G, poisson's ratio, and p-wave modulus
+    :returns: [K, G, poisson's ratio, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     R = np.sqrt(E*E + 9*lame1*lame1 + 2*E*lame1);
     K = (E + 3*lame1 + R) / 6;
@@ -103,7 +109,8 @@ def get_constants_from_youngs_and_shear(E, G):
 
     :param E: Young's modulus
     :param G: shear modulus
-    :returns: K, lame1, poisson's ratio, and p-wave modulus
+    :returns: [K, lame1, poisson's ratio, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     K = (E*G) / (3*(3*G - E));
     lame1 = (G*(E-2*G)) / (3*G - E);
@@ -118,7 +125,8 @@ def get_constants_from_youngs_and_nu(E, nu):
 
     :param E: Young's modulus
     :param nu: poisson's ratio
-    :returns: K, lame1, G, and p-wave modulus
+    :returns: [K, lame1, G, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     K = E / (3*(1-2*nu));
     lame1 = (E*nu) / ((1+nu) * (1-2*nu));
@@ -133,7 +141,8 @@ def get_constants_from_lame1_and_shear(lame1, G):
 
     :param lame1: lame's first parameter
     :param G: shear modulus
-    :returns: K, E, poisson's ratio, and p-wave modulus
+    :returns: [K, E, poisson's ratio, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     K = lame1 + (2*G)/3
     E = (G * (3*lame1 + 2*G)) / (lame1 + G);
@@ -148,7 +157,8 @@ def get_constants_from_lame1_and_nu(lame1, nu):
 
     :param lame1: lame's first parameter
     :param nu: poisson's ratio
-    :returns: K, E, G, and p-wave modulus
+    :returns: [K, E, G, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     K = (lame1 * (1+nu)) / (3*nu);
     E = (lame1 * (1+nu) * (1-2*nu)) / nu;
@@ -163,7 +173,8 @@ def get_constants_from_lame1_and_pwave(lame1, M):
 
     :param lame1: lame's first parameter
     :param M: p-wave modulus
-    :returns: K, E, G, and poisson's ratio
+    :returns: [K, E, G, and poisson's ratio]
+    :rtype: list of 4 floats
     """
     K = (M+2*lame1) / 3;
     E = (M-lame1)*(M+2*lame1) / (M+lame1);
@@ -178,7 +189,8 @@ def get_constants_from_shear_and_nu(G, nu):
 
     :param G: shear modulus
     :param nu: poisson's ratio
-    :returns: K, E, lame1, and p-wave modulus
+    :returns: [K, E, lame1, and p-wave modulus]
+    :rtype: list of 4 floats
     """
     K = (2*G*(1+nu)) / (3 * (1-2*nu));
     E = 2*G*(1+nu);
@@ -193,7 +205,8 @@ def get_constants_from_shear_and_pwave(G, M):
 
     :param G: shear modulus
     :param M: p-wave modulus
-    :returns: K, E, lame1, and pr
+    :returns: [K, E, lame1, and pr]
+    :rtype: list of 4 floats
     """
     K = M - (4*G)/3;
     E = (G * (3*M - 4*G)) / (M-G);
@@ -208,7 +221,8 @@ def get_constants_from_nu_and_pwave(nu, M):
 
     :param nu: poisson's ratio
     :param M: p-wave modulus
-    :returns: K, E, G, and lame1
+    :returns: [K, E, G, and lame1]
+    :rtype: list of 4 floats
     """
     K = (M * (1+nu)) / (3 * (1-nu));
     E = (M * (1+nu) * (1-2*nu)) / (1-nu);
