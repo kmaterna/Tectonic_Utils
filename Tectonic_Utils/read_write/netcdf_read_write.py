@@ -202,25 +202,27 @@ def write_temp_output_txt(z, outfile):
     return;
 
 
-def write_netcdf4(x, y, z, outfile):
+def write_netcdf4(x, y, z, outfile, precision=10):
     """
     Writing PIXEL NODE registered netcdf4 file from numpy array.
     Internal strategy: send out to a binary file and make GMT convert to netcdf.
+    Note: I've used higher precision for higher latitudes, like precision=10 for latitude=65
 
     :param x: 1D array of floats
     :param y: 1D array of floats
     :param z: 2D array of floats
     :param outfile: filename, string
+    :param precision: how many decimal places for the x-inc and y-inc?  Use higher precision for high latitudes.
     """
     print("writing outfile %s " % outfile);
     outtxt = outfile+'.xyz'
     write_temp_output_txt(z, outtxt);
-    xinc = np.round(x[1] - x[0], 6);
-    yinc = np.round(y[1] - y[0], 6);
-    xmin = np.round(np.min(x)-xinc/2, 6);  # for the half-pixel outside the edge
-    xmax = np.round(np.max(x)+xinc/2, 6);  # writing pixel-node registration from Python's netcdf into .grd files
-    ymin = np.round(np.min(y)-yinc/2, 6);  # writing pixel-node registration from Python's netcdf into .grd files
-    ymax = np.round(np.max(y)+yinc/2, 6);  # writing pixel-node registration from Python's netcdf into .grd files
+    xinc = np.round(x[1] - x[0], precision);
+    yinc = np.round(y[1] - y[0], precision);
+    xmin = np.round(np.min(x)-xinc/2, precision);  # for the half-pixel outside the edge
+    xmax = np.round(np.max(x)+xinc/2, precision);  # writing pixel-node reg. from Python's netcdf into .grd files
+    ymin = np.round(np.min(y)-yinc/2, precision);  # writing pixel-node reg. from Python's netcdf into .grd files
+    ymax = np.round(np.max(y)+yinc/2, precision);  # writing pixel-node reg. from Python's netcdf into .grd files
     increments = str(xinc)+'/'+str(yinc);
     region = str(xmin)+'/'+str(xmax)+'/'+str(ymin)+'/'+str(ymax);
     if isinstance(z[0][0], np.float64):
