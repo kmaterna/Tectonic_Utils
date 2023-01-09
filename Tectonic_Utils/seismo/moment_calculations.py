@@ -5,7 +5,7 @@ import numpy as np
 
 
 def moment_from_muad(mu, A, d):
-    """moment = mu * A * d
+    """moment = mu * A * d.
 
     :param mu: shear modulus, in Pa
     :type mu: float
@@ -19,7 +19,7 @@ def moment_from_muad(mu, A, d):
     return mu*A*d;
 
 def mw_from_moment(moment):
-    """Definition of moment magnitude. Takes newton-meters, returns moment magnitude
+    """Definition of moment magnitude. Takes newton-meters, returns moment magnitude.
 
     :param moment: moment in Newton-meters
     :type moment: float
@@ -31,7 +31,7 @@ def mw_from_moment(moment):
     return mw;
 
 def moment_from_mw(Mw):
-    """Definition of moment magnitude. Takes magnitude, returns moment in newton-meters
+    """Definition of moment magnitude. Takes magnitude, returns moment in newton-meters.
 
     :param Mw: moment magnitude
     :type Mw: float

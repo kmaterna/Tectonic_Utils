@@ -1,6 +1,6 @@
 """
-Functions to convert between local enu, local llh, and global xyz coordinates
-Translated from Matlab
+Functions to convert between local enu, local llh, and global xyz coordinates.
+Translated from Matlab.
 """
 
 import numpy as np

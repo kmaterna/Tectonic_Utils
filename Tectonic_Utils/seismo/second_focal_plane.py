@@ -37,27 +37,27 @@ import numpy as np
 
 
 def vector_norm(v):
-    """Computes norm of vector"""
+    """Computes norm of vector."""
     norm = np.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
     return norm;
 
 
 def unit_vector(v):
-    """Computes unit vector associated with 3-component vector"""
+    """Computes unit vector associated with 3-component vector."""
     norm = vector_norm(v);
     unit_vector = [v[0]/norm, v[1]/norm, v[2]/norm];
     return unit_vector;
 
 
 def vector_angle(v1, v2):
-    """Returns angle between two vectors, in radians"""
+    """Returns angle between two vectors, in radians."""
     vectorAngle = np.arccos(np.dot(v1, v2)/(vector_norm(v1)*vector_norm(v2)));  # Returns in radians
     return vectorAngle;
 
 
 def find_aux_plane(strike, dip, rake):
     """
-    Find the second auxiliary plane in a double couple focal mechanism from the given slip plane/vector
+    Find the second auxiliary plane in a double couple focal mechanism from the given slip plane/vector.
 
     :param strike: strike of first focal plane, in degrees
     :type strike: float

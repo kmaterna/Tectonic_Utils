@@ -1,4 +1,8 @@
-"""functions to support the conversion between utm coordinate system (meters) and lat/lon (degrees)"""
+"""
+Functions to support the conversion between utm coordinate system (meters) and lat/lon (degrees)
+
+**NOTE**: I usually use GDALtransform and the Python equivalent instead of this module anymore. GDAL is safer.
+"""
 
 import numpy as np
 

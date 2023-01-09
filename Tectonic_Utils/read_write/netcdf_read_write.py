@@ -148,7 +148,7 @@ def read_any_grd(filename):
 
 
 def give_metrics_on_grd(filename):
-    """Print shape, min/max, and NaN metrics on a netcdf grid file
+    """Print shape, min/max, and NaN metrics on a netcdf grid file.
 
     :param filename: name of grd file
     :type filename: string
@@ -165,7 +165,7 @@ def give_metrics_on_grd(filename):
 
 def read_3D_netcdf(filename):
     """
-    Reading function for 3D netcdf pixel-node registered files with key pattern 't, x, y, z'
+    Reading function for 3D netcdf pixel-node registered files with key pattern 't, x, y, z'.
 
     :param filename: name of netcdf file
     :type filename: string
@@ -184,7 +184,7 @@ def read_3D_netcdf(filename):
 
 
 def write_temp_output_txt(z, outfile):
-    """A helper function for dumping grid data into pixel-node-registered grd files
+    """A helper function for dumping grid data into pixel-node-registered grd files.
 
     :param z: 2D array of floats
     :param outfile: string, filename
@@ -206,7 +206,7 @@ def write_netcdf4(x, y, z, outfile, precision=10):
     """
     Writing PIXEL NODE registered netcdf4 file from numpy array.
     Internal strategy: send out to a binary file and make GMT convert to netcdf.
-    Note: I've used higher precision for higher latitudes, like precision=10 for latitude=65
+    Note: Precision of 10 (or something high) ensures better performance for higher latitudes, like >60°.
 
     :param x: 1D array of floats
     :param y: 1D array of floats

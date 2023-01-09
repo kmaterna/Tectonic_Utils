@@ -1,5 +1,5 @@
 """
-Functions to rotate a point by a known euler pole.
+Functions to rotate a point by a known Euler pole.
 """
 
 import numpy as np
@@ -39,7 +39,14 @@ def point_rotation_by_Euler_Pole(Point, Euler_Pole):
 
 
 def degma2radyr(omega):
-    """Convert omega from degrees/Ma to radians/yr"""
+    """
+    Convert omega from degrees/Ma to radians/yr
+
+    :param omega: rotation rate in degrees per million years
+    :type omega: float
+    :returns: rotation rate in radians per year
+    :rtype: float
+    """
     radyr = omega * (np.pi / 180) * 1e-6;
     return radyr;
 

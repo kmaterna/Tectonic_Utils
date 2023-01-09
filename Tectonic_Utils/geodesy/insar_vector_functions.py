@@ -107,10 +107,10 @@ def get_unit_vector_from_heading(heading):
 def calc_rdr_azimuth_incidence_from_lkv_plane_down(lkve, lkvn, lkvu):
     """
     Function especially for UAVSAR interferograms to extract the incidence angle from lkv products
-    lkve, lkvn, lkvu describe vector from plane to ground
-    Convention: Azimuth angle measured from North in Anti-clockwise direction, in degrees, from ground to plane
+    lkve, lkvn, lkvu describe vector from plane to ground.
+    Convention: Azimuth angle measured from North in Anti-clockwise direction, in degrees, from ground to plane.
     Convention: Incidence angle measured from vertical at target
-    (aka degrees from vertical at satellite) (always +ve), in degrees
+    (aka degrees from vertical at satellite) (always +ve), in degrees.
 
     :param lkve: e component of look vector FROM PLANE TO GROUND
     :type lkve: float
@@ -137,11 +137,11 @@ def calc_rdr_azimuth_incidence_from_lkv_plane_down(lkve, lkvn, lkvu):
 
 def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
     """
-    Function especially for UAVSAR interferograms to extract the lkv from azimuth/incidence
-    Convention: Azimuth angle measured from North in Anti-clockwise direction, in degrees, from ground to plane
+    Function especially for UAVSAR interferograms to extract the lkv from azimuth/incidence.
+    Convention: Azimuth angle measured from North in Anti-clockwise direction, in degrees, from ground to plane.
     Convention: Incidence angle measured from vertical at target
-    (aka degrees from vertical at satellite) (always +ve), in degrees
-    lkve, lkvn, lkvu describe vector from ground to plane
+    (aka degrees from vertical at satellite) (always +ve), in degrees.
+    lkve, lkvn, lkvu describe vector from ground to plane.
 
     :param azimuth: CCW from north angle of vector from ground to plane, in degrees
     :type azimuth: float
@@ -162,10 +162,10 @@ def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
 
 def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
     """
-    General InSAR look vector math function, assuming right-looking satellite
-    lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite
-    incidence angle is angle between look vector and vertical in degrees
-    Flight angle is clockwise from north in degrees
+    General InSAR look vector math function, assuming right-looking satellite.
+    lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
+    incidence angle is angle between look vector and vertical in degrees.
+    Flight angle is clockwise from north in degrees.
 
     :param lkv_e: e component of look vector from ground to satellite
     :type lkv_e: float
@@ -191,8 +191,8 @@ def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
 
 def flight_incidence_angles2look_vector(flight_angle, incidence_angle):
     """
-    General InSAR look vector math function, assuming right-looking satellite
-    lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite
+    General InSAR look vector math function, assuming right-looking satellite.
+    lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
 
     :param flight_angle: heading, clockwise from north, in degrees
     :type flight_angle: float
@@ -212,8 +212,8 @@ def flight_incidence_angles2look_vector(flight_angle, incidence_angle):
 
 def def3D_into_LOS(U_e, U_n, U_u, flight_angle, incidence_angle):
     """
-    Fialko, 2001, equation to project relative deformation into the LOS
-    Dlos = [U_n sin(phi) - U_e cos(phi)]*sin(lamda) + U_u cos(lamda)
+    Fialko, 2001, equation to project relative deformation into the LOS.
+    Dlos = [U_n sin(phi) - U_e cos(phi)]*sin(lamda) + U_u cos(lamda).
     [U_e, U_n, U_u] are the east, north, and up components of the deformation.
 
     :param U_e: east component of deformation

@@ -1,6 +1,6 @@
 """
 Convert between local enu, local llh, and global xyz coordinates
-Translated from the Matlab toolkit of P. Segall and lab.
+Translated from the Matlab toolkit of the Segall lab.
 """
 
 import numpy as np
@@ -139,7 +139,7 @@ def get_datums(names=None):
 
     :param names: string
     :type names: string
-    :returns: 5 numbers representing the chosen datum relative to WGS-84
+    :returns: 5 floats representing the chosen datum relative to WGS-84
     :rtype: array
     """
 
