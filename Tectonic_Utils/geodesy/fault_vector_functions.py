@@ -328,7 +328,7 @@ def get_unit_vector(vec):
     """
     Get unit vector.
 
-    :param vec: n-component vector, any units
+    :param vec: 3-component vector, any units
     :type vec: array_like
     :return: unit vector
     :rtype: array_like

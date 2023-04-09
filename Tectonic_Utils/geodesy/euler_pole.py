@@ -74,6 +74,52 @@ def get_r(lon, lat):
     return [X, Y, Z];
 
 
+def euler_vector_to_euler_pole(euler_vector):
+    """
+    Convert a three-component vector representing an Euler Pole into a lon/lat/rate representation of the Euler Pole.
+    TODO: Write tests for this, converting back and forth between the two representations
+
+    :param euler_vector: [ev_x, ev_y, ev_z] in deg/ma, where longitude 0 is along the positive east axis
+    :type euler_vector: array_like
+    :returns: lon, lat, rate
+    :rtype: float, float, float
+    """
+    lon = np.rad2deg(np.arctan2(euler_vector[1], euler_vector[0]));
+    horiz_mag = fault_vector_functions.get_vector_magnitude([euler_vector[0], euler_vector[1], 0]);
+    lat = np.rad2deg(np.arctan(np.abs(euler_vector[2])/horiz_mag));
+    if euler_vector[2] < 0:  # if negative z-coordinate, it should be in the southern hemisphere.
+        lat = -lat;
+    magnitude = fault_vector_functions.get_vector_magnitude(euler_vector);
+    return lon, lat, magnitude;
+
+
+def euler_pole_to_euler_vector(euler_pole):
+    """
+    Convert a lon/lat/rate representing an Euler Pole into a vector representation of the Euler Pole.
+
+    :param euler_pole: [lon, lat, rate]
+    :type euler_pole: array_like
+    :returns: ev_x, ev_y, ev_z in same units as `rate`, where longitude 0 is along the positive east axis.
+    :rtype: float, float, float
+    """
+    direction_vector = get_r(euler_pole[0], euler_pole[1]);
+    unit_vector = fault_vector_functions.get_unit_vector(direction_vector);
+    scaled_vector = np.multiply(unit_vector, euler_pole[2]);
+    return scaled_vector[0], scaled_vector[1], scaled_vector[2];
+
+
+def get_opposite_ep(euler_pole):
+    """
+    Get opposite pole on other side of the Earth
+
+    :param euler_pole: [lon, lat, rate]
+    :type euler_pole: array_like
+    :returns: opposite euler pole
+    :rtype: [float, float, float]
+    """
+    return [euler_pole[0]+180, -euler_pole[1], -euler_pole[2]];
+
+
 def get_unit_east(lon):
     """
     Unit east vector from a point on earth's surface in XYZ coordinates.
