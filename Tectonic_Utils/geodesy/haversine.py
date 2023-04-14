@@ -33,7 +33,7 @@ def distance(origin, destination):
 def calculate_initial_compass_bearing(pointA, pointB):
     """
     Calculate the bearing between two points.
-    By the formula theta = atan2(sin(delta_long).cos(lat2),cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(delta_long))
+    By the formula theta = atan2(sin(delta_long).cos(lat2),cos(lat1).sin(lat2) - sin(lat1).cos(lat2).cos(\\delta_long)).
 
     :param pointA: Tuple representing (latitude, longitude) of first point, in decimal degrees
     :type pointA: array_like

@@ -1,5 +1,5 @@
 """
-Useful utilities for look vectors and coordinate systems
+Useful utilities for look vectors and coordinate systems.
 """
 
 import numpy as np
@@ -7,7 +7,7 @@ import numpy as np
 
 def bearing_to_cartesian(heading):
     """
-    Bearing (heading from North) to cartesian orientation CCW from east
+    Bearing (heading from North) to cartesian orientation CCW from east.
 
     :param heading: CW from North, in degrees
     :type heading: float
@@ -19,7 +19,7 @@ def bearing_to_cartesian(heading):
 
 def cartesian_to_heading(cartesian_angle):
     """
-    Cartesian orientation (CCW from east) to heading (CW from north)
+    Cartesian orientation (CCW from east) to heading (CW from north).
 
     :param cartesian_angle: CCW from East, in degrees
     :type cartesian_angle: float
@@ -31,7 +31,7 @@ def cartesian_to_heading(cartesian_angle):
 
 def complement_angle(angle):
     """
-    90 minus angle, in degrees
+    90 minus angle, in degrees.
 
     :param angle: degrees
     :returns: angle in degrees
@@ -41,7 +41,7 @@ def complement_angle(angle):
 
 def cartesian_to_ccw_from_north(angle):
     """
-    angle minus 90, in degrees
+    angle minus 90, in degrees.
 
     :param angle: degrees
     :returns: angle in degrees
@@ -51,7 +51,7 @@ def cartesian_to_ccw_from_north(angle):
 
 def rotate_vector_by_angle(x0, y0, theta):
     """
-    rotate a vector by an angle theta, in degrees CCW from East
+    rotate a vector by an angle theta, in degrees CCW from East.
 
     :param x0: x component of vector
     :type x0: float
@@ -68,7 +68,7 @@ def rotate_vector_by_angle(x0, y0, theta):
 
 
 def normalize_vector(lkve, lkvn, lkvu):
-    """Take a 3-component vector and normalize its components to a unit vector"""
+    """Take a 3-component vector and normalize its components to a unit vector."""
     east_sq = np.square(lkve)
     north_sq = np.square(lkvn)
     up_sq = np.square(lkvu)
@@ -83,7 +83,7 @@ def normalize_vector(lkve, lkvn, lkvu):
 
 def get_unit_vector_from_angle(angle):
     """
-    Get the unit vector associated with a cartesian angle (CCW from east in degrees)
+    Get the unit vector associated with a cartesian angle (CCW from east in degrees).
 
     :param angle: degrees CW from North
     :returns: list of two floats, x-component and y-component of unit vector
@@ -94,7 +94,7 @@ def get_unit_vector_from_angle(angle):
 
 def get_unit_vector_from_heading(heading):
     """
-    Get the unit vector associated with a heading angle (CW from north in degrees)
+    Get the unit vector associated with a heading angle (CW from north in degrees).
 
     :param heading: degrees CW from North
     :returns: list of two floats, x-component and y-component of unit vector
@@ -106,10 +106,10 @@ def get_unit_vector_from_heading(heading):
 
 def calc_rdr_azimuth_incidence_from_lkv_plane_down(lkve, lkvn, lkvu):
     """
-    Function especially for UAVSAR interferograms to extract the incidence angle from lkv products
+    Function especially for UAVSAR interferograms to extract the incidence angle from lkv products.
     lkve, lkvn, lkvu describe vector from plane to ground.
     Convention: Azimuth angle measured from North in Anti-clockwise direction, in degrees, from ground to plane.
-    Convention: Incidence angle measured from vertical at target
+    Convention: Incidence angle measured from vertical at target.
     (aka degrees from vertical at satellite) (always +ve), in degrees.
 
     :param lkve: e component of look vector FROM PLANE TO GROUND
@@ -139,7 +139,7 @@ def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
     """
     Function especially for UAVSAR interferograms to extract the lkv from azimuth/incidence.
     Convention: Azimuth angle measured from North in Anti-clockwise direction, in degrees, from ground to plane.
-    Convention: Incidence angle measured from vertical at target
+    Convention: Incidence angle measured from vertical at target.
     (aka degrees from vertical at satellite) (always +ve), in degrees.
     lkve, lkvn, lkvu describe vector from ground to plane.
 

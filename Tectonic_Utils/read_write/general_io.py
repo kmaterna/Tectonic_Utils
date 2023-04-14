@@ -1,6 +1,6 @@
 """
 Functions to read common file types into structures in Python.
-Example: a multi-segment file with polygons or lines, as could be used in GMT
+Example: a multi-segment file with polygons or lines, as could be used in GMT.
 """
 
 

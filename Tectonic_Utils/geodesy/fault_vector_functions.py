@@ -1,10 +1,10 @@
 """
-Useful utilities for defining fault planes and coordinate systems
+Useful utilities for defining fault planes and coordinate systems.
 """
 
 import numpy as np
 import math
-from Tectonic_Utils.geodesy import haversine
+from Tectonic_Utils.geodesy import haversine, utilities
 
 
 def xy2lonlat_single(xi, yi, reflon, reflat):
@@ -125,7 +125,7 @@ def get_plane_normal(strike, dip):
 
 def simple_cross_product(a, b):
     """
-    Implements the simple cross product for 2 vectors in 3-D space
+    Implement the simple cross product for 2 vectors in 3-D space.
 
     :param a: array-like, 3-component vector
     :param b: array-like, 3-component vector
@@ -165,7 +165,7 @@ def get_dip_degrees(x0, y0, z0, x1, y1, z1):
 
 def get_strike_vector(strike):
     """
-    Get a unit vector along the strike direction of a plane
+    Get a unit vector along the strike direction of a plane.
 
     :param strike: strike, in degrees CW from N
     :type strike: float
@@ -176,9 +176,10 @@ def get_strike_vector(strike):
     strike_vector = [np.cos(theta), np.sin(theta), 0];
     return strike_vector;
 
+
 def get_dip_vector(strike, dip):
     """
-    Get a unit vector along the dip direction of a plane
+    Get a unit vector along the dip direction of a plane.
 
     :param strike: strike, in degrees CW from N
     :type strike: float
@@ -197,7 +198,7 @@ def get_dip_vector(strike, dip):
 
 def get_rtlat_dip_slip(slip, rake):
     """
-    Decompose slip into right lateral and reverse dip slip components
+    Decompose slip into right lateral and reverse dip slip components.
 
     :param slip: slip, in any length unit
     :type slip: float
@@ -213,7 +214,7 @@ def get_rtlat_dip_slip(slip, rake):
 
 def get_leftlat_reverse_slip(slip, rake):
     """
-    Decompose slip into left lateral and reverse slip components
+    Decompose slip into left lateral and reverse slip components.
 
     :param slip: slip, in any length unit
     :type slip: float
@@ -229,7 +230,7 @@ def get_leftlat_reverse_slip(slip, rake):
 
 def get_strike(deltax, deltay):
     """
-    Compute the strike of a vector x,y
+    Compute the strike of a vector x,y.
 
     :param deltax: displacement in x direction, in any length unit
     :type deltax: float
@@ -247,7 +248,7 @@ def get_strike(deltax, deltay):
 
 def get_downdip_width(top, bottom, dip):
     """
-    Get the total downdip-width of a rectangular fault plane given its top depth, bottom depth, and dip
+    Get total downdip-width of a rectangular fault plane given top depth, bottom depth, and dip.
 
     :param top: depth of top of fault plane, in km (positive down)
     :type top: float
@@ -263,19 +264,19 @@ def get_downdip_width(top, bottom, dip):
 
 
 def get_total_slip(strike_slip, dip_slip):
-    """Just the pythagorean theorem"""
+    """Just the pythagorean theorem."""
     return np.sqrt(strike_slip * strike_slip + dip_slip * dip_slip);
 
 
 def get_strike_length(x0, x1, y0, y1):
-    """Just the pythagorean theorem"""
+    """Just the pythagorean theorem."""
     length = np.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
     return length;
 
 
 def get_top_bottom_from_center(center_depth, width, dip):
     """
-    Get the top and bottom depth of a rectangular fault from its width, center, and dip
+    Get the top and bottom depth of a rectangular fault from its width, center, and dip.
 
     :param center_depth: depth of center of fault plane, in km (positive down)
     :type center_depth: float
@@ -293,7 +294,7 @@ def get_top_bottom_from_center(center_depth, width, dip):
 
 def get_top_bottom_from_top(top_depth, width, dip):
     """
-    Get the top and bottom depth of a rectangular fault from its width, top-edge depth, and dip
+    Get the top and bottom depth of a rectangular fault from its width, top-edge depth, and dip.
 
     :param top_depth: depth of top edge of fault plane, in km (positive down)
     :type top_depth: float
@@ -317,11 +318,7 @@ def get_vector_magnitude(vector):
     :return: magnitude
     :rtype: float
     """
-    total = 0;
-    for i in range(len(vector)):
-        total = total + vector[i]*vector[i];
-    magnitude = np.sqrt(total);
-    return magnitude;
+    return utilities.get_vector_magnitude(vector);
 
 
 def get_unit_vector(vec):
@@ -333,9 +330,7 @@ def get_unit_vector(vec):
     :return: unit vector
     :rtype: array_like
     """
-    mag = np.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
-    vec = np.divide(vec, mag);
-    return vec;
+    return utilities.get_unit_vector(vec);
 
 
 def add_vector_to_point(x0, y0, vector_mag, vector_heading):
@@ -361,7 +356,7 @@ def get_rake(rtlat_strike_slip, dip_slip):
     """
     Return the rake of a given slip vector.
     Positive strike-slip is right lateral, and positive dip-slip is reverse.
-    Will return 0 if dipslip,strikeslip == 0,0
+    Will return 0 if dipslip,strikeslip == 0,0.
 
     :param rtlat_strike_slip: quantity of right lateral slip, any length units
     :type rtlat_strike_slip: float

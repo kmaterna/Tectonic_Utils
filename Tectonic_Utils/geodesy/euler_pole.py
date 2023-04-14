@@ -40,7 +40,7 @@ def point_rotation_by_Euler_Pole(Point, Euler_Pole):
 
 def degma2radyr(omega):
     """
-    Convert omega from degrees/Ma to radians/yr
+    Convert omega from degrees/Ma to radians/yr.
 
     :param omega: rotation rate in degrees per million years
     :type omega: float
@@ -109,7 +109,7 @@ def euler_pole_to_euler_vector(euler_pole):
 
 def get_opposite_ep(euler_pole):
     """
-    Get opposite pole on other side of the Earth
+    Get opposite pole on other side of the Earth.
 
     :param euler_pole: [lon, lat, rate]
     :type euler_pole: array_like

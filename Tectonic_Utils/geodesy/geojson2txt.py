@@ -1,8 +1,8 @@
 """
 This script contains utility functions to convert between two different InSAR data representations:
 
-* geojson, produced by Kite after downsampling
-* text representation, used for inversions
+1. geojson, produced by Kite after downsampling
+2. text representation, used for inversions
 """
 
 import numpy as np
@@ -12,25 +12,68 @@ import json
 Downsampled_pixel = collections.namedtuple("Downsampled_pixel",
                                            ["mean", "median", "std", "BL_corner", "TR_corner", "unitE", "unitN",
                                             "unitU"]);
-Downsampled_pixel.__doc__ = """
-:param mean: mean LOS value for pixel (meters)
-:param median: median LOS value for pixel (meters)
-:param std: standard deviation LOS value for pixel (meters)
-:param BL_corner: Bottom Left corner coordinate (longitude, latitude)
-:param TR_corner: Top Right corner coordinate (longitude, latitude)
-:param unitE: east component of unit vector from ground to satellite
-:param unitN: north component of unit vector from ground to satellite
-:param unitU: up component of unit vector from ground to satellite
+"""
+A namedtuple object containing a quadtree-downsampled pixel, including
+downsampled pixel footprint, downsampled pixel look vector, and downsampled deformation values.
+
+.. py:attribute:: mean
+    :type: float
+    :noindex:
+
+    mean of LOS values within the pixel (meters)
+
+.. py:attribute:: median
+    :type: float
+    :noindex:
+
+    median of LOS values within the pixel (meters)
+    
+.. py:attribute:: std
+    :type: float
+    :noindex:
+
+    standard deviation of LOS values within the pixel (meters) 
+
+    
+.. py:attribute:: BL_corner
+    :type: tuple, list, or array
+    :noindex:
+
+    Coordinates of Bottom Left corner (longitude, latitude) 
+
+.. py:attribute:: TR_corner
+    :type: tuple, list, or array
+    :noindex:
+
+    Coordinates of Top Right corner (longitude, latitude) 
+
+.. py:attribute:: unitE
+    :type: float
+    :noindex:
+
+    east component of unit vector from ground to satellite 
+
+.. py:attribute:: unitN
+    :type: float
+    :noindex:
+
+    north component of unit vector from ground to satellite 
+
+.. py:attribute:: unitU
+    :type: float
+    :noindex:
+
+    up component of unit vector from ground to satellite 
 """
 
 
 def read_geojson(infile):
     """
-    Reads a geojson as created by Kite downsampling into downsampled pixel objects.
+    Read a geojson as created by Kite downsampling into downsampled pixel objects.
 
     :param infile: name of geojson file
     :type infile: string
-    :return: list of pixel objects
+    :return: list of Downsampled_pixel objects
     :rtype: list
     """
     # "features" is a list with n elements
@@ -60,9 +103,9 @@ def read_geojson(infile):
 
 def pixels_to_txt(pixel_list, text_file, bbox=(-180, 180, -90, 90), std_min=0.001):
     """
-    Writes InSAR pixels in the format needed by Slippy inversion code: Lon Lat Value unitE unitN unitU
+    Write InSAR pixels in basic text format: Lon Lat Value unitE unitN unitU.
 
-    :param pixel_list: list of pixel objects
+    :param pixel_list: list of Downsampled_pixel objects
     :type pixel_list: list
     :param text_file: name of output file
     :type text_file: str

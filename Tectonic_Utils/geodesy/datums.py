@@ -1,6 +1,6 @@
 """
 Convert between local enu, local llh, and global xyz coordinates
-Translated from the Matlab toolkit of the Segall lab.
+Translated from the Matlab toolkit of the Stanford lab.
 """
 
 import numpy as np
@@ -124,15 +124,15 @@ def get_datums(names=None):
     Returns da, df, dX, dY, dZ given a specific datum.
     DATUMVALUE=data(DATUMNAMES) returns the datum parameters for datum specified by string array DATUMNAMES.
     These parameters are defined as differences to the WGS-84 ellipsoid:
-        * da = WGS-84 equatorial radius minus the specified datum equatorial radius (meters)
-        * df = WGS-84 flattening minus the specified datum flattening
-        * dX = X-coordinate of WGS-84 geocenter minus the specified datum X-coordinate (meters)
-        * dY = Y-coordinate of WGS-84 geocenter minus the specified datum Y-coordinate (meters)
-        * dZ = Z-coordinate of WGS-84 geocenter minus the specified datum Z-coordinate (meters)
+    * da = WGS-84 equatorial radius minus the specified datum equatorial radius (meters)
+    * df = WGS-84 flattening minus the specified datum flattening
+    * dX = X-coordinate of WGS-84 geocenter minus the specified datum X-coordinate (meters)
+    * dY = Y-coordinate of WGS-84 geocenter minus the specified datum Y-coordinate (meters)
+    * dZ = Z-coordinate of WGS-84 geocenter minus the specified datum Z-coordinate (meters)
 
     For reference:
-        * WGS-84 Equatorial Radius (a) = 6378137.0
-        * WGS-84 Flattening (f) = 1/298.257223563
+    * WGS-84 Equatorial Radius (a) = 6378137.0
+    * WGS-84 Flattening (f) = 1/298.257223563
 
     Calling the function without input arguments returns a list of available datums.
     Unmatched datums return NaNs.

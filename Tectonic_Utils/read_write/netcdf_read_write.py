@@ -13,7 +13,7 @@ from netCDF4 import Dataset
 # --------------- READING ------------------- #
 
 def parse_pixelnode_registration(filename):
-    """Ensure pixel node registration for netcdf file
+    """Ensure pixel node registration for netcdf file.
 
     :param filename: name of file
     :type filename: string
