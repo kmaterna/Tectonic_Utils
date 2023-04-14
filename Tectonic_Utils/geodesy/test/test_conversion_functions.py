@@ -26,21 +26,13 @@ class Tests(unittest.TestCase):
 
     def test_plane_normal(self):
         plane_normal = fault_vector_functions.get_plane_normal(strike=0, dip=0);
-        self.assertAlmostEqual(plane_normal[0], 0);
-        self.assertAlmostEqual(plane_normal[1], 0);
-        self.assertAlmostEqual(plane_normal[2], 1);
+        self.assertTrue(np.allclose(plane_normal, [0, 0, 1]))  # the calculated answer
         plane_normal = fault_vector_functions.get_plane_normal(strike=90, dip=89.99);
-        self.assertAlmostEqual(plane_normal[0], 0);
-        self.assertAlmostEqual(plane_normal[1], -1);
-        self.assertAlmostEqual(plane_normal[2], 0.0001745329);
+        self.assertTrue(np.allclose(plane_normal, [0, -1, 0.0001745329]));  # the calculated answer
         plane_normal = fault_vector_functions.get_plane_normal(strike=270, dip=89.99);
-        self.assertAlmostEqual(plane_normal[0], 0);
-        self.assertAlmostEqual(plane_normal[1], 1);
-        self.assertAlmostEqual(plane_normal[2], 0.0001745329);
+        self.assertTrue(np.allclose(plane_normal, [0, 1, 0.0001745329]));
         plane_normal = fault_vector_functions.get_plane_normal(strike=180, dip=1);
-        self.assertAlmostEqual(plane_normal[0],  -0.0174524064372835);
-        self.assertAlmostEqual(plane_normal[1], 0);
-        self.assertAlmostEqual(plane_normal[2], 0.999847695156391);
+        self.assertTrue(np.allclose(plane_normal, [-0.0174524064372835, 0, 0.999847695156391]));
         return;
 
     def test_lkv_conversion(self):

@@ -3,7 +3,7 @@ Functions to rotate a point by a known Euler pole.
 """
 
 import numpy as np
-from . import fault_vector_functions
+from . import fault_vector_functions, utilities
 
 
 def point_rotation_by_Euler_Pole(Point, Euler_Pole):
@@ -77,7 +77,6 @@ def get_r(lon, lat):
 def euler_vector_to_euler_pole(euler_vector):
     """
     Convert a three-component vector representing an Euler Pole into a lon/lat/rate representation of the Euler Pole.
-    TODO: Write tests for this, converting back and forth between the two representations
 
     :param euler_vector: [ev_x, ev_y, ev_z] in deg/ma, where longitude 0 is along the positive east axis
     :type euler_vector: array_like
@@ -114,10 +113,10 @@ def get_opposite_ep(euler_pole):
 
     :param euler_pole: [lon, lat, rate]
     :type euler_pole: array_like
-    :returns: opposite euler pole
+    :returns: opposite euler pole, -180 <= lon <= 180
     :rtype: [float, float, float]
     """
-    return [euler_pole[0]+180, -euler_pole[1], -euler_pole[2]];
+    return [utilities.wrap_lon(euler_pole[0]+180), -euler_pole[1], -euler_pole[2]];
 
 
 def get_unit_east(lon):
