@@ -6,65 +6,22 @@ This script contains utility functions to convert between two different InSAR da
 """
 
 import numpy as np
-import collections
 import json
 
-Downsampled_pixel = collections.namedtuple("Downsampled_pixel",
-                                           ["mean", "median", "std", "BL_corner", "TR_corner", "unitE", "unitN",
-                                            "unitU"]);
-"""
-A namedtuple object containing a quadtree-downsampled pixel, including
-downsampled pixel footprint, downsampled pixel look vector, and downsampled deformation values.
-
-.. py:attribute:: mean
-    :type: float
-    :noindex:
-
-    mean of LOS values within the pixel (meters)
-
-.. py:attribute:: median
-    :type: float
-    :noindex:
-
-    median of LOS values within the pixel (meters)
-    
-.. py:attribute:: std
-    :type: float
-    :noindex:
-
-    standard deviation of LOS values within the pixel (meters) 
-
-    
-.. py:attribute:: BL_corner
-    :type: tuple, list, or array
-    :noindex:
-
-    Coordinates of Bottom Left corner (longitude, latitude) 
-
-.. py:attribute:: TR_corner
-    :type: tuple, list, or array
-    :noindex:
-
-    Coordinates of Top Right corner (longitude, latitude) 
-
-.. py:attribute:: unitE
-    :type: float
-    :noindex:
-
-    east component of unit vector from ground to satellite 
-
-.. py:attribute:: unitN
-    :type: float
-    :noindex:
-
-    north component of unit vector from ground to satellite 
-
-.. py:attribute:: unitU
-    :type: float
-    :noindex:
-
-    up component of unit vector from ground to satellite 
-"""
+class Downsampled_pixel:
+    """
+    An object containing a quadtree-downsampled pixel, including
+    downsampled pixel footprint, downsampled pixel look vector, and downsampled deformation values.
+    """
+    def __init__(self, mean, median, std, BL_corner, TR_corner, unitE, unitN, unitU):
+        self.mean = mean;  # mean of LOS values within the pixel (meters)
+        self.median = median;  # median of LOS values within the pixel (meters)
+        self.std = std;  # standard deviation of LOS values within the pixel (meters)
+        self.BL_corner = BL_corner;  # Coordinates of Bottom Left corner (longitude, latitude)
+        self.TR_corner = TR_corner;  # Coordinates of Top Right corner (longitude, latitude)
+        self.unitE = unitE;  # east component of unit vector from ground to satellite
+        self.unitN = unitN;  # north component of unit vector from ground to satellite
+        self.unitU = unitU;  # up component of unit vector from ground to satellite
 
 
 def read_geojson(infile):

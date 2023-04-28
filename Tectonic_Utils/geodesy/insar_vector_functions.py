@@ -137,13 +137,13 @@ def calc_rdr_azimuth_incidence_from_lkv_plane_down(lkve, lkvn, lkvu):
 
 def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
     """
-    Function especially for UAVSAR interferograms to extract the lkv from azimuth/incidence.
+    Function especially for ISCE interferograms to extract the lkv from azimuth/incidence.
     Convention: Azimuth angle measured from North in Anti-clockwise direction, in degrees, from ground to plane.
     Convention: Incidence angle measured from vertical at target.
     (aka degrees from vertical at satellite) (always +ve), in degrees.
     lkve, lkvn, lkvu describe vector from ground to plane.
 
-    :param azimuth: CCW from north angle of vector from ground to plane, in degrees
+    :param azimuth: CCW from north angle of vector from ground to plane, in degrees (ISCE LOS.RDR convention)
     :type azimuth: float
     :param incidence: angle from look vector to vertical, measured at the target (aka deg. from vertical at satellite)
     :type incidence: float
@@ -156,7 +156,6 @@ def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
     lkv_u = np.cos(incidence_rad);
     lkv_n = np.sin(incidence_rad) * np.sin(azimuth_rad);
     lkv_e = np.sin(incidence_rad) * np.cos(azimuth_rad);
-
     return lkv_e, lkv_n, lkv_u;
 
 
