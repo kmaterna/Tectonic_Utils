@@ -45,7 +45,7 @@ putting all my Python utility functions
 into one unit-tested repository reduces bugs, increases code reproducibility, and allows for faster experimentation. 
 The library is open source and available on Pip in case it would help others too. 
 
-Disclaimer: Completely bug-free code can never be guaranteed. As things come up, I occasionally fix and update the package Pip.    
+Disclaimer: Completely bug-free code can never be guaranteed. As things come up, I occasionally fix and update the package on Pip/PyPI.    
 
 If you're using this package and you'd like to contribute or you find bugs, please let me know!  
 

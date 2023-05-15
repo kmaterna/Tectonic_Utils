@@ -3,6 +3,7 @@
 def read_simple_kml(infile):
     """
     Read a simple box drawn in Google Earth and saved as a KML file with field 'coordinates'.
+    For more complicated KMLs with many elements, I'm switching to use the Python library "fastkml" for reading.
 
     :param infile: kml file with simple box
     :type infile: string
