@@ -81,18 +81,18 @@ def calculate_endpoint_given_bearing(origin, bearing, angular_distance_degrees):
     # theta is bearing in radians.
     # delta is the angular distance in radians, d/R (d = distance, R = radius of Earth)
 
-    lat0 = origin[0];
-    lon0 = origin[1];
+    lat0 = origin[0]
+    lon0 = origin[1]
     phi1 = np.deg2rad(lat0)
-    lambda1 = np.deg2rad(lon0);
-    delta = np.deg2rad(angular_distance_degrees);
-    theta = np.deg2rad(bearing);
-    phi2 = np.arcsin((np.sin(phi1)*np.cos(delta)) + (np.cos(phi1)*np.sin(delta)*np.cos(theta)));
-    lambda2 = lambda1 + np.arctan2(np.sin(theta)*np.sin(delta)*np.cos(phi1), np.cos(delta)-np.sin(phi1)*np.sin(phi2));
+    lambda1 = np.deg2rad(lon0)
+    delta = np.deg2rad(angular_distance_degrees)
+    theta = np.deg2rad(bearing)
+    phi2 = np.arcsin((np.sin(phi1)*np.cos(delta)) + (np.cos(phi1)*np.sin(delta)*np.cos(theta)))
+    lambda2 = lambda1 + np.arctan2(np.sin(theta)*np.sin(delta)*np.cos(phi1), np.cos(delta)-np.sin(phi1)*np.sin(phi2))
     lat2 = np.rad2deg(phi2)
-    lon2 = np.rad2deg(lambda2);  
+    lon2 = np.rad2deg(lambda2)  
     destination = [lat2, lon2]
-    return destination; 
+    return destination 
 
 
 def xy_distance(ref_loc, sta_loc):
@@ -107,12 +107,12 @@ def xy_distance(ref_loc, sta_loc):
     :return: [distance_x, distance_y], in m
     :rtype: [float, float]
     """
-    radius = distance(ref_loc, sta_loc);  # in km
+    radius = distance(ref_loc, sta_loc)  # in km
     bearing = calculate_initial_compass_bearing((ref_loc[0], ref_loc[1]), (sta_loc[0], sta_loc[1]))
-    azimuth = 90 - bearing;
-    x = radius * np.cos(np.deg2rad(azimuth)) * 1000;  # in m
-    y = radius * np.sin(np.deg2rad(azimuth)) * 1000;  # in m
-    return [x, y];
+    azimuth = 90 - bearing
+    x = radius * np.cos(np.deg2rad(azimuth)) * 1000  # in m
+    y = radius * np.sin(np.deg2rad(azimuth)) * 1000  # in m
+    return [x, y]
 
 
 def add_vector_to_coords(lon0, lat0, dx, dy):
@@ -129,6 +129,6 @@ def add_vector_to_coords(lon0, lat0, dx, dy):
     :return: [lon1, lat1], in degrees
     :rtype: [float, float]
     """
-    lat1 = lat0+dy/111.000;
-    lon1 = lon0+dx/(111.000*np.cos(np.deg2rad(lat0)));
-    return [lon1, lat1];
+    lat1 = lat0+dy/111.000
+    lon1 = lon0+dx/(111.000*np.cos(np.deg2rad(lat0)))
+    return [lon1, lat1]

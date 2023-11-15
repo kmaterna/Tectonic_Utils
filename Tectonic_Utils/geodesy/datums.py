@@ -116,7 +116,7 @@ data = {
     'WGS 72               ': [02.000000e+000,  3.121058e-008,     0,     0,     5],
     'WGS 84               ': [00.000000e+000,  0.000000e+000,     0,     0,     0],
     'ZANDERIJ             ': [-2.510000e+002, -1.419270e-005,  -265,   120,  -358]
-};
+}
 
 
 def get_datums(names=None):
@@ -144,14 +144,14 @@ def get_datums(names=None):
     """
 
     if not names:    # Return list of available datums if called with no input arguments.
-        return data.keys();
+        return data.keys()
     # Read the database. Match requested datums with those available.
-    all_keys = data.keys();            # collect keys
-    value = np.zeros((len(names), 5));   # initialize return vaule
+    all_keys = data.keys()            # collect keys
+    value = np.zeros((len(names), 5))   # initialize return vaule
     for i in range(len(names)):
-        modified_name = "{:<21}".format(names[i].upper());
+        modified_name = "{:<21}".format(names[i].upper())
         if modified_name in all_keys:
-            value[i, :] = data[modified_name];
+            value[i, :] = data[modified_name]
         else:
-            value[i, :] = [np.nan, np.nan, np.nan, np.nan, np.nan];
-    return value;
+            value[i, :] = [np.nan, np.nan, np.nan, np.nan, np.nan]
+    return value

@@ -9,12 +9,12 @@ def wrap_lon(longitude):
     :returns: wrapped longitude, from -180° to 180°
     """
     if longitude > 360 or longitude < -360:
-        raise ValueError("longitude outside normal range (-360 to 360)");
+        raise ValueError("longitude outside normal range (-360 to 360)")
     if longitude > 180:
-        longitude = longitude - 360;
+        longitude = longitude - 360
     if longitude < -180:
-        longitude = longitude + 360;
-    return longitude;
+        longitude = longitude + 360
+    return longitude
 
 
 def get_vector_magnitude(vector):
@@ -26,11 +26,11 @@ def get_vector_magnitude(vector):
     :return: magnitude
     :rtype: float
     """
-    total = 0;
+    total = 0
     for i in range(len(vector)):
-        total = total + vector[i]*vector[i];
-    magnitude = np.sqrt(total);
-    return magnitude;
+        total = total + vector[i]*vector[i]
+    magnitude = np.sqrt(total)
+    return magnitude
 
 
 def get_unit_vector(vec):
@@ -42,6 +42,6 @@ def get_unit_vector(vec):
     :return: unit vector
     :rtype: array_like
     """
-    mag = np.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
-    vec = np.divide(vec, mag);
-    return vec;
+    mag = np.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2])
+    vec = np.divide(vec, mag)
+    return vec

@@ -28,36 +28,37 @@ def xyz2llh(xyz, datum=(0, 0)):
     """
 
     # Check input arguments
-    if type(datum) == str:
-        datum = datums.get_datums(datum);
-        if any(np.isnan(datum)):
-            raise ValueError('Could not resolve datum name.');
-    da = float(datum[0]);
-    df = float(datum[1]);
+    if not isinstance(datum, str):
+        raise ValueError(f'Could not parse given datum: {datum}')
+    datum_array = datums.get_datums(datum)
+    if any(np.isnan(datum_array)):
+        raise ValueError('Could not resolve datum name.')
+    da = float(datum_array[0])
+    df = float(datum_array[1])
 
     if np.shape(xyz)[1] != 3:
-        raise TypeError('Input xyz MUST be nx3.');
+        raise TypeError('Input xyz MUST be nx3.')
 
     # Set constants
-    a = 6378137 - da;
-    f = 1 / 298.2572235630 - df;
-    b = (1-f) * a;
-    e2 = 2 * f - np.square(f);
-    E2 = (np.square(a) - np.square(b)) / np.square(b);
+    a = 6378137 - da
+    f = 1 / 298.2572235630 - df
+    b = (1-f) * a
+    e2 = 2 * f - np.square(f)
+    E2 = (np.square(a) - np.square(b)) / np.square(b)
 
     # Calculate longitude, latitude, and height
-    llh = np.zeros(np.shape(xyz));
-    p = np.sqrt(np.square(xyz[:, 0]) + np.square(xyz[:, 1]));
-    llh[:, 0] = np.arctan2(xyz[:, 1], xyz[:, 0]);
-    theta = np.arctan(np.divide((xyz[:, 2] * a), (p * b)));
+    llh = np.zeros(np.shape(xyz))
+    p = np.sqrt(np.square(xyz[:, 0]) + np.square(xyz[:, 1]))
+    llh[:, 0] = np.arctan2(xyz[:, 1], xyz[:, 0])
+    theta = np.arctan(np.divide((xyz[:, 2] * a), (p * b)))
     llh[:, 1] = np.arctan((xyz[:, 2] + E2 * b * np.power(np.sin(theta), 3)) /
-                          (p - e2 * a * np.power(np.cos(theta), 3)) );
-    N = a / np.sqrt(1 - e2 * np.square(np.sin(llh[:, 1])));
-    llh[:, 2] = p / np.cos(llh[:, 1]) - N;
+                          (p - e2 * a * np.power(np.cos(theta), 3)) )
+    N = a / np.sqrt(1 - e2 * np.square(np.sin(llh[:, 1])))
+    llh[:, 2] = p / np.cos(llh[:, 1]) - N
 
     # Convert to degrees
-    llh[:, 0:2] = llh[:, 0:2]*57.295779513082323;
-    return llh;
+    llh[:, 0:2] = llh[:, 0:2]*57.295779513082323
+    return llh
 
 
 def llh2xyz(llh, datum=(0, 0)):
@@ -79,32 +80,33 @@ def llh2xyz(llh, datum=(0, 0)):
     """
 
     # Check input arguments
-    if type(datum) == str:
-        datum = datums.get_datums(datum);
-        if any(np.isnan(datum)):
-            raise ValueError('Could not resolve datum name.');
-    da = float(datum[0]);
-    df = float(datum[1]);
+    if not isinstance(datum, str):
+        raise ValueError(f'Could not parse given datum: {datum}')
+    datum_array = datums.get_datums(datum)
+    if any(np.isnan(datum_array)):
+        raise ValueError('Could not resolve datum name.')
+    da = float(datum_array[0])
+    df = float(datum_array[1])
 
     if np.shape(llh)[1] != 3:
-        raise TypeError('Input llh MUST be nx3.');
+        raise TypeError('Input llh MUST be nx3.')
 
     # Ellipsoid parameters
-    a = 6378137 - da;
-    f = 1 / 298.257223563 - df;
-    b = (1-f) * a;
+    a = 6378137 - da
+    f = 1 / 298.257223563 - df
+    b = (1-f) * a
 
     # Convert degrees to radians
-    phi = llh[:, 1] * np.pi / 180;   # lat
-    lam = llh[:, 0] * np.pi / 180;   # lon
+    phi = llh[:, 1] * np.pi / 180   # lat
+    lam = llh[:, 0] * np.pi / 180   # lon
 
     # Convert llh to xyz
-    XYZ = np.zeros(np.shape(llh));
-    N = np.square(a) / np.sqrt(np.square(a) * np.square(np.cos(phi)) + np.square(b) * np.square(np.sin(phi)));
-    XYZ[:, 0] = (N + llh[:, 2]) * np.cos(phi) * np.cos(lam);
-    XYZ[:, 1] = (N + llh[:, 2]) * np.cos(phi) * np.sin(lam);
-    XYZ[:, 2] = (np.square(b) * N / np.square(a) + llh[:, 2] ) * np.sin(phi);
-    return XYZ;
+    XYZ = np.zeros(np.shape(llh))
+    N = np.square(a) / np.sqrt(np.square(a) * np.square(np.cos(phi)) + np.square(b) * np.square(np.sin(phi)))
+    XYZ[:, 0] = (N + llh[:, 2]) * np.cos(phi) * np.cos(lam)
+    XYZ[:, 1] = (N + llh[:, 2]) * np.cos(phi) * np.sin(lam)
+    XYZ[:, 2] = (np.square(b) * N / np.square(a) + llh[:, 2] ) * np.sin(phi)
+    return XYZ
 
 
 def xyz2enum(origin):
@@ -122,18 +124,18 @@ def xyz2enum(origin):
 
     # Check input arguments
     if len(origin) < 2:
-        raise ValueError('Input origin must have 2 elements, longitude and latitude (degrees).');
+        raise ValueError('Input origin must have 2 elements, longitude and latitude (degrees).')
 
     # Convert to radians and evaluate trigonometric functions
-    origin = np.multiply(origin, np.pi / 180);
-    s = np.sin(origin);
-    c = np.cos(origin);
+    origin = np.multiply(origin, np.pi / 180)
+    s = np.sin(origin)
+    c = np.cos(origin)
 
     # Make transformation matrix
     T = np.array([[-s[0], c[0], 0],
                   [-s[1]*c[0], -s[1]*s[0], c[1]],
-                  [c[1]*c[0], c[1]*s[0], s[1]]]);
-    return T;
+                  [c[1]*c[0], c[1]*s[0], s[1]]])
+    return T
 
 
 def xyz2enu(d, origin, dcov=None):
@@ -162,20 +164,20 @@ def xyz2enu(d, origin, dcov=None):
 
     # Check input arguments
     if len(origin) > 2:
-        origin = np.reshape(origin, (1, 3));
-        origin = xyz2llh(origin);
-        origin = origin[0];  # 1x3 1D array, contains llh
+        origin = np.reshape(origin, (1, 3))
+        origin = xyz2llh(origin)
+        origin = origin[0]  # 1x3 1D array, contains llh
 
     # Make transformation matrix
-    Tm = xyz2enum(origin);
+    Tm = xyz2enum(origin)
 
     # Transform
-    e = np.dot(Tm, d.T);
+    e = np.dot(Tm, d.T)
     if dcov is not None:
-        ecov = np.dot(np.dot(Tm, dcov), Tm.T);
+        ecov = np.dot(np.dot(Tm, dcov), Tm.T)
     else:
-        ecov = None;
-    return e.T, ecov;
+        ecov = None
+    return e.T, ecov
 
 
 def enu2xyz(d, origin, dcov=None):
@@ -203,18 +205,18 @@ def enu2xyz(d, origin, dcov=None):
     """
     # Check input arguments
     if len(origin) > 2:
-        origin = np.reshape(origin, (1, 3));
-        origin = xyz2llh(origin);
-        origin = origin[0];  # 1x3 1D array, contains llh
+        origin = np.reshape(origin, (1, 3))
+        origin = xyz2llh(origin)
+        origin = origin[0]  # 1x3 1D array, contains llh
 
     # Make transformation matrix
-    Tm = xyz2enum(origin);
-    Tminv = np.linalg.inv(Tm);
+    Tm = xyz2enum(origin)
+    Tminv = np.linalg.inv(Tm)
 
     # Transform
-    e = np.dot(Tminv, d.T);
+    e = np.dot(Tminv, d.T)
     if dcov is not None:
-        ecov = np.dot(np.dot(Tminv, dcov), Tminv.T);
+        ecov = np.dot(np.dot(Tminv, dcov), Tminv.T)
     else:
-        ecov = None;
-    return e.T, ecov;
+        ecov = None
+    return e.T, ecov
