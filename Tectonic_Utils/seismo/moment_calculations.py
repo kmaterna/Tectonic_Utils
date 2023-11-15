@@ -16,7 +16,7 @@ def moment_from_muad(mu, A, d):
     :returns: moment, in Newton-meters
     :rtype: float
     """
-    return mu*A*d;
+    return mu*A*d
 
 def mw_from_moment(moment):
     """Definition of moment magnitude from Hanks and Kanamori (1979). Takes newton-meters, returns moment magnitude.
@@ -26,9 +26,9 @@ def mw_from_moment(moment):
     :returns: magnitude
     :rtype: float
     """
-    moment = moment*1e7;   # convert to dyne-cm
+    moment = moment*1e7   # convert to dyne-cm
     mw = (2/3)*np.log10(moment) - 10.7
-    return mw;
+    return mw
 
 def moment_from_mw(Mw):
     """Definition of moment magnitude from Hanks and Kanamori (1979). Takes magnitude, returns moment in newton-meters.
@@ -38,7 +38,7 @@ def moment_from_mw(Mw):
     :returns: moment in Newton-meters
     :rtype: float
     """
-    exponent = 1.5*Mw + 1.5*10.7;
-    moment = np.power(10, exponent);
-    moment_newton_meters = moment * 1e-7;
-    return moment_newton_meters;
+    exponent = 1.5*Mw + 1.5*10.7
+    moment = np.power(10, exponent)
+    moment_newton_meters = moment * 1e-7
+    return moment_newton_meters

@@ -147,11 +147,10 @@ def get_datums(names=None):
         return data.keys()
     # Read the database. Match requested datums with those available.
     all_keys = data.keys()            # collect keys
-    value = np.zeros((len(names), 5))   # initialize return vaule
-    for i in range(len(names)):
-        modified_name = "{:<21}".format(names[i].upper())
-        if modified_name in all_keys:
-            value[i, :] = data[modified_name]
-        else:
-            value[i, :] = [np.nan, np.nan, np.nan, np.nan, np.nan]
-    return value
+    value = np.zeros((1, 5))   # initialize return vaule
+    modified_name = "{:<21}".format(names.upper())
+    if modified_name in all_keys:
+        value[0, :] = data[modified_name]
+    else:
+        value[0, :] = [np.nan, np.nan, np.nan, np.nan, np.nan]
+    return np.array(value)

@@ -20,8 +20,8 @@ def get_MT(mrr, mtt, mpp, mrt, mrp, mtp):
 
     :returns: np.array, 3x3 matrix
     """
-    MT = np.array([[mrr, mrt, mrp], [mrt, mtt, mtp], [mrp, mtp, mpp]]);
-    return MT;
+    MT = np.array([[mrr, mrt, mrp], [mrt, mtt, mtp], [mrp, mtp, mpp]])
+    return MT
 
 
 def diagonalize_MT(MT):
@@ -30,9 +30,9 @@ def diagonalize_MT(MT):
 
     :returns: np.array, 3x3 matrix
     """
-    eigvals, eigvecs = np.linalg.eig(MT);
-    eigvals = sorted(eigvals)[::-1];
-    return np.diag(eigvals);
+    eigvals, eigvecs = np.linalg.eig(MT)
+    eigvals = sorted(eigvals)[::-1]
+    return np.diag(eigvals)
 
 
 def get_deviatoric_MT(MT):
@@ -41,9 +41,9 @@ def get_deviatoric_MT(MT):
 
     :returns: np.array, 3x3 matrix
     """
-    iso_MT = get_iso_MT(MT);
-    M_dev = np.subtract(MT, iso_MT);
-    return M_dev;
+    iso_MT = get_iso_MT(MT)
+    M_dev = np.subtract(MT, iso_MT)
+    return M_dev
 
 
 def get_iso_MT(MT):
@@ -52,8 +52,8 @@ def get_iso_MT(MT):
 
     :returns: np.array, 3x3 matrix
     """
-    x = (1 / 3) * np.trace(MT);
-    iso_MT = np.multiply(np.eye(3), x);
+    x = (1 / 3) * np.trace(MT)
+    iso_MT = np.multiply(np.eye(3), x)
     return iso_MT
 
 
@@ -63,13 +63,13 @@ def get_clvd_dc_from_deviatoric_MT(MT):
 
     :returns: two np.arrays, each 3x3 matrix
     """
-    eigenvalues = np.diag(MT);
+    eigenvalues = np.diag(MT)
     assert(eigenvalues[0] > eigenvalues[1] > eigenvalues[2]), ValueError("Deviatoric eigenvalues out of order.")
-    dc_component = (1/2)*(eigenvalues[0]-eigenvalues[2]);
-    clvd_component = eigenvalues[1]*(1/2);
-    M_dc = np.diag([dc_component, 0, -dc_component]);
-    M_clvd = np.diag([-clvd_component, 2*clvd_component, -clvd_component]);
-    return M_clvd, M_dc;
+    dc_component = (1/2)*(eigenvalues[0]-eigenvalues[2])
+    clvd_component = eigenvalues[1]*(1/2)
+    M_dc = np.diag([dc_component, 0, -dc_component])
+    M_clvd = np.diag([-clvd_component, 2*clvd_component, -clvd_component])
+    return M_clvd, M_dc
 
 
 def decompose_iso_dc_clvd(MT):
@@ -78,12 +78,12 @@ def decompose_iso_dc_clvd(MT):
 
     :returns: three np.arrays, each 3x3 matrix
     """
-    diag_MT = diagonalize_MT(MT);  # equivalent to a coordinate transformation
-    M_iso = get_iso_MT(diag_MT);  # get the trace
-    M_dev = get_deviatoric_MT(diag_MT);
-    M_dev = diagonalize_MT(M_dev);  # diagonalized in the proper order
-    M_clvd, M_dc = get_clvd_dc_from_deviatoric_MT(M_dev);
-    return M_iso, M_clvd, M_dc;
+    diag_MT = diagonalize_MT(MT)  # equivalent to a coordinate transformation
+    M_iso = get_iso_MT(diag_MT)  # get the trace
+    M_dev = get_deviatoric_MT(diag_MT)
+    M_dev = diagonalize_MT(M_dev)  # diagonalized in the proper order
+    M_clvd, M_dc = get_clvd_dc_from_deviatoric_MT(M_dev)
+    return M_iso, M_clvd, M_dc
 
 
 # def get_separate_scalar_moments(MT):
@@ -103,14 +103,14 @@ def get_total_scalar_moment(MT):
     :returns: Mo, scalar moment
     :rtype: float
     """
-    MT = np.divide(MT, 1e16);  # done to prevent computer buffer overflow
-    total = 0;
+    MT = np.divide(MT, 1e16)  # done to prevent computer buffer overflow
+    total = 0
     for i in range(3):
         for j in range(3):
-            total = total + MT[i][j]*MT[i][j];
-    Mo = (1/np.sqrt(2)) * np.sqrt(total);
-    Mo = np.multiply(Mo, 1e16);
-    return Mo;
+            total = total + MT[i][j]*MT[i][j]
+    Mo = (1/np.sqrt(2)) * np.sqrt(total)
+    Mo = np.multiply(Mo, 1e16)
+    return Mo
 
 
 def get_percent_double_couple(MT):
@@ -124,9 +124,9 @@ def get_percent_double_couple(MT):
     :returns: percentage double couple, percentage CLVD
     :rtype: float, float
     """
-    m_dev = diagonalize_MT(get_deviatoric_MT(MT));
-    epsilon = np.diag(m_dev)[1] / np.max([np.abs(np.diag(m_dev)[0]), np.abs(np.diag(m_dev)[2])]);
-    fraction = epsilon * 2;
-    perc_clvd = 100 * (abs(fraction));
-    perc_dc = 100 - perc_clvd;
-    return perc_dc, perc_clvd;
+    m_dev = diagonalize_MT(get_deviatoric_MT(MT))
+    epsilon = np.diag(m_dev)[1] / np.max([np.abs(np.diag(m_dev)[0]), np.abs(np.diag(m_dev)[2])])
+    fraction = epsilon * 2
+    perc_clvd = 100 * (abs(fraction))
+    perc_dc = 100 - perc_clvd
+    return perc_dc, perc_clvd

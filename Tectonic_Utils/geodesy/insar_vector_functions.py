@@ -181,8 +181,7 @@ def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
     dotproduct = np.dot(unit_lkv, vert_vector)
     incidence_angle = np.rad2deg(np.arccos(dotproduct))
 
-    lkv_horiz_angle = np.arctan2(lkv_n,
-                                 lkv_e)  # cartesian angle of horizontal look vector (negative small # for DESC)
+    lkv_horiz_angle = np.arctan2(lkv_n, lkv_e)  # cartesian angle of horiz look-vec. (negative small # for DESC)
     heading_deg = cartesian_to_heading(np.rad2deg(lkv_horiz_angle))
     flight_angle = heading_deg + 90  # satellite flies 90 degrees away from look vector direction
     return [flight_angle, incidence_angle]

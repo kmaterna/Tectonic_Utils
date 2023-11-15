@@ -72,10 +72,10 @@ def xy2lonlat(xi, yi, reflon, reflat):
             return xy2lonlat_single(xi, yi, reflon, reflat)
         else:
             raise ValueError(f"Error! Dimension of x and y does not agree: {xi} {yi}" )
+    if len(list(xi)) != len(list(yi)):
+        raise ValueError(f'Error! Length of x and y does not agree: {len(list(xi))} {len(list(yi))}')
 
-    if len(xi) != len(yi):  # if we are getting a list of values, we return a list of the same dimensions
-        raise ValueError(f'Error! Length of x and y does not agree: {len(xi)} {len(yi)}')
-
+    # if we are getting a list of values, we return a list of the same dimensions
     lat, lon = [], []
     for a, b in zip(xi, yi):
         loni, lati = xy2lonlat_single(a, b, reflon, reflat)
@@ -96,18 +96,24 @@ def latlon2xy(loni, lati, lon0, lat0):
     :type lon0: float
     :param lat0: latitude of reference point
     :type lat0: float
-    :returns: [x, y] of target point(s), in km
-    :rtype: list
+    :returns: x, y of target point(s), in km
+    :rtype: list, list  (float, float in case of single inputs)
     """
-    if type(loni) == float or type(loni) == np.float64 or type(loni) == int:  # if single value, return single value.
-        x, y = latlon2xy_single(loni, lati, lon0, lat0)
-    else:  # If we are getting a list, return a list of the same dimensions
-        x, y = [], []
-        for i in range(len(loni)):
-            xi, yi = latlon2xy_single(loni[i], lati[i], lon0, lat0)
-            x.append(xi)
-            y.append(yi)
-    return [x, y]
+    if not isinstance(loni, Iterable):
+        if not isinstance(lati, Iterable):  # if single value, return single value
+            return latlon2xy_single(loni, lati, lon0, lat0)
+        else:
+            raise ValueError(f"Error! Dimension of x and y does not agree: {loni} {lati}" )
+    if len(list(loni)) != len(list(lati)):
+        raise ValueError(f'Error! Length of x and y does not agree: {len(list(loni))} {len(list(lati))}')
+
+    # If we are getting a list, return a list of the same dimensions
+    x, y = [], []
+    for a, b in zip(loni, lati):
+        xi, yi = latlon2xy_single(a, b, lon0, lat0)
+        x.append(xi)
+        y.append(yi)
+    return x, y
 
 
 def get_plane_normal(strike, dip):
@@ -373,5 +379,5 @@ def get_rake(rtlat_strike_slip, dip_slip):
     :return: rake in range -180 to 180 degrees
     :rtype: float
     """
-    rake = np.rad2deg(math.atan2(dip_slip, -rtlat_strike_slip))    # the Aki and Richards definition shows positive ll
+    rake = np.rad2deg(math.atan2(dip_slip, -rtlat_strike_slip))    # Aki and Richards definition: positive ll
     return rake
