@@ -153,4 +153,4 @@ def get_datums(names=None):
         value[0, :] = data[modified_name]
     else:
         value[0, :] = [np.nan, np.nan, np.nan, np.nan, np.nan]
-    return np.array(value)
+    return value

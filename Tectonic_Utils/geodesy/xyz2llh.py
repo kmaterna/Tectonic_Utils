@@ -33,8 +33,7 @@ def xyz2llh(xyz, datum='NAD83'):
     datum_array = datums.get_datums(datum)
     if np.sum(np.isnan(datum_array)) > 0:
         raise ValueError('Could not resolve datum name.')
-    da = datum_array[0][0]
-    df = datum_array[0][1]
+    da, df = datum_array[0][0], datum_array[0][1]
 
     if np.shape(xyz)[1] != 3:
         raise TypeError('Input xyz MUST be nx3.')
@@ -85,8 +84,7 @@ def llh2xyz(llh, datum='NAD83'):
     datum_array = datums.get_datums(datum)
     if np.sum(np.isnan(datum_array)) > 0:
         raise ValueError(f'Could not resolve datum name: {datum}')
-    da = datum_array[0][0]
-    df = datum_array[0][1]
+    da, df = datum_array[0][0], datum_array[0][1]
 
     if np.shape(llh)[1] != 3:
         raise TypeError('Input llh MUST be nx3.')
