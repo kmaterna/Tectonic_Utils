@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "tectonic-utils"
+version = "0.1.0"
+description = "A small package of useful geophysics utilities"
+authors = ["Kathryn Materna <kmaterna@berkeley.edu>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/kmaterna/Tectonic_Utils"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+numpy = "^1.20"
+scipy = "*"
+netCDF4 = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -10,4 +10,5 @@ how_to_make_docs.txt
 .eggs/*
 *.ppt
 *.pptx
+*DS_Store
 Tectonic_Utils/read_write/test/written_example.grd

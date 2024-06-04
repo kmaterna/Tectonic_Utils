@@ -208,7 +208,28 @@ def flight_incidence_angles2look_vector(flight_angle, incidence_angle):
     return [lkv_e, lkv_n, lkv_u]
 
 
-def def3D_into_LOS(U_e, U_n, U_u, flight_angle, incidence_angle):
+def flight_incidence_angles2look_vector_leftlook(flight_angle, incidence_angle):
+    """
+    General InSAR look vector math function, assuming left-looking satellite.
+    lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
+
+    :param flight_angle: heading, clockwise from north, in degrees
+    :type flight_angle: float
+    :param incidence_angle: angle between look vector and vertical, in degrees
+    :type incidence_angle: float
+    :returns: [lkv_e, lkv_n, lkv_u]
+    :rtype: list
+    """
+    lk_heading = flight_angle + 90  # heading, 90 degrees to the left of the satellite
+    horizontal_lkv = np.sin(np.deg2rad(incidence_angle))
+    lkv_u = np.cos(np.deg2rad(incidence_angle))
+    lkv_cartesian_angle = bearing_to_cartesian(lk_heading)
+    lkv_e = horizontal_lkv * np.cos(np.deg2rad(lkv_cartesian_angle))
+    lkv_n = horizontal_lkv * np.sin(np.deg2rad(lkv_cartesian_angle))
+    return [lkv_e, lkv_n, lkv_u]
+
+
+def def3D_into_LOS(U_e, U_n, U_u, flight_angle, incidence_angle, look_direction='right'):
     """
     Fialko, 2001, equation to project relative deformation into the LOS.
     Dlos = [U_n sin(phi) - U_e cos(phi)]*sin(lamda) + U_u cos(lamda).
@@ -224,12 +245,19 @@ def def3D_into_LOS(U_e, U_n, U_u, flight_angle, incidence_angle):
     :type flight_angle: float
     :param incidence_angle: local incidence angle at the reflector (usually angle from the vertical), in degrees
     :type incidence_angle: float
+    :param look_direction: 'left' or 'right' (default 'right')
+    :type look_direction: string
     :returns: los deformation (in same units as U_e)
     :rtype: float
     """
     phi = np.deg2rad(flight_angle)
     lamda = np.deg2rad(incidence_angle)
-    d_los = ((U_n * np.sin(phi) - U_e * np.cos(phi)) * np.sin(lamda) + U_u * np.cos(lamda))
+    if look_direction == 'right':
+        d_los = ((U_n * np.sin(phi) - U_e * np.cos(phi)) * np.sin(lamda) + U_u * np.cos(lamda))
+    elif look_direction == 'left':
+        d_los = ((U_n * np.sin(phi) + U_e * np.cos(phi)) * np.sin(lamda) + U_u * np.cos(lamda))
+    else:
+        raise ValueError("Error!  parameter look_direction must be 'right' or 'left', not %s" % look_direction)
     return d_los
 
 
