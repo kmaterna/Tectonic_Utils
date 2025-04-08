@@ -34,3 +34,22 @@ def read_gmt_multisegment_latlon(input_file, split_delimiter=' '):
     lon_collection.append(lon_temp)
     lat_collection.append(lat_temp)
     return lon_collection, lat_collection
+
+
+def write_gmt_multisegment(list_of_coords_segments, filename):
+    """
+    Write a list of lists of coordiantes into a GMT-compatible multi-segment file
+     [(-115.5650522767964, 33.11974272741214, 0.0),
+     (-115.5642209309202, 33.12270979703938, 0.0),
+     (-115.5637985114591, 33.12561963960839, 0.0)]
+
+    :param list_of_coords_segments: list of lists, or list of tuples
+    :param filename: string, name of output file
+    """
+    print("Writing file %s " % filename)
+    with open(filename, 'w') as ofile:
+        for segment in list_of_coords_segments:
+            ofile.write('>\n')
+            for coordinate in segment:
+                ofile.write("%f %f \n" % (coordinate[0], coordinate[1]))
+    return
