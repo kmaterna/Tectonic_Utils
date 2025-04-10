@@ -45,7 +45,7 @@ def calculate_initial_compass_bearing(pointA, pointB):
     :return: bearing, in degrees CW from north
     :rtype: float
     """
-    if ~isinstance(pointA, tuple) or ~isinstance(pointB, tuple):
+    if not isinstance(pointA, tuple) or not isinstance(pointB, tuple):
         raise TypeError("Only tuples are supported as arguments")
 
     lat1 = math.radians(pointA[0])
