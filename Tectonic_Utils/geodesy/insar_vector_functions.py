@@ -260,7 +260,7 @@ def def3D_into_LOS(U_e, U_n, U_u, flight_angle, incidence_angle, look_direction=
     if look_direction == 'right':
         d_los = ((U_n * np.sin(phi) - U_e * np.cos(phi)) * np.sin(lamda) + U_u * np.cos(lamda))
     elif look_direction == 'left':
-        d_los = ((U_n * np.sin(phi) + U_e * np.cos(phi)) * np.sin(lamda) + U_u * np.cos(lamda))
+        d_los = (-(U_n * np.sin(phi) - U_e * np.cos(phi)) * np.sin(lamda) + U_u * np.cos(lamda))
     else:
         raise ValueError("Error!  parameter look_direction must be 'right' or 'left', not %s" % look_direction)
     return d_los
