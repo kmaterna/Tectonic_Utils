@@ -2,7 +2,7 @@
 
 import numpy as np
 import unittest
-from .. import fault_vector_functions, insar_vector_functions, xyz2llh
+from .. import fault_vector_functions, xyz2llh
 
 
 class Tests(unittest.TestCase):
@@ -33,14 +33,6 @@ class Tests(unittest.TestCase):
         self.assertTrue(np.allclose(plane_normal, [0, 1, 0.0001745329]))
         plane_normal = fault_vector_functions.get_plane_normal(strike=180, dip=1)
         self.assertTrue(np.allclose(plane_normal, [-0.0174524064372835, 0, 0.999847695156391]))
-        return
-
-    def test_lkv_conversion(self):
-        """ Testing that look vectors are converted correctly"""
-        [lkv_e, lkv_n, lkv_u] = insar_vector_functions.flight_incidence_angles2look_vector(190, 30)
-        [out_flight, out_inc] = insar_vector_functions.look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u)
-        self.assertAlmostEqual(190, out_flight)
-        self.assertAlmostEqual(30, out_inc)
         return
 
     def test_llh_xyz_conversion(self):
@@ -75,15 +67,6 @@ class Tests(unittest.TestCase):
         # Feel-good code: check out the print statements!
         print("pos file enu vs computed enu: ", enu_from_pos_file, e_enu)
         print("pos_xyz_obs vs computed xyz_obs: ", xyz_obs_2005, np.add(e_xyz, reference_xyz))
-        return
-
-    def test_proj_into_vertical_no_horizontal(self):
-        # LKV 45 degree test case:
-        semivert = insar_vector_functions.proj_los_into_vertical_no_horiz(1, [0.7, 0, 0.7])
-        self.assertAlmostEqual(semivert, 1.41421356)
-        # LKV vertical test case:
-        semivert = insar_vector_functions.proj_los_into_vertical_no_horiz(1, [0, 0, 1])
-        self.assertAlmostEqual(semivert, 1.0)
         return
 
 

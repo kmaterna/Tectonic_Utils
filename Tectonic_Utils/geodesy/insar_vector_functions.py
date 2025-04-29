@@ -161,26 +161,34 @@ def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
 
 def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
     """
-    General InSAR look vector math function, assuming right-looking satellite.
+    Compute incidence and azimuth from 3-component look vector. The satellite can look either direction.
+    The inputs can be either scalars or numpy arrays.
     lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
     incidence angle is angle between look vector and vertical in degrees.
     Flight angle is clockwise from north in degrees.
 
     :param lkv_e: e component of look vector from ground to satellite
-    :type lkv_e: float
+    :type lkv_e: float or numpy array
     :param lkv_n: n component of look vector from ground to satellite
-    :type lkv_n: float
+    :type lkv_n: float or numpy array
     :param lkv_u: u component of look vector from ground to satellite
-    :type lkv_u: float
+    :type lkv_u: float or numpy array
     :returns: [flight_angle, incidence_angle] in degrees
-    :rtype: list
+    :rtype: list of two objects, either floats or numpy arrays
     """
-    unit_lkv = [lkv_e, lkv_n, lkv_u]
-    unit_lkv = unit_lkv / np.linalg.norm(unit_lkv)
-    vert_vector = [0, 0, 1]
-    dotproduct = np.dot(unit_lkv, vert_vector)
-    incidence_angle = np.rad2deg(np.arccos(dotproduct))
 
+    # Stack into a 3D array: shape (M, N, 3)
+    unit_lkv = np.stack((lkv_e, lkv_n, lkv_u), axis=-1)  # shape (M, N, 3)
+
+    # Normalize each 3-component vector (broadcasting norm across last axis)
+    norms = np.linalg.norm(unit_lkv, axis=-1, keepdims=True)  # shape (M, N, 1)
+    unit_lkv_normalized = unit_lkv / norms  # shape (M, N, 3)
+
+    # Dot product with vertical vector [0, 0, 1]
+    dotproduct = unit_lkv_normalized[..., 2]  # Extract just the "up" component
+
+    # Incidence and Azimuth: angle from vertical, angle on horizontal plane
+    incidence_angle = np.rad2deg(np.arccos(dotproduct))
     lkv_horiz_angle = np.arctan2(lkv_n, lkv_e)  # cartesian angle of horiz look-vec. (negative small # for DESC)
     heading_deg = cartesian_to_heading(np.rad2deg(lkv_horiz_angle))
     flight_angle = heading_deg + 90  # satellite flies 90 degrees away from look vector direction
@@ -189,15 +197,16 @@ def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
 
 def flight_incidence_angles2look_vector(flight_angle, incidence_angle):
     """
-    General InSAR look vector math function, assuming right-looking satellite.
+    Compute look vector components from azimuth and incidence, assuming right-looking satellite.
     lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
+    The inputs can be either scalars or numpy arrays.
 
     :param flight_angle: heading, clockwise from north, in degrees
-    :type flight_angle: float
+    :type flight_angle: float or numpy array
     :param incidence_angle: angle between look vector and vertical, in degrees
-    :type incidence_angle: float
+    :type incidence_angle: float or numpy array
     :returns: [lkv_e, lkv_n, lkv_u]
-    :rtype: list
+    :rtype: list of three objects, either floats or numpy arrays
     """
     lk_heading = flight_angle - 90  # heading, 90 degrees to the right of the satellite
     horizontal_lkv = np.sin(np.deg2rad(incidence_angle))
@@ -210,15 +219,16 @@ def flight_incidence_angles2look_vector(flight_angle, incidence_angle):
 
 def flight_incidence_angles2look_vector_leftlook(flight_angle, incidence_angle):
     """
-    General InSAR look vector math function, assuming left-looking satellite.
+    Compute look vector components from azimuth and incidence, assuming left-looking satellite.
     lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
+    The inputs can be either scalars or numpy arrays.
 
     :param flight_angle: heading, clockwise from north, in degrees
-    :type flight_angle: float
+    :type flight_angle: float or numpy array
     :param incidence_angle: angle between look vector and vertical, in degrees
-    :type incidence_angle: float
+    :type incidence_angle: float or numpy array
     :returns: [lkv_e, lkv_n, lkv_u]
-    :rtype: list
+    :rtype: list of three objects, either floats or numpy arrays
     """
     lk_heading = flight_angle + 90  # heading, 90 degrees to the left of the satellite
     horizontal_lkv = np.sin(np.deg2rad(incidence_angle))
