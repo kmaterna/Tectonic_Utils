@@ -161,7 +161,8 @@ def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
 
 def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
     """
-    Compute incidence and azimuth from 3-component look vector. The satellite can look either direction.
+    Compute incidence and azimuth from 3-component look vector. This assumes a right-looking satellite.
+    For left-looking platform, subtract 180 from the resulting azimuth.
     The inputs can be either scalars or numpy arrays.
     lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
     incidence angle is angle between look vector and vertical in degrees.
@@ -191,7 +192,7 @@ def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
     incidence_angle = np.rad2deg(np.arccos(dotproduct))
     lkv_horiz_angle = np.arctan2(lkv_n, lkv_e)  # cartesian angle of horiz look-vec. (negative small # for DESC)
     heading_deg = cartesian_to_heading(np.rad2deg(lkv_horiz_angle))
-    flight_angle = heading_deg + 90  # satellite flies 90 degrees away from look vector direction
+    flight_angle = heading_deg + 90  # satellite flies 90 degrees away from look vector direction, right-looking
     return [flight_angle, incidence_angle]
 
 
