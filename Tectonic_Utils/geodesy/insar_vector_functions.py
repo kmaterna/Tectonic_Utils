@@ -159,9 +159,9 @@ def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
     return lkv_e, lkv_n, lkv_u
 
 
-def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
+def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u, look_direction='right'):
     """
-    Compute incidence and azimuth from 3-component look vector. This assumes a right-looking satellite.
+    Compute incidence and azimuth from 3-component look vector.
     For left-looking platform, subtract 180 from the resulting azimuth.
     The inputs can be either scalars or numpy arrays.
     lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
@@ -174,6 +174,8 @@ def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
     :type lkv_n: float or numpy array
     :param lkv_u: u component of look vector from ground to satellite
     :type lkv_u: float or numpy array
+    :param look_direction: look direction of the SAR platform, must be 'right' or 'left'
+    :type look_direction: string
     :returns: [flight_angle, incidence_angle] in degrees
     :rtype: list of two objects, either floats or numpy arrays
     """
@@ -192,13 +194,18 @@ def look_vector2flight_incidence_angles(lkv_e, lkv_n, lkv_u):
     incidence_angle = np.rad2deg(np.arccos(dotproduct))
     lkv_horiz_angle = np.arctan2(lkv_n, lkv_e)  # cartesian angle of horiz look-vec. (negative small # for DESC)
     heading_deg = cartesian_to_heading(np.rad2deg(lkv_horiz_angle))
-    flight_angle = heading_deg + 90  # satellite flies 90 degrees away from look vector direction, right-looking
+    if look_direction == 'right':
+        flight_angle = heading_deg + 90  # satellite flies 90 degrees away from look vector direction, right-looking
+    elif look_direction == 'left':
+        flight_angle = heading_deg - 90  # satellite flies 90 degrees away from look vector direction, left-looking
+    else:
+        raise (ValueError("ERROR! Provided look direction of %s must be right or left" % look_direction))
     return [flight_angle, incidence_angle]
 
 
-def flight_incidence_angles2look_vector(flight_angle, incidence_angle):
+def flight_incidence_angles2look_vector(flight_angle, incidence_angle, look_direction='right'):
     """
-    Compute look vector components from azimuth and incidence, assuming right-looking satellite.
+    Compute look vector components from azimuth and incidence.
     lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
     The inputs can be either scalars or numpy arrays.
 
@@ -206,32 +213,17 @@ def flight_incidence_angles2look_vector(flight_angle, incidence_angle):
     :type flight_angle: float or numpy array
     :param incidence_angle: angle between look vector and vertical, in degrees
     :type incidence_angle: float or numpy array
+    :param look_direction: look direction of the SAR platform, must be 'right' or 'left'
+    :type look_direction: string
     :returns: [lkv_e, lkv_n, lkv_u]
     :rtype: list of three objects, either floats or numpy arrays
     """
-    lk_heading = flight_angle - 90  # heading, 90 degrees to the right of the satellite
-    horizontal_lkv = np.sin(np.deg2rad(incidence_angle))
-    lkv_u = np.cos(np.deg2rad(incidence_angle))
-    lkv_cartesian_angle = bearing_to_cartesian(lk_heading)
-    lkv_e = horizontal_lkv * np.cos(np.deg2rad(lkv_cartesian_angle))
-    lkv_n = horizontal_lkv * np.sin(np.deg2rad(lkv_cartesian_angle))
-    return [lkv_e, lkv_n, lkv_u]
-
-
-def flight_incidence_angles2look_vector_leftlook(flight_angle, incidence_angle):
-    """
-    Compute look vector components from azimuth and incidence, assuming left-looking satellite.
-    lkv_e, lkv_n, lkv_u are the components of the look vector from ground to satellite.
-    The inputs can be either scalars or numpy arrays.
-
-    :param flight_angle: heading, clockwise from north, in degrees
-    :type flight_angle: float or numpy array
-    :param incidence_angle: angle between look vector and vertical, in degrees
-    :type incidence_angle: float or numpy array
-    :returns: [lkv_e, lkv_n, lkv_u]
-    :rtype: list of three objects, either floats or numpy arrays
-    """
-    lk_heading = flight_angle + 90  # heading, 90 degrees to the left of the satellite
+    if look_direction == 'right':
+        lk_heading = flight_angle - 90  # heading, 90 degrees to the right of the satellite
+    elif look_direction == 'left':
+        lk_heading = flight_angle + 90  # heading, 90 degrees to the left of the satellite
+    else:
+        raise (ValueError("ERROR! Provided look direction of %s must be right or left" % look_direction))
     horizontal_lkv = np.sin(np.deg2rad(incidence_angle))
     lkv_u = np.cos(np.deg2rad(incidence_angle))
     lkv_cartesian_angle = bearing_to_cartesian(lk_heading)
