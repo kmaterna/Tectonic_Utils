@@ -6,7 +6,7 @@ import numpy as np
 import math
 
 
-def distance(origin, destination):
+def distance(origin, destination, radius=6371):
     """
     Computes the distance between origin [lat1, lon1] and destination [lat2, lon2].
 
@@ -14,12 +14,12 @@ def distance(origin, destination):
     :type origin: array_like
     :param destination: Tuple representing (latitude, longitude) of second point, in decimal degrees
     :type destination: array_like
+    :param radius: float, radius of Earth in km, default 6371
     :return: distance, in km
     :rtype: float
     """
     lat1, lon1 = origin
     lat2, lon2 = destination
-    radius = 6371  # km
 
     dlat = math.radians(lat2-lat1)
     dlon = math.radians(lon2-lon1)
@@ -31,12 +31,40 @@ def distance(origin, destination):
     return d
 
 
+def distance_vectorized(origin, destination, radius=6371.0):
+    """
+    Calculate the great-circle distance between pairs of points using numpy vectorized operations.
+
+    Parameters:
+    - origin: ndarray of shape (N, 2) with columns [lat, lon] in degrees
+    - destination: ndarray of shape (N, 2) with columns [lat, lon] in degrees
+    - radius: radius of the Earth in kilometers (default: 6371)
+
+    Returns:
+    - distances: ndarray of shape (N,) with distances in kilometers
+    """
+    lat1 = np.radians(origin[:, 0])
+    lon1 = np.radians(origin[:, 1])
+    lat2 = np.radians(destination[:, 0])
+    lon2 = np.radians(destination[:, 1])
+
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+
+    a = np.sin(dlat / 2.0) ** 2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2.0) ** 2
+    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
+
+    dist = radius * c
+    return dist
+
+
 def calculate_initial_compass_bearing(pointA, pointB):
     r"""
     Calculate the bearing between two points.
     By the formula
 
-    .. math::   \theta = atan2(\sin(\Delta_{long})*\cos(lat_2), \cos(lat_1)*\sin(lat_2) - \sin(lat_1)*\cos(lat_2)*\cos(\Delta_{long})).
+    .. math::   \theta = atan2(\sin(\Delta_{long})*\cos(lat_2), \cos(lat_1)*\sin(lat_2) -
+                         \sin(lat_1)*\cos(lat_2)*\cos(\Delta_{long})).
 
     :param pointA: Tuple representing (latitude, longitude) of first point, in decimal degrees
     :type pointA: array_like
@@ -62,6 +90,33 @@ def calculate_initial_compass_bearing(pointA, pointB):
     # from -180 to + 180 which is not what we want for a compass bearing
     # The solution is to normalize the initial bearing as shown below
     initial_bearing = math.degrees(initial_bearing)
+    compass_bearing = (initial_bearing + 360) % 360
+
+    return compass_bearing
+
+
+def calculate_initial_compass_bearing_vectorized(pointA, pointB):
+    """
+    Calculate initial compass bearing from pointA to pointB using numpy vectorized operations.
+
+    Parameters:
+    - pointA: ndarray of shape (N, 2) with [lat, lon] in degrees
+    - pointB: ndarray of shape (N, 2) with [lat, lon] in degrees
+
+    Returns:
+    - bearings: ndarray of shape (N,) with compass bearings in degrees [0, 360)
+    """
+    lat1 = np.radians(pointA[:, 0])
+    lat2 = np.radians(pointB[:, 0])
+    diff_long = np.radians(pointB[:, 1] - pointA[:, 1])
+
+    x = np.sin(diff_long) * np.cos(lat2)
+    y = np.cos(lat1) * np.sin(lat2) - (
+            np.sin(lat1) * np.cos(lat2) * np.cos(diff_long)
+    )
+
+    initial_bearing = np.arctan2(x, y)
+    initial_bearing = np.degrees(initial_bearing)
     compass_bearing = (initial_bearing + 360) % 360
 
     return compass_bearing
