@@ -5,7 +5,7 @@ Useful utilities for defining fault planes and coordinate systems.
 import numpy as np
 import math
 from collections.abc import Iterable
-from Tectonic_Utils.geodesy import haversine, utilities
+from . import haversine, utilities
 
 
 def xy2lonlat_single(xi, yi, reflon, reflat):
@@ -71,7 +71,7 @@ def xy2lonlat(xi, yi, reflon, reflat):
         if not isinstance(yi, Iterable):  # if single value, return single value
             return xy2lonlat_single(xi, yi, reflon, reflat)
         else:
-            raise ValueError(f"Error! Dimension of x and y does not agree: {xi} {yi}" )
+            raise ValueError(f"Error! Dimension of x and y does not agree: {xi} {yi}")
     if len(list(xi)) != len(list(yi)):
         raise ValueError(f'Error! Length of x and y does not agree: {len(list(xi))} {len(list(yi))}')
 
@@ -103,7 +103,7 @@ def latlon2xy(loni, lati, lon0, lat0):
         if not isinstance(lati, Iterable):  # if single value, return single value
             return latlon2xy_single(loni, lati, lon0, lat0)
         else:
-            raise ValueError(f"Error! Dimension of x and y does not agree: {loni} {lati}" )
+            raise ValueError(f"Error! Dimension of x and y does not agree: {loni} {lati}")
     if len(list(loni)) != len(list(lati)):
         raise ValueError(f'Error! Length of x and y does not agree: {len(list(loni))} {len(list(lati))}')
 
