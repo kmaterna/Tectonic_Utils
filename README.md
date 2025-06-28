@@ -28,12 +28,12 @@ Functions in this library that I use regularly:
 ## Installation
 On Unix (other systems not tested yet), install from PyPI using: 
 
-```pip install Tectonic-Utils```
+```pip install tectonic-utils```
 
 To test that it works, import a utility in Python. I use an import structure like: 
 ```
 $ python
->>> from Tectonic_Utils.geodesy import haversine
+>>> from tectonic_utils.geodesy import haversine
 ```
 
 ## Documentation

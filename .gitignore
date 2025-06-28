@@ -3,7 +3,7 @@ __pycache__/*
 .idea
 build*
 dist*
-Tectonic_Utils.egg-info*
+tectonic_utils.egg-info*
 upload_wheel.sh
 docs/*
 how_to_make_docs.txt
