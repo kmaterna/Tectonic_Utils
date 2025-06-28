@@ -11,4 +11,4 @@ how_to_make_docs.txt
 *.ppt
 *.pptx
 *DS_Store
-Tectonic_Utils/read_write/test/written_example.grd
+tectonic_utils/read_write/test/written_example.grd

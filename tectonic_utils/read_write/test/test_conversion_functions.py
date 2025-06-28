@@ -28,9 +28,9 @@ class Tests(unittest.TestCase):
         subprocess.call(['rm', 'gmt.history'], shell=False)
 
         # Test a read-write cycle on an example grid
-        [x, y, z] = netcdf_read_write.read_any_grd("Tectonic_Utils/read_write/test/example_grd.grd")
-        netcdf_read_write.write_netcdf4(x, y, z, "Tectonic_Utils/read_write/test/written_example.grd")
-        netcdf_read_write.parse_pixelnode_registration("Tectonic_Utils/read_write/test/written_example.grd")
+        [x, y, z] = netcdf_read_write.read_any_grd("tectonic_utils/read_write/test/example_grd.grd")
+        netcdf_read_write.write_netcdf4(x, y, z, "tectonic_utils/read_write/test/written_example.grd")
+        netcdf_read_write.parse_pixelnode_registration("tectonic_utils/read_write/test/written_example.grd")
         subprocess.call(['rm', 'gmt.history'], shell=False)
 
         return
