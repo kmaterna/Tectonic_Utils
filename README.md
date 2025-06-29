@@ -16,7 +16,7 @@ Functions in this library that I use regularly:
 * Earthquake magnitude scaling (Wells and Coppersmith, 1994)
 * Reading GMT multi-segment files into Python
 
-![cover](https://github.com/kmaterna/Tectonic_Utils/blob/master/Tectonic_Utils/cover_picture.png)
+![cover](https://github.com/kmaterna/Tectonic_Utils/blob/master/tectonic_utils/cover_picture.png)
 
 ## Dependencies
 * Python 3
