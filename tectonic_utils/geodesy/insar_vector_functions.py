@@ -10,9 +10,9 @@ def bearing_to_cartesian(heading):
     Bearing (heading from North) to cartesian orientation CCW from east.
 
     :param heading: CW from North, in degrees
-    :type heading: float
+    :type heading: float or numpy.ndarray
     :returns: Cartesian direction, CCW from East, in degrees
-    :rtype: float
+    :rtype: float or numpy.ndarray
     """
     return 90 - heading
 
@@ -22,9 +22,9 @@ def cartesian_to_heading(cartesian_angle):
     Cartesian orientation (CCW from east) to heading (CW from north).
 
     :param cartesian_angle: CCW from East, in degrees
-    :type cartesian_angle: float
+    :type cartesian_angle: float or numpy.ndarray
     :returns: heading direction, CW from North, in degrees
-    :rtype: float
+    :rtype: float or numpy.ndarray
     """
     return 90 - cartesian_angle
 
@@ -113,13 +113,13 @@ def calc_rdr_azimuth_incidence_from_lkv_plane_down(lkve, lkvn, lkvu):
     (aka degrees from vertical at satellite) (always +ve), in degrees.
 
     :param lkve: e component of look vector FROM PLANE TO GROUND
-    :type lkve: float
+    :type lkve: float or numpy.ndarray
     :param lkvn: n component of look vector FROM PLANE TO GROUND
-    :type lkvn: float
+    :type lkvn: float or numpy.ndarray
     :param lkvu: u component of look vector FROM PLANE TO GROUND
-    :type lkvu: float
+    :type lkvu: float or numpy.ndarray
     :returns: azimuth, incidence, angles in degrees
-    :rtype: float, float
+    :rtype: float, float or numpy.ndarray, numpy.ndarray
     """
 
     east_sq = np.square(lkve)
@@ -144,9 +144,9 @@ def calc_lkv_from_rdr_azimuth_incidence(azimuth, incidence):
     lkve, lkvn, lkvu describe vector from ground to plane.
 
     :param azimuth: CCW from north angle of vector from ground to plane, in degrees (ISCE LOS.RDR convention)
-    :type azimuth: float
+    :type azimuth: float or numpy.ndarray
     :param incidence: angle from look vector to vertical, measured at the target (aka deg. from vertical at satellite)
-    :type incidence: float
+    :type incidence: float or numpy.ndarray
     :returns: lkve, lkvn, lkvu, unit vector from ground to plane
     """
 
@@ -244,19 +244,19 @@ def def3D_into_LOS(U_e, U_n, U_u, flight_angle, incidence_angle, look_direction=
     [U_e, U_n, U_u] are the east, north, and up components of the deformation.
 
     :param U_e: east component of deformation
-    :type U_e: float
+    :type U_e: float or numpy.ndarray
     :param U_n: north component of deformation
-    :type U_n: float
+    :type U_n: float or numpy.ndarray
     :param U_u: vertical component of deformation
-    :type U_u: float
+    :type U_u: float or numpy.ndarray
     :param flight_angle: azimuth of satellite heading vector in degrees, CW from north
-    :type flight_angle: float
+    :type flight_angle: float or numpy.ndarray
     :param incidence_angle: local incidence angle at the reflector (angle from the vertical), in degrees
-    :type incidence_angle: float
+    :type incidence_angle: float or numpy.ndarray
     :param look_direction: 'left' or 'right' (default 'right')
     :type look_direction: string
     :returns: los deformation (in same units as U_e)
-    :rtype: float
+    :rtype: float or numpy.ndarray
     """
     phi = np.deg2rad(flight_angle)
     lamda = np.deg2rad(incidence_angle)
