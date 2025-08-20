@@ -7,6 +7,7 @@ The assumption is 2D Netcdf files with 3 variables, in x-y-z order.
 import numpy as np
 import scipy.io.netcdf as netcdf
 import subprocess
+import os
 from netCDF4 import Dataset
 
 
@@ -19,7 +20,7 @@ def parse_pixelnode_registration(filename):
     :type filename: string
     """
     output = subprocess.check_output(['gmt', 'grdinfo', filename], shell=False)
-    assert("Pixel node registration used" in str(output)), ValueError("ERROR! "+filename+" not pixel-node registered")
+    assert ("Pixel node registration used" in str(output)), ValueError("ERROR! "+filename+" not pixel-node registered")
     return
 
 
@@ -234,7 +235,7 @@ def write_netcdf4(x, y, z, outfile, precision=10):
     print(command)
     subprocess.call(['gmt', 'xyz2grd', outtxt, '-G'+outfile, '-I'+increments, '-R'+region, binary_format_flags, '-r',
                      '-fg', '-di-9999'], shell=False)
-    subprocess.call(['rm', outtxt], shell=False)
+    os.remove(outtxt)
     return
 
 

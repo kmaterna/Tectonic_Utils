@@ -2,8 +2,8 @@
 
 import numpy as np
 import unittest
-import subprocess
-from .. import netcdf_read_write
+import os
+from .. import netcdf_read_write as netrw
 
 
 class Tests(unittest.TestCase):
@@ -22,16 +22,16 @@ class Tests(unittest.TestCase):
 
         # Test a write function
         grid = np.zeros((len(lats), len(lons)))
-        netcdf_read_write.write_netcdf4(lons, lats, grid, filename)
-        netcdf_read_write.parse_pixelnode_registration(filename)
-        subprocess.call(['rm', filename], shell=False)
-        subprocess.call(['rm', 'gmt.history'], shell=False)
+        netrw.write_netcdf4(lons, lats, grid, filename)
+        netrw.parse_pixelnode_registration(filename)
+        os.remove(filename)
+        os.remove('gmt.history')
 
         # Test a read-write cycle on an example grid
-        [x, y, z] = netcdf_read_write.read_any_grd("tectonic_utils/read_write/test/example_grd.grd")
-        netcdf_read_write.write_netcdf4(x, y, z, "tectonic_utils/read_write/test/written_example.grd")
-        netcdf_read_write.parse_pixelnode_registration("tectonic_utils/read_write/test/written_example.grd")
-        subprocess.call(['rm', 'gmt.history'], shell=False)
+        [x, y, z] = netrw.read_any_grd(os.path.join("tectonic_utils", "read_write", "test", "example_grd.grd"))
+        netrw.write_netcdf4(x, y, z, os.path.join("tectonic_utils", "read_write", "test", "written_example.grd"))
+        netrw.parse_pixelnode_registration(os.path.join("tectonic_utils", "read_write", "test", "written_example.grd"))
+        os.remove('gmt.history')
 
         return
 
